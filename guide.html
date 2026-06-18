@@ -87,7 +87,7 @@
     <table>
       <tr><th>Layer</th><th>Owns</th></tr>
       <tr><td>Shopify (Storefront API)</td><td>Products, variants, options, prices, inventory, <b>selling plans</b>, cart, hosted checkout</td></tr>
-      <tr><td>Your CMS (synced)</td><td>The <b>bundle pairing</b> (bottle ↔ refill) + copy. No prices/stock.</td></tr>
+      <tr><td>Your CMS · <code>product-attribute-api</code></td><td>Per-product editorial (scent blurbs, benefits, where-to-use…) <b>+ the bundle pairing</b>, keyed by Shopify product ID. No prices/stock.</td></tr>
       <tr><td>Storefront (React)</td><td>Reads pairing → re-hydrates live from Shopify → renders V2 page → adds 2 lines</td></tr>
     </table>
     <p>Five phases. Each below has <span class="pill goal">Goal</span>, the files to touch, the exact steps/code, and a <span class="pill verify">Verify</span> check.</p>
@@ -101,8 +101,8 @@
       <li>Tag the refill <code>subscription</code> (the app's <span class="file">getProductSellingPlans.ts</span> queries <code>query:"tag:subscription"</code>).</li>
     </ul>
     <div class="callout warn"><b>If subscriptions aren't set up yet</b> — ship the bundle <strong>one-time only</strong> first (skip the Subscribe row in Phase 3), and turn it on later. Nothing else changes.</div>
-    <h3>CMS — a "bundle" content type</h3>
-    <p>Because the CMS already syncs products from Shopify, a bundle is just a record linking two synced products + copy:</p>
+    <h3>CMS — add the pairing to the product-attribute payload</h3>
+    <p>The PDP already fetches per-product CMS content via <code>getFiberyProductByProductId(product.id)</code> (the <code>product-attribute-api</code> edge function, keyed by the Shopify product ID). Author the pairing as a field on that <em>same</em> payload — right where <code>refillsAndKits</code> already lives:</p>
     <pre><code><span class="c">// CMS "bundle" record (editorial-verse / Supabase)</span>
 {
   <span class="k">host_handle</span>:    <span class="s">"surface-cleaner"</span>,        <span class="c">// the PDP this bundle shows on</span>
@@ -113,7 +113,7 @@
   <span class="k">copy</span>: { title: <span class="s">"Bottle + Refill"</span>, blurb: <span class="s">"…"</span> },
   <span class="k">active</span>: <span class="k">true</span>
 }</code></pre>
-    <p><span class="pill verify">Verify</span> the refill returns a non-empty <code>sellingPlanGroups</code> in a Storefront query, and the CMS bundle record is reachable by <code>host_handle</code>.</p>
+    <p><span class="pill verify">Verify</span> the refill returns a non-empty <code>sellingPlanGroups</code> from Shopify, and a <code>/product/attribute/{id}</code> response includes a <code>bundle</code> field for the host product.</p>
 
     <!-- PHASE 1 -->
     <h2 id="p1"><span class="num">1</span> · Data layer — structured options + selling plans</h2>
@@ -121,7 +121,7 @@
     <p><span class="file">src/features/shop/query.ts</span> <span class="file">src/features/shop/types.ts</span> <span class="file">src/features/common/useVariantSelector.ts</span> <span class="file">src/features/common/api/products/getProductByHandle.ts</span></p>
 
     <div class="step-h"><span class="b">1</span><h3>Add structured fields to <code>productFields</code></h3></div>
-    <p>In <code>query.ts</code>, inside the <code>variants(first: N){ edges { node { … } } }</code> block add <code>selectedOptions</code>, and at the product level add <code>options</code> and <code>sellingPlanGroups</code>:</p>
+    <p>In <code>query.ts</code>, inside the <code>variants(first: N){ edges { node { … } } }</code> block add <code>selectedOptions</code>, and at the product level add <code>options</code>. (<code>sellingPlanGroups</code> is <b>already</b> in <code>productFields</code> — subscriptions are ready; no change needed there.)</p>
     <pre><code><span class="c"># variant node — add:</span>
 selectedOptions { name value }
 
@@ -162,32 +162,30 @@ type TSelectedOption = { name: string; value: string }
     <!-- PHASE 2 -->
     <h2 id="p2"><span class="num">2</span> · CMS pairing + resolver</h2>
     <p><span class="pill goal">Goal</span> Fetch the bundle pairing from the CMS and hydrate every member live from Shopify.</p>
-    <p><span class="file">src/environment.ts</span> <span class="file">src/features/common/api.ts</span> <span class="file">new: useBundle.ts</span></p>
+    <p><span class="file">src/features/common/api.ts</span> (existing <code>getFiberyProductByProductId</code>) · <span class="file">src/features/shop/useFetchDataHook.tsx</span> (already exposes it as <code>fiberyProductQuery</code>) · <span class="file">new: resolveBundle()</span></p>
 
-    <div class="step-h"><span class="b">1</span><h3>Endpoint</h3></div>
-    <p>Add a CMS endpoint (mirror the existing CMS fetches, e.g. <code>getFiberyProductByProductId</code>). In <code>environment.ts</code> add <code>BUNDLE_API_URL</code> (or reuse the per-product attribute function). The CMS returns the bundle record for a host handle.</p>
-    <pre><code><span class="c">// src/features/common/api.ts — RTK Query</span>
-getBundleByHandle: builder.query&lt;Bundle | null, string&gt;({
-  query: (handle) => `${BUNDLE_API_URL}?host=${handle}`,
-})</code></pre>
+    <div class="step-h"><span class="b">1</span><h3>Read the pairing — no new endpoint</h3></div>
+    <p>The PDP already calls <code>getFiberyProductByProductId(product.id)</code> and exposes it as <code>fiberyProductQuery</code>. The pairing rides on that payload — just read <code>value.bundle</code>:</p>
+    <pre><code><span class="c">// already fetched on the product page (useFetchDataHook)</span>
+const bundleDef = fiberyProductQuery.data?.value?.bundle
+<span class="c">// → { refillHandle, plasticHandle, glassHandle, defaultRefillSize, active } | undefined</span></code></pre>
 
     <div class="step-h"><span class="b">2</span><h3>Resolver</h3></div>
     <p>Reuse the <span class="file">RefillsAndKits.tsx</span> <code>Promise.all(getProductByHandle)</code> pattern — but <em>validate</em> each member (RefillsAndKits does not).</p>
-    <pre><code><span class="k">async function</span> resolveBundle(handle, userTags) {
-  <span class="k">const</span> def = <span class="k">await</span> getBundleByHandle(handle)
-  <span class="k">if</span> (!def?.active) <span class="k">return null</span>                       <span class="c">// no bundle → normal PDP</span>
+    <pre><code><span class="k">async function</span> resolveBundle(bundleDef, userTags) {
+  <span class="k">if</span> (!bundleDef?.active) <span class="k">return null</span>                  <span class="c">// no pairing → normal PDP</span>
   <span class="k">const</span> [plastic, glass, refill] = (<span class="k">await</span> Promise.all([
-    getProductByHandle(def.plastic_handle),
-    getProductByHandle(def.glass_handle),
-    getProductByHandle(def.refill_handle),
+    getProductByHandle(bundleDef.plasticHandle),
+    getProductByHandle(bundleDef.glassHandle),
+    getProductByHandle(bundleDef.refillHandle),    <span class="c">// Shopify = live variants, price, sellingPlanGroups</span>
   ])).map(r => r.body?.product)
 
   <span class="k">const</span> ok = (p) => p && p.variants.edges.some(v => v.node.availableForSale)
                   && !shouldExcludeProduct(p, userTags)        <span class="c">// per-viewer veto</span>
   <span class="k">if</span> (![plastic, glass, refill].every(ok)) <span class="k">return null</span>  <span class="c">// hide if any member invalid</span>
-  <span class="k">return</span> { def, plastic, glass, refill }
+  <span class="k">return</span> { plastic, glass, refill }
 }</code></pre>
-    <p><span class="pill verify">Verify</span> for a host handle with a CMS bundle, the resolver returns hydrated bottle(s) + refill; for an unpublished/OOS member it returns <code>null</code>.</p>
+    <p><span class="pill verify">Verify</span> for a product whose CMS payload has <code>value.bundle</code>, the resolver returns hydrated bottle(s) + refill; for an unpublished/OOS member it returns <code>null</code>.</p>
 
     <!-- PHASE 3 -->
     <h2 id="p3"><span class="num">3</span> · The V2 product page UI</h2>
