@@ -152,7 +152,7 @@
 </style>
 </head>
 <body>
-<div class="proto"><div class="proto-in"><b>PRODUCT PAGE V2+ · Surface Cleaner</b> — <span class="tws">Figma V2 + tweaks (<span class="tw">✦</span>): <i>①</i> refill size+$/btl · <i>②</i> bottles-avoided · <i>③</i> set recap + delivery progress · <i>④</i> sticky bar · <i>⑤</i> subscribe savings · <i>+</i> real per-scent photos · functional Bottle/Refill toggle · working accordions · scent check.</span></div></div>
+<div class="proto"><div class="proto-in"><b>PRODUCT PAGE V2+ · Surface Cleaner</b> — <span class="tws">Figma V2 + tweaks (<span class="tw">✦</span>): <i>①</i> refill size ·<i>②</i> bottles-avoided · <i>③</i> set recap + delivery progress · <i>④</i> sticky bar · <i>⑤</i> subscribe savings · <i>+</i> real per-scent photos · functional Bottle/Refill toggle · working accordions · scent check.</span></div></div>
 
 <div class="wrap">
   <div class="pdp">
@@ -305,7 +305,7 @@
     if(ro) st.refill=true;
   }
   function renderRsize(){
-    document.getElementById("rsize").innerHTML=RSIZES.map(s=>`<button class="${st.rsize===s.id?"on":""}" data-rsize="${s.id}"><span class="b">Refills ${s.bottles}</span><span class="v">${money(s.price)} · ${money(s.price/s.bottles)}/btl</span></button>`).join("");
+    document.getElementById("rsize").innerHTML=RSIZES.map(s=>`<button class="${st.rsize===s.id?"on":""}" data-rsize="${s.id}"><span class="b">Refills ${s.bottles}</span><span class="v">${money(s.price)}</span></button>`).join("");
     document.getElementById("refillSub").textContent=`${rs().oz} · refills ${rs().bottles} bottles`;
   }
   function render(){
