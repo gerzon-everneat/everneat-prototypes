@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Everneat · Bundle Prototypes</title>
+<meta name="robots" content="noindex, nofollow" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{--ink:#1a1815;--muted:#726d64;--line:#e7e0d2;--lime:#c9c42b;--serif:"Fraunces",Georgia,serif;--sans:"Inter",system-ui,sans-serif;}
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:var(--sans);color:var(--ink);background:linear-gradient(180deg,#faf6ef,#f3ede2);min-height:100vh;display:grid;place-items:center;padding:2rem;}
+  .card{max-width:640px;width:100%;}
+  .eyebrow{font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;color:var(--muted);}
+  h1{font-family:var(--serif);font-weight:600;font-style:italic;font-size:2.4rem;letter-spacing:0.01em;margin:0.5rem 0 0.4rem;}
+  p.lead{color:var(--muted);font-size:0.95rem;line-height:1.6;margin:0 0 2rem;}
+  a.proto{display:flex;align-items:center;justify-content:space-between;gap:1rem;text-decoration:none;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:1rem;padding:1.25rem 1.4rem;margin-bottom:0.9rem;transition:border-color .15s, transform .15s;}
+  a.proto:hover{border-color:var(--ink);transform:translateY(-1px);}
+  a.proto .t{font-family:var(--serif);font-weight:600;font-size:1.15rem;}
+  a.proto .s{font-size:0.82rem;color:var(--muted);margin-top:0.2rem;}
+  a.proto .tag{font-size:0.6rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;background:var(--lime);color:#1a1815;padding:0.2rem 0.5rem;border-radius:1em;}
+  a.proto .arrow{font-size:1.3rem;color:var(--muted);}
+  .foot{margin-top:1.5rem;font-size:0.75rem;color:var(--muted);line-height:1.6;}
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="eyebrow">Everneat · Internal</div>
+    <h1>Bundle Prototypes</h1>
+    <p class="lead">Interactive prototypes of the Surface Cleaner bundle (Product Page V2), matched to the Figma design. Click around — scent, format, refill size, and subscribe all work.</p>
+
+    <a class="proto" href="./bundle-figma-v2-plus.html">
+      <span><span class="t">Product Page V2 — tweaked</span><span class="s">Figma V2 + refill sizes, eco cue, set recap, subscribe savings, sticky bar</span></span>
+      <span class="tag">Latest</span>
+    </a>
+    <a class="proto" href="./bundle-figma-v2.html">
+      <span><span class="t">Product Page V2 — faithful</span><span class="s">1:1 reproduction of the Figma frame, no tweaks</span></span>
+      <span class="arrow">→</span>
+    </a>
+
+    <div class="foot">Self-contained static prototypes · real product data &amp; photos · not indexed (noindex).</div>
+  </div>
+</body>
+</html>
