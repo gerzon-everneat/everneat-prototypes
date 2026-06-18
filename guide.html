@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Everneat · Bundle Implementation Guide</title>
+<meta name="robots" content="noindex, nofollow" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#1a1815;--ink2:#2c2925;--muted:#726d64;--line:#e0d9cb;--fill:#f5f4f2;--white:#fff;
+    --lime:#c9c42b;--lime-bg:#f3f2db;--lime-deep:#8a861b;
+    --code-bg:#1f1d18;--code-fg:#e9e5d6;--code-key:#c9c42b;--code-str:#9fd0c4;--code-com:#8a8472;
+    --serif:"Fraunces",Georgia,serif;--sans:"Inter",system-ui,sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:var(--sans);color:var(--ink2);background:#faf7f0;-webkit-font-smoothing:antialiased;font-size:15px;line-height:1.6;}
+  .layout{display:grid;grid-template-columns:240px 1fr;max-width:1180px;margin:0 auto;gap:2.5rem;padding:0 1.5rem;}
+  /* sidebar TOC */
+  .toc{position:sticky;top:0;align-self:start;height:100vh;overflow:auto;padding:2.2rem 0;font-size:0.82rem;}
+  .toc .brand{font-family:var(--serif);font-style:italic;font-weight:600;font-size:1.1rem;color:var(--ink);margin-bottom:0.2rem;}
+  .toc .brand-sub{font-size:0.66rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:1.4rem;}
+  .toc a{display:block;color:var(--muted);text-decoration:none;padding:0.32rem 0;border-left:2px solid transparent;padding-left:0.7rem;}
+  .toc a:hover{color:var(--ink);}
+  .toc a.h2{padding-left:1.5rem;font-size:0.78rem;}
+  .toc a.phase{color:var(--ink);font-weight:600;}
+  /* content */
+  .content{padding:2.2rem 0 6rem;max-width:740px;}
+  h1{font-family:var(--serif);font-weight:600;font-style:italic;font-size:2.3rem;color:var(--ink);margin:0 0 0.3rem;}
+  .lede{color:var(--muted);font-size:1rem;margin:0 0 2rem;}
+  h2{font-family:var(--serif);font-weight:600;font-size:1.5rem;color:var(--ink);margin:3rem 0 0.4rem;padding-top:1rem;border-top:1px solid var(--line);}
+  h2 .num{color:var(--lime-deep);}
+  h3{font-size:1.02rem;font-weight:600;color:var(--ink);margin:1.8rem 0 0.5rem;}
+  p{margin:0.6rem 0;}
+  ul,ol{margin:0.5rem 0;padding-left:1.3rem;}
+  li{margin:0.35rem 0;}
+  code{font-family:var(--mono);font-size:0.86em;background:var(--fill);border:1px solid var(--line);border-radius:0.3rem;padding:0.05rem 0.32rem;color:var(--ink);}
+  pre{background:var(--code-bg);color:var(--code-fg);border-radius:0.7rem;padding:1.1rem 1.2rem;overflow:auto;font-family:var(--mono);font-size:0.8rem;line-height:1.65;margin:0.9rem 0;}
+  pre code{background:none;border:none;padding:0;color:inherit;font-size:inherit;}
+  pre .c{color:var(--code-com);}
+  pre .k{color:var(--code-key);}
+  pre .s{color:var(--code-str);}
+  .file{font-family:var(--mono);font-size:0.74rem;color:var(--lime-deep);background:var(--lime-bg);border:1px solid #e4e1b8;border-radius:0.4rem;padding:0.1rem 0.45rem;display:inline-block;margin:0.3rem 0;}
+  .pill{display:inline-block;font-size:0.6rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;border-radius:1em;padding:0.18rem 0.5rem;}
+  .pill.goal{background:var(--lime-bg);color:var(--lime-deep);}
+  .pill.verify{background:#e3eee9;color:#2e7d4f;}
+  .callout{border:1px solid var(--line);border-left:3px solid var(--lime);background:var(--white);border-radius:0.5rem;padding:0.9rem 1.1rem;margin:1.2rem 0;font-size:0.9rem;}
+  .callout.warn{border-left-color:#d4923a;}
+  .callout b{font-family:var(--serif);font-style:italic;}
+  table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:0.85rem;}
+  th,td{text-align:left;padding:0.55rem 0.7rem;border-bottom:1px solid var(--line);vertical-align:top;}
+  th{font-size:0.66rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);}
+  .step-h{display:flex;align-items:center;gap:0.6rem;margin-top:1.6rem;}
+  .step-h .b{width:1.5rem;height:1.5rem;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-size:0.72rem;font-weight:700;flex:none;}
+  .step-h h3{margin:0;}
+  .topnav{font-size:0.8rem;margin-bottom:1.5rem;}
+  .topnav a{color:var(--lime-deep);text-decoration:none;font-weight:600;}
+  @media (max-width:880px){.layout{grid-template-columns:1fr;}.toc{position:static;height:auto;overflow:visible;padding:1.5rem 0 0;}.toc a{display:inline-block;border:1px solid var(--line);border-radius:1em;margin:0.2rem 0.2rem 0 0;padding:0.25rem 0.6rem;}.toc a.h2{display:none;}}
+</style>
+</head>
+<body>
+<div class="layout">
+  <nav class="toc">
+    <div class="brand">Everneat</div>
+    <div class="brand-sub">Bundle · Build Guide</div>
+    <a href="#overview">Overview</a>
+    <a href="#prereq">0 · Prerequisites</a>
+    <a href="#p1" class="phase">1 · Data layer</a>
+    <a href="#p2" class="phase">2 · CMS pairing</a>
+    <a href="#p3" class="phase">3 · PDP UI</a>
+    <a href="#p4" class="phase">4 · Add the set</a>
+    <a href="#p5" class="phase">5 · Grouped cart</a>
+    <a href="#edge">Edge cases</a>
+    <a href="#test">Testing</a>
+    <a href="#rollout">Rollout</a>
+  </nav>
+
+  <main class="content">
+    <div class="topnav"><a href="./bundle-plan.html">← animated plan</a> &nbsp;·&nbsp; <a href="./bundle-figma-v2-plus.html">prototype →</a></div>
+    <h1>Bundle implementation guide</h1>
+    <p class="lede">Exactly how to build the Surface Cleaner bundle (Product Page V2 + subscribe) on the Shopify Storefront API + your synced CMS. File-by-file, with the real code changes.</p>
+
+    <h2 id="overview">Overview</h2>
+    <p>The bundle is a <b>soft bundle</b>: the product page adds a <strong>bottle</strong> and a <strong>concentrate refill</strong> as <strong>two real Shopify cart lines</strong> in one <code>cartLinesAdd</code>. Nothing is a "Shopify bundle product" or Function.</p>
+    <table>
+      <tr><th>Layer</th><th>Owns</th></tr>
+      <tr><td>Shopify (Storefront API)</td><td>Products, variants, options, prices, inventory, <b>selling plans</b>, cart, hosted checkout</td></tr>
+      <tr><td>Your CMS (synced)</td><td>The <b>bundle pairing</b> (bottle ↔ refill) + copy. No prices/stock.</td></tr>
+      <tr><td>Storefront (React)</td><td>Reads pairing → re-hydrates live from Shopify → renders V2 page → adds 2 lines</td></tr>
+    </table>
+    <p>Five phases. Each below has <span class="pill goal">Goal</span>, the files to touch, the exact steps/code, and a <span class="pill verify">Verify</span> check.</p>
+
+    <h2 id="prereq"><span class="num">0</span> · Prerequisites (before any code)</h2>
+    <h3>Shopify — subscription on the refill</h3>
+    <p>The "Subscribe −15% / every N weeks" only exists if the refill product has a <strong>selling plan</strong>. In Shopify admin (native Shopify Subscriptions or your subscription app):</p>
+    <ul>
+      <li>Add the refill to a selling-plan group with a <strong>15% percentage</strong> discount.</li>
+      <li>Delivery-interval options: <code>4 / 6 / 8 / 12 weeks</code>.</li>
+      <li>Tag the refill <code>subscription</code> (the app's <span class="file">getProductSellingPlans.ts</span> queries <code>query:"tag:subscription"</code>).</li>
+    </ul>
+    <div class="callout warn"><b>If subscriptions aren't set up yet</b> — ship the bundle <strong>one-time only</strong> first (skip the Subscribe row in Phase 3), and turn it on later. Nothing else changes.</div>
+    <h3>CMS — a "bundle" content type</h3>
+    <p>Because the CMS already syncs products from Shopify, a bundle is just a record linking two synced products + copy:</p>
+    <pre><code><span class="c">// CMS "bundle" record (editorial-verse / Supabase)</span>
+{
+  <span class="k">host_handle</span>:    <span class="s">"surface-cleaner"</span>,        <span class="c">// the PDP this bundle shows on</span>
+  <span class="k">plastic_handle</span>: <span class="s">"surface-cleaner"</span>,
+  <span class="k">glass_handle</span>:   <span class="s">"surface-cleaner-glass"</span>,
+  <span class="k">refill_handle</span>:  <span class="s">"surface-cleaner-concentrate-refill-in-aluminum-bottle-copy"</span>,
+  <span class="k">default_refill_size</span>: <span class="s">"8"</span>,
+  <span class="k">copy</span>: { title: <span class="s">"Bottle + Refill"</span>, blurb: <span class="s">"…"</span> },
+  <span class="k">active</span>: <span class="k">true</span>
+}</code></pre>
+    <p><span class="pill verify">Verify</span> the refill returns a non-empty <code>sellingPlanGroups</code> in a Storefront query, and the CMS bundle record is reachable by <code>host_handle</code>.</p>
+
+    <!-- PHASE 1 -->
+    <h2 id="p1"><span class="num">1</span> · Data layer — structured options + selling plans</h2>
+    <p><span class="pill goal">Goal</span> Stop guessing scent/size from product titles; resolve variants exactly, and read the refill's selling plans.</p>
+    <p><span class="file">src/features/shop/query.ts</span> <span class="file">src/features/shop/types.ts</span> <span class="file">src/features/common/useVariantSelector.ts</span> <span class="file">src/features/common/api/products/getProductByHandle.ts</span></p>
+
+    <div class="step-h"><span class="b">1</span><h3>Add structured fields to <code>productFields</code></h3></div>
+    <p>In <code>query.ts</code>, inside the <code>variants(first: N){ edges { node { … } } }</code> block add <code>selectedOptions</code>, and at the product level add <code>options</code> and <code>sellingPlanGroups</code>:</p>
+    <pre><code><span class="c"># variant node — add:</span>
+selectedOptions { name value }
+
+<span class="c"># product level — add:</span>
+options { name values }
+sellingPlanGroups(first: 5) {
+  edges { node {
+    name
+    options { name values }                 <span class="c"># e.g. "Delivery every" → ["4 weeks", ...]</span>
+    sellingPlans(first: 10) { edges { node {
+      id
+      options { name value }                <span class="c"># the frequency this plan is</span>
+      priceAdjustments { adjustmentValue {
+        ... on SellingPlanPercentagePriceAdjustment { adjustmentPercentage }
+      } }
+    } } }
+  } }
+}</code></pre>
+    <p>(The <code>sellingPlanGroups</code> shape already exists in <span class="file">getProductSellingPlans.ts</span> — copy it.)</p>
+
+    <div class="step-h"><span class="b">2</span><h3>Type the new fields</h3></div>
+    <pre><code><span class="c">// src/features/shop/types.ts</span>
+type TSelectedOption = { name: string; value: string }
+<span class="c">// on ProductVariant:</span>  selectedOptions: TSelectedOption[]
+<span class="c">// on TProductDetail:</span>  options: { name: string; values: string[] }[]
+                       sellingPlanGroups?: TSellingPlanGroups</code></pre>
+
+    <div class="step-h"><span class="b">3</span><h3>Resolve variants by option, not title</h3></div>
+    <p>In <code>useVariantSelector.ts</code>, match the chosen scent/size against <code>selectedOptions</code> instead of parsing <code>node.title</code> against the hardcoded <code>allScents</code> + oz-regex. Return "unavailable" when there's no exact match — never fall back to a default variant.</p>
+    <pre><code><span class="k">const</span> findVariant = (scent, size) =>
+  variants.find(v => {
+    <span class="k">const</span> o = Object.fromEntries(v.node.selectedOptions.map(s => [s.name, s.value]))
+    <span class="k">return</span> o.Scent === scent && (size ? o.Size === size : <span class="k">true</span>)
+  }) ?? <span class="k">null</span>   <span class="c">// null = disable that combination</span></code></pre>
+    <div class="callout"><b>Heads up</b> — title-parsing is used elsewhere too (cart line labels, card components). Scope this change to the bundle flow first, or migrate call-sites deliberately.</div>
+    <p><span class="pill verify">Verify</span> log <code>variants[].selectedOptions</code> for the bottle &amp; refill; confirm scent/size resolve and the refill returns <code>sellingPlanGroups</code>.</p>
+
+    <!-- PHASE 2 -->
+    <h2 id="p2"><span class="num">2</span> · CMS pairing + resolver</h2>
+    <p><span class="pill goal">Goal</span> Fetch the bundle pairing from the CMS and hydrate every member live from Shopify.</p>
+    <p><span class="file">src/environment.ts</span> <span class="file">src/features/common/api.ts</span> <span class="file">new: useBundle.ts</span></p>
+
+    <div class="step-h"><span class="b">1</span><h3>Endpoint</h3></div>
+    <p>Add a CMS endpoint (mirror the existing CMS fetches, e.g. <code>getFiberyProductByProductId</code>). In <code>environment.ts</code> add <code>BUNDLE_API_URL</code> (or reuse the per-product attribute function). The CMS returns the bundle record for a host handle.</p>
+    <pre><code><span class="c">// src/features/common/api.ts — RTK Query</span>
+getBundleByHandle: builder.query&lt;Bundle | null, string&gt;({
+  query: (handle) => `${BUNDLE_API_URL}?host=${handle}`,
+})</code></pre>
+
+    <div class="step-h"><span class="b">2</span><h3>Resolver</h3></div>
+    <p>Reuse the <span class="file">RefillsAndKits.tsx</span> <code>Promise.all(getProductByHandle)</code> pattern — but <em>validate</em> each member (RefillsAndKits does not).</p>
+    <pre><code><span class="k">async function</span> resolveBundle(handle, userTags) {
+  <span class="k">const</span> def = <span class="k">await</span> getBundleByHandle(handle)
+  <span class="k">if</span> (!def?.active) <span class="k">return null</span>                       <span class="c">// no bundle → normal PDP</span>
+  <span class="k">const</span> [plastic, glass, refill] = (<span class="k">await</span> Promise.all([
+    getProductByHandle(def.plastic_handle),
+    getProductByHandle(def.glass_handle),
+    getProductByHandle(def.refill_handle),
+  ])).map(r => r.body?.product)
+
+  <span class="k">const</span> ok = (p) => p && p.variants.edges.some(v => v.node.availableForSale)
+                  && !shouldExcludeProduct(p, userTags)        <span class="c">// per-viewer veto</span>
+  <span class="k">if</span> (![plastic, glass, refill].every(ok)) <span class="k">return null</span>  <span class="c">// hide if any member invalid</span>
+  <span class="k">return</span> { def, plastic, glass, refill }
+}</code></pre>
+    <p><span class="pill verify">Verify</span> for a host handle with a CMS bundle, the resolver returns hydrated bottle(s) + refill; for an unpublished/OOS member it returns <code>null</code>.</p>
+
+    <!-- PHASE 3 -->
+    <h2 id="p3"><span class="num">3</span> · The V2 product page UI</h2>
+    <p><span class="pill goal">Goal</span> Render the Figma V2 layout from live data.</p>
+    <p><span class="file">src/features/shop/content/ContentOptions.tsx</span> (branch when a bundle exists) <span class="file">components/cards/variants/{Scent,Format}.tsx</span> <span class="file">MakeRoutine.tsx</span> (reuse subscribe logic)</p>
+    <h3>How each Figma element maps to data</h3>
+    <table>
+      <tr><th>UI</th><th>Source</th></tr>
+      <tr><td>Scent cards</td><td>host product <code>options["Scent"]</code> → reuse <code>Scent</code> visuals</td></tr>
+      <tr><td>Format toggle (Bottle / Refill only)</td><td>local state</td></tr>
+      <tr><td>Material sub (Plastic / Glass)</td><td>swap active bottle = <code>plastic</code> vs <code>glass</code> product</td></tr>
+      <tr><td>Add-a-Refill · size</td><td>refill product <code>options["Size"]</code> ($20/$38/$56 variants)</td></tr>
+      <tr><td>One-time vs Subscribe −15%</td><td>refill <code>sellingPlanGroups</code> → plan + frequency (reuse <code>MakeRoutine</code>)</td></tr>
+      <tr><td>Total</td><td>bottle price + refill (plan-adjusted) price — display only</td></tr>
+    </table>
+    <pre><code><span class="c">// local PDP state</span>
+{ scent, material:<span class="s">"plastic"</span>|<span class="s">"glass"</span>, format:<span class="s">"bottle"</span>|<span class="s">"refill"</span>,
+  refillSize, refillAdded:<span class="k">true</span>, plan:<span class="s">"once"</span>|<span class="s">"sub"</span>, sellingPlanId, freq, qty }
+
+<span class="c">// the selected variants drive everything:</span>
+bottleVariant = findVariant(scent, <span class="s">"16 oz"</span>, activeBottleProduct)
+refillVariant = findVariant(refillScent, refillSize, refill)
+sellingPlanId = plan===<span class="s">"sub"</span> ? planForFrequency(refill, freq).id : <span class="k">null</span></code></pre>
+    <div class="callout">Subscribe price = the refill variant price with the plan's <code>adjustmentPercentage</code> applied. Show it for clarity, but the <strong>real</strong> discount is applied by Shopify via the <code>sellingPlanId</code> at checkout.</div>
+    <p><span class="pill verify">Verify</span> the page matches the prototype; switching material swaps price/image; choosing Subscribe shows the 15% price.</p>
+
+    <!-- PHASE 4 -->
+    <h2 id="p4"><span class="num">4</span> · "Add the set" — the cart action</h2>
+    <p><span class="pill goal">Goal</span> Add both variants in one atomic mutation, with the refill on its selling plan.</p>
+    <p><span class="file">src/features/common/api/manageCart/addCartLines.ts</span> <span class="file">src/features/cart/slice.ts</span></p>
+
+    <div class="step-h"><span class="b">1</span><h3>Let the multi-line add carry <code>sellingPlanId</code> (+ optional attribute)</h3></div>
+    <pre><code><span class="c">// addCartLines.ts — build each line from the input</span>
+<span class="k">const</span> lines = input.map(l => ({
+  merchandiseId: l.variantId,
+  quantity: l.quantity,
+  ...(l.sellingPlanId ? { sellingPlanId: l.sellingPlanId } : {}),
+  ...(l.attributes   ? { attributes: l.attributes }     : {}),  <span class="c">// e.g. _addedFromBundleId</span>
+}))
+<span class="c">// mutation cartLinesAdd(cartId, lines: [CartLineInput!]!) { cart { ...cartFields } userErrors { field message } }</span></code></pre>
+
+    <div class="step-h"><span class="b">2</span><h3>The thunk</h3></div>
+    <pre><code><span class="c">// src/features/cart/slice.ts</span>
+<span class="k">const</span> addBundleToCartAsync = createAsyncThunk(<span class="s">"cart/addBundle"</span>, <span class="k">async</span> (sel) => {
+  <span class="k">const</span> { cartId } = <span class="k">await</span> ensureCart()
+  <span class="k">const</span> bundleId = crypto.randomUUID()
+  <span class="k">const</span> lines = [
+    { variantId: sel.bottleVariantId, quantity: caseQty(sel.bottleProduct),
+      attributes: [{ key: <span class="s">"_addedFromBundleId"</span>, value: bundleId }] },
+    { variantId: sel.refillVariantId, quantity: caseQty(sel.refillProduct),
+      sellingPlanId: sel.sellingPlanId || <span class="k">null</span>,
+      attributes: [{ key: <span class="s">"_addedFromBundleId"</span>, value: bundleId }] },
+  ]
+  <span class="k">return</span> addCartLines({ cartId, lines })   <span class="c">// one cartLinesAdd → 2 lines</span>
+})</code></pre>
+
+    <div class="step-h"><span class="b">3</span><h3>Per-member quantity from the <code>case_</code> tag</h3></div>
+    <p>Don't reuse the hardcoded <code>quantity: isB2B ? 12 : 1</code> from <span class="file">GeneralButtonAddToCart.tsx</span> — derive each line's quantity from its own product's <code>case_</code> tag via <code>extractCaseNumber</code> (Surface Cleaner products are all <code>case_12</code>, but the refill could differ).</p>
+    <p><span class="pill verify">Verify</span> add the set → cart has <strong>2 lines</strong>; the refill line shows the subscription; the hosted checkout total reflects the 15%.</p>
+
+    <!-- PHASE 5 -->
+    <h2 id="p5"><span class="num">5</span> · Grouped cart card <span style="font-size:0.7rem;color:var(--muted)">(deferred — optional polish)</span></h2>
+    <p>Only if you want the two lines shown as one "set" card. It adds real complexity, so it's last.</p>
+    <ul>
+      <li><span class="file">loadCart.ts</span> — add <code>attributes { key value }</code> to the shared <code>cartFields</code> fragment; <span class="file">cart/types.ts</span> — add <code>attributes</code> to the line type.</li>
+      <li><span class="file">ItemShop.tsx</span> — group lines by <code>_addedFromBundleId</code> before mapping; switch keys from <code>index</code> → <code>node.id</code>.</li>
+      <li>New <code>BundleCartItem</code> — qty/remove operate on <strong>both</strong> lines (the mutations already take arrays); handle orphan states.</li>
+    </ul>
+
+    <h2 id="edge">Edge cases &amp; gotchas</h2>
+    <ul>
+      <li><b>Missing / unpublished / OOS member</b> → resolver returns null, bundle hidden (Phase 2).</li>
+      <li><b>Title parsing</b> is brittle and used elsewhere — migrate to <code>selectedOptions</code> deliberately.</li>
+      <li><b>CMS sync key</b> — reference a stable Shopify handle/ID so re-syncs don't break the pairing.</li>
+      <li><b>B2B pricing</b> — the existing wholesale logic (price/2, <code>EXCLUSIVE_DISCOUNT_CODE</code>) still applies to each line; make sure the subscribe discount and wholesale code don't double-count.</li>
+      <li><b>Hosted checkout</b> — never compute final price client-side beyond display; Shopify is authoritative.</li>
+      <li><b>No codegen</b> — queries are untyped inline strings; change the GraphQL, the type, and the builder together.</li>
+    </ul>
+
+    <h2 id="test">Testing</h2>
+    <ol>
+      <li>Per-phase Verify checks above.</li>
+      <li>E2E: open a bundle PDP → pick scent/material/refill size → choose Subscribe + frequency → Add the set → confirm 2 cart lines, refill on subscription, correct totals → continue to checkout and confirm the 15% holds.</li>
+      <li>Negative: unpublish the refill → bundle disappears; pick a scent the refill lacks → that option disables (no silent fallback).</li>
+    </ol>
+
+    <h2 id="rollout">Rollout</h2>
+    <ol>
+      <li>Ship <strong>one-time-only</strong> if subscriptions aren't configured yet; enable Subscribe when the selling plan exists.</li>
+      <li>Gate each bundle with the CMS <code>active</code> flag (instant on/off, no deploy).</li>
+      <li>Start with one product (Surface Cleaner) → validate → roll the pattern to others by adding CMS records.</li>
+    </ol>
+
+    <div class="topnav" style="margin-top:3rem;border-top:1px solid var(--line);padding-top:1.5rem"><a href="./bundle-plan.html">← animated plan</a> &nbsp;·&nbsp; <a href="./bundle-figma-v2-plus.html">interactive prototype →</a></div>
+  </main>
+</div>
+</body>
+</html>
