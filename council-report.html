@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Decision Council · Everneat Bundle</title>
+<meta name="robots" content="noindex, nofollow" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{--ink:#1C1A1D;--card:#2A2830;--line:#3A3840;--lime:#E2F075;--text:#fff;--muted:#9a96a0;
+        --green:#5fd08a;--amber:#e6c84e;--red:#e07a7a;}
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--ink);color:var(--text);font-family:"Inter",system-ui,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1080px;margin:0 auto;padding:3rem 1.5rem 5rem;}
+  .label{font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:700;color:var(--lime);}
+  h1{font-size:2.1rem;font-weight:800;line-height:1.15;margin:0.6rem 0 0.5rem;letter-spacing:-0.01em;}
+  .ts{color:var(--muted);font-size:0.85rem;}
+  h2{font-size:1.3rem;font-weight:700;margin:3rem 0 1rem;}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;}
+  .ccard{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:1.3rem;}
+  .ccard .who{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.7rem;}
+  .ccard .ic{font-size:1.4rem;}
+  .ccard .nm{font-weight:700;font-size:1.02rem;}
+  .ccard .role{color:var(--muted);font-size:0.74rem;letter-spacing:0.04em;text-transform:uppercase;}
+  .verdict{color:var(--lime);font-weight:600;font-size:0.95rem;margin:0.4rem 0 0.9rem;}
+  .ccard ul{margin:0 0 0.9rem;padding-left:1.1rem;}
+  .ccard li{font-size:0.85rem;color:#d7d3da;margin:0.4rem 0;}
+  .badge{display:inline-block;font-size:0.62rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:0.2rem 0.55rem;border-radius:1em;}
+  .b-high{background:rgba(95,208,138,.16);color:var(--green);}
+  .b-med{background:rgba(230,200,78,.16);color:var(--amber);}
+  .b-low{background:rgba(224,122,122,.16);color:var(--red);}
+  .bias{color:var(--muted);font-size:0.74rem;margin-top:0.6rem;font-style:italic;}
+  details{background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:0.6rem;overflow:hidden;}
+  summary{cursor:pointer;padding:0.9rem 1.1rem;font-weight:600;font-size:0.92rem;list-style:none;display:flex;justify-content:space-between;align-items:center;}
+  summary::-webkit-details-marker{display:none;}
+  summary::after{content:"+";color:var(--lime);font-size:1.2rem;font-weight:700;}
+  details[open] summary::after{content:"–";}
+  details .body{padding:0 1.1rem 1.1rem;font-size:0.86rem;color:#d7d3da;}
+  details .body b{color:#fff;}
+  .syn{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--lime);border-radius:16px;padding:1.6rem 1.8rem;}
+  .syn h3{font-size:0.74rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--lime);margin:1.6rem 0 0.5rem;}
+  .syn h3:first-child{margin-top:0;}
+  .syn p{font-size:0.92rem;color:#d7d3da;margin:0.4rem 0;}
+  .optgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin:0.6rem 0;}
+  .opt{background:var(--ink);border:1px solid var(--line);border-radius:12px;padding:1rem;}
+  .opt .t{font-weight:700;font-size:0.9rem;margin-bottom:0.3rem;}
+  .opt.rec{border-color:var(--lime);}
+  .opt .tag{font-size:0.58rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--lime);}
+  .opt p{font-size:0.8rem;color:var(--muted);margin:0.3rem 0 0;}
+  .rec{font-size:1.05rem;font-weight:700;color:#fff;background:rgba(226,240,117,.1);border:1px solid rgba(226,240,117,.4);border-radius:12px;padding:1rem 1.2rem;margin:0.6rem 0;}
+  .rec b{color:var(--lime);}
+  .rec ol{margin:0.6rem 0 0;padding-left:1.2rem;}
+  .rec li{font-size:0.9rem;font-weight:500;color:#e7e4ea;margin:0.35rem 0;}
+  .dealbreak{background:rgba(224,122,122,.08);border:1px solid rgba(224,122,122,.35);border-radius:12px;padding:0.9rem 1.2rem;margin:0.6rem 0;}
+  .dealbreak li{font-size:0.86rem;color:#f0d8d8;}
+  .dissent{color:var(--muted);font-size:0.9rem;border-left:2px solid var(--line);padding-left:1rem;}
+  .foot{margin-top:3rem;color:var(--muted);font-size:0.78rem;text-align:center;border-top:1px solid var(--line);padding-top:1.5rem;}
+  @media (max-width:760px){.grid,.optgrid{grid-template-columns:1fr;}h1{font-size:1.6rem;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="label">Decision Council Report</div>
+  <h1>Is the "soft bundle" the right way to ship Everneat's bottle&nbsp;+&nbsp;refill?</h1>
+  <div class="ts">5-member council · blind peer review · chairman synthesis — June 23, 2026</div>
+
+  <h2>The Council</h2>
+  <div class="grid">
+    <div class="ccard">
+      <div class="who"><span class="ic">🔬</span><span><span class="nm">The Researcher</span><br/><span class="role">Evidence-first</span></span></div>
+      <div class="verdict">Right architecture, but NOT shippable as drawn — it's "soft bundle + 2 mandatory prerequisite fixes."</div>
+      <ul>
+        <li>Hosted-checkout + Shopify-authoritative pricing is real → it kills fixed-SKU & most apps → two real lines is the forced-correct choice.</li>
+        <li>Blocking gaps glossed over: the multi-line <code>addCartLines</code> has <b>no <code>sellingPlanId</code></b> field (only single-line does); scent/size ride <b>two disagreeing hardcoded title lists</b>, no <code>selectedOptions</code>.</li>
+        <li>Backend ambiguity: pairing is <b>read</b> from Supabase but attributes are <b>written</b> to a Fly.io backend — which owns the pairing is undecided.</li>
+      </ul>
+      <span class="badge b-med">Confidence: Medium</span>
+      <div class="bias">Bias: favours code-evidence & latent brittleness over ship-speed.</div>
+    </div>
+
+    <div class="ccard">
+      <div class="who"><span class="ic">🛑</span><span><span class="nm">The Sceptic</span><br/><span class="role">Stress-test</span></span></div>
+      <div class="verdict">Sound to <em>create</em>, but it silently decomposes into two unrelated products the moment anything touches it after the add.</div>
+      <ul>
+        <li>"Atomicity" is an illusion: lines resolve independently; <code>addCartLines</code> throws after a partial commit; no two-line thunk, optimistic path only touches <code>lines[0]</code>, no <code>userErrors</code> handling → it's a reducer rewrite.</li>
+        <li>Deferring cart-grouping is what <b>causes</b> partial-bundle desync — an orphaned refill stuck on a 15% <b>subscription</b> after the bottle is deleted on a checkout you don't control = churn.</li>
+        <li>Discount stacking (50% wholesale + 15% subscribe on an orphan line) is unmodeled; CMS pairing breaks silently on a refill rename.</li>
+      </ul>
+      <span class="badge b-high">Confidence: High</span>
+      <div class="bias">Bias: over-weights failure modes & lifecycle debt vs. time-to-market.</div>
+    </div>
+
+    <div class="ccard">
+      <div class="who"><span class="ic">♟️</span><span><span class="nm">The Strategist</span><br/><span class="role">Compounding / long-horizon</span></span></div>
+      <div class="verdict">Ship it — it's the only option that keeps the refill a subscribable line (the LTV engine) while keeping every richer path reversibly open.</div>
+      <ul>
+        <li>Pattern scales (per-bundle cost = authoring a CMS pairing, not eng) — but pairing is <b>commerce truth in an editorial CMS</b> → 3-year debt; make it a typed, migration-ready field destined for a Shopify metafield.</li>
+        <li>Subscription-led refilling is the highest-compounding axis; only the soft bundle keeps the refill an independent subscribable line (fixed-SKU/native bundle sever it).</li>
+        <li>Optionality: soft bundle dominates; deferred grouping is reversible; fixed-SKU/Liquid apps are one-way doors. Write <code>_addedFromBundleId</code> on both lines from day one.</li>
+      </ul>
+      <span class="badge b-high">Confidence: High</span>
+      <div class="bias">Bias: favours reversibility/optionality & where data lives over near-term simplicity.</div>
+    </div>
+
+    <div class="ccard">
+      <div class="who"><span class="ic">🔧</span><span><span class="nm">The Operator</span><br/><span class="role">Execution reality</span></span></div>
+      <div class="verdict">Very buildable — two-line add is ~½ day; the real cost is the title→<code>selectedOptions</code> rewrite + an external selling-plan you don't control. Ship one-time, one product, flagged, in ~1 week.</div>
+      <ul>
+        <li><code>useVariantSelector</code> rewrite (~15 consumers) is THE schedule risk — its default-fallback <b>is</b> the wrong-SKU bug; a half-migration leaves silent fallback.</li>
+        <li>Subscribe needs a real selling plan configured on the refill (ops/person dependency) → decouple: ship one-time first, gate Subscribe behind "a plan exists."</li>
+        <li>Prod breaks: title rename misclassifies (warn, don't fallback); CMS coupling must <b>drop</b> the bundle not 500; QA must diff PDP-total vs hosted-checkout-total for DTC one-time / subscribe / B2B on the real store.</li>
+      </ul>
+      <span class="badge b-high">Confidence: High</span>
+      <div class="bias">Bias: descopes to the smallest shippable slice; weights uncontrolled dependencies heavily.</div>
+    </div>
+
+    <div class="ccard" style="grid-column:1/-1;">
+      <div class="who"><span class="ic">💡</span><span><span class="nm">The Creative</span><br/><span class="role">Reframe / lateral</span></span></div>
+      <div class="verdict">Don't ship a "bundle" — make the <em>refill subscription</em> the hero and the bottle a near-free accessory (razor-and-blades / Brita). Reframe "how to bundle" → "how to make refilling the default behavior."</div>
+      <ul>
+        <li>Invert the hierarchy: bottle = near-free "device," refill = recurring hero (same two-line plumbing, different protagonist). The neutral "Set/box" framing actively competes with the subscription you want.</li>
+        <li>Add a zero-engineering <b>"Refill Reorder"</b> path (account / post-purchase one-tap refill on a selling plan) — lower risk, serves "refill forever," ship it <b>before</b> the PDP bundle to prove attach demand.</li>
+        <li>Reuse the shipped customer-achievements feature: "you've refilled 12 bottles → ~3 kg plastic saved" streak loop drives subscription; price the bottle as a deposit/refill-credit.</li>
+      </ul>
+      <span class="badge b-med">Confidence: Medium</span>
+      <div class="bias">Bias: reframes the question; under-weights the cost of throwing away the designed surface + "free bottle" COGS.</div>
+    </div>
+  </div>
+
+  <h2>Peer Review <span style="color:var(--muted);font-weight:400;font-size:0.85rem">(blind — who got what right / missed)</span></h2>
+  <details><summary>🔬 Researcher — the only full schema-level audit</summary><div class="body"><b>Right:</b> the only one to surface the concrete schema trap (no <code>sellingPlanId</code> on the multi-line add) and the disagreeing scent lists / missing <code>selectedOptions</code> / read-vs-write backend split. <b>Misses:</b> purely an engineering-readiness audit — doesn't question whether the bundle is the right <em>product</em> framing, or the post-add lifecycle. <b>Agrees</b> most with the Operator; <b>conflicts</b> most with the Creative (orthogonal: "fix two things & ship" vs "don't ship a bundle").</div></details>
+  <details><summary>🛑 Sceptic — owns the lifecycle-after-add blind spot</summary><div class="body"><b>Right:</b> uniquely connects deferring grouping to a concrete failure — an orphaned 15% <b>subscription</b> refill on a checkout you can't control. The "reducer rewrite, not a feature add" reframing is correct. <b>Misses:</b> almost entirely a risk catalog; concedes the architecture is correct but offers no MVP path to de-risk. <b>Agrees</b> with the Researcher; <b>conflicts</b> head-on with the Strategist on whether deferred grouping is cheap reversible debt or the active cause of churn. <b>This B-vs-C clash is the sharpest disagreement in the room.</b></div></details>
+  <details><summary>♟️ Strategist — the only 3-year view</summary><div class="body"><b>Right:</b> the most durable insight — pairing data is commerce truth in an editorial CMS (real debt); make it typed/migration-ready. "Write <code>_addedFromBundleId</code> from day one" is the single most actionable cross-cutting move. <b>Misses:</b> optimistic about a "clean path" the buildability audits contradict (no <code>sellingPlanId</code> on the array add, the reducer/​title-parse work). <b>Agrees</b> with the Creative (subscription = the prize); <b>conflicts</b> with the Sceptic on deferred grouping.</div></details>
+  <details><summary>🔧 Operator — the most concrete test plan</summary><div class="body"><b>Right:</b> isolates the real schedule risk (the shared-hook rewrite whose default-fallback IS the wrong-SKU bug) and treats the configured selling plan as a hard external/person dependency → decouple & gate. Its prod break-points (warn-don't-fallback, drop-don't-500, diff totals across DTC/subscribe/B2B) are the shippable QA plan. <b>Misses:</b> handles the add & the page, less the post-checkout-edit orphan; "½ day" may be optimistic given the reducer argument. <b>Agrees</b> with the Researcher; <b>conflicts</b> with the Creative (ship a narrowed bundle vs the bundle is the wrong artifact).</div></details>
+  <details><summary>💡 Creative — the only frame-challenge</summary><div class="body"><b>Right:</b> the inversion (refill hero, bottle as device) is a genuinely better protagonist, and the zero-eng "Refill Reorder shipped first to prove attach" is the standout cheap-test move no one else proposed; the achievements-streak reuse is smart & on-brand. <b>Misses:</b> admits "same two-line plumbing," so every hard engineering constraint (missing <code>sellingPlanId</code>, reducer rewrite, title-parsing) still applies — and the subscription-hero framing <em>deepens</em> the external selling-plan dependency. <b>Agrees</b> with the Strategist; <b>conflicts</b> with the Operator & Researcher.</div></details>
+
+  <h2>Chairman's Synthesis</h2>
+  <div class="syn">
+    <h3>The core tension</h3>
+    <p>The council splits cleanly: two <b>engineering-readiness</b> voices (Researcher, Operator) say the soft bundle is the correct architecture but isn't shippable as drawn; one <b>lifecycle</b> voice (Sceptic) says creating the bundle is easy — <em>owning</em> it after the add is the unsolved problem; and two <b>strategy</b> voices (Strategist, Creative) say the real prize is the refill <em>subscription</em>, not the bundle. The sharpest single clash: <b>is deferring the grouped-cart "cheap reversible debt" (Strategist) or the active cause of orphaned-subscription churn (Sceptic)?</b> With a subscription refill in play, the Sceptic wins that one — an orphaned recurring refill is real harm, not cosmetic.</p>
+
+    <h3>Top options</h3>
+    <div class="optgrid">
+      <div class="opt rec"><span class="tag">Recommended</span><div class="t">Soft bundle — hardened &amp; sequenced</div><p>Build it, but fix the prerequisites first, ship one-time-only v1 behind a flag, and add Subscribe + grouping as gated follow-ons.</p></div>
+      <div class="opt"><div class="t">Refill-first reframe</div><p>Ship a low-risk "Refill Reorder" path (and lead with the refill/subscription) before the bundle PDP. Best done <em>alongside</em> option 1.</p></div>
+      <div class="opt"><div class="t">Foundations only (not-now)</div><p>If the rewrite is too big to absorb, just do the <code>selectedOptions</code> migration as debt paydown — it unblocks everything and fixes a live bug.</p></div>
+    </div>
+
+    <h3>Recommendation</h3>
+    <div class="rec">
+      <b>Ship the soft bundle — but not the drawn 5-phase plan. Sequence it:</b>
+      <ol>
+        <li><b>Foundations first</b> (unblocks everything + fixes a live wrong-SKU bug): add <code>selectedOptions</code>/<code>options</code> to the product query &amp; migrate <code>useVariantSelector</code> to resolve by option (scoped to the bundle's products, <b>warn — don't fall back</b>); extend <code>addCartLines</code>/<code>TCartLinesInput</code> to carry per-line <code>sellingPlanId</code>&nbsp;+&nbsp;<code>attributes</code>; make the pairing a <b>typed, migration-ready</b> field and decide its owning backend.</li>
+        <li><b>v1 = one-time-only soft bundle</b>, one product (Surface Cleaner), behind the CMS <code>active</code> flag (default off), writing <code>_addedFromBundleId</code> on both lines, with real <code>userErrors</code> + multi-line cart state. QA PDP-total vs hosted-checkout-total across DTC &amp; B2B on the real store.</li>
+        <li><b>In parallel (or first, it's cheap):</b> ship the Creative's <b>Refill Reorder</b> path for existing bottle owners — the lowest-risk way to prove the refill-subscription thesis.</li>
+        <li><b>Then</b> enable Subscribe (once the refill's selling plan exists in Shopify) and add the grouped-cart card + an orphan-refill policy — because the subscription is exactly what makes deferred grouping dangerous.</li>
+      </ol>
+    </div>
+
+    <h3>Deal-breakers (hard stops)</h3>
+    <div class="dealbreak"><ul>
+      <li>Do <b>not</b> ship Subscribe until a real selling plan is configured on the refill in Shopify — else it silently adds as one-time. Gate it.</li>
+      <li>Do <b>not</b> ship paired lines without <code>userErrors</code> handling + multi-line optimistic state — the current single-line (<code>lines[0]</code>) machinery will desync.</li>
+      <li>Do <b>not</b> ship the cross-listing selector on the current title-parse default-fallback — it silently adds the wrong SKU. <code>selectedOptions</code> is a prerequisite, not skippable "foundation work."</li>
+      <li>Resolve which backend <b>owns</b> the pairing (Supabase read vs Fly.io write diverge) before authoring pairings; a renamed/unpublished member must <b>drop</b> the bundle, not 500 the page.</li>
+    </ul></div>
+
+    <h3>Dissenting view</h3>
+    <p class="dissent">The Creative: don't build the bundle PDP at all yet — it's the wrong artifact. The "Set" box competes with the subscription you actually want; the real money (à la contact-lenses / coffee-pods) is the <em>reorder</em>, and the highest-intent refiller already owns a bottle and should never see a bottle SKU again. Ship Refill Reorder + a subscription-hero PDP, measure attach, and the elaborate cross-listing bundle may prove unnecessary. <em>(Counter: the bundle PDP is also the acquisition surface for new customers who don't yet own a bottle — so it's complementary, not redundant; just not first.)</em></p>
+  </div>
+
+  <div class="foot">Council convened by Neatr · Powered by Claude</div>
+</div>
+</body>
+</html>
