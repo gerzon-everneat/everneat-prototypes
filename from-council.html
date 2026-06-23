@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Everneat · Surface Cleaner — refill-first (from council)</title>
+<meta name="robots" content="noindex, nofollow" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --black:#000;--ink:#1a1815;--ink2:#2c2925;--muted:#726d64;--muted2:#5f5f53;
+    --line:#d9d3c8;--line2:#e7e0d2;--fill:#f5f4f2;--white:#fff;
+    --lime:#c9c42b;--lime-bg:#f3f2db;--lime-deep:#8a861b;--blue:#7dafd3;
+    --serif:"Fraunces","PP Editorial New",Georgia,serif;--sans:"Inter","Aileron",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:var(--sans);color:var(--ink2);background:#fff;-webkit-font-smoothing:antialiased;font-size:15px;}
+  .proto{position:sticky;top:0;z-index:40;background:#1a1815;color:#cdc5b4;}
+  .proto-in{max-width:1180px;margin:0 auto;padding:0.6rem 1.5rem;font-size:0.73rem;line-height:1.5;}
+  .proto b{color:var(--lime);font-weight:600;}.proto .note{color:#9a9180;}
+
+  .wrap{max-width:1180px;margin:0 auto;padding:2rem 1.5rem 6rem;}
+  .pdp{display:grid;grid-template-columns:1fr 520px;gap:2.4rem;align-items:start;}
+  .gallery{position:sticky;top:4rem;}
+  .hero{aspect-ratio:1/1;background:var(--fill);border-radius:1.25rem;display:grid;place-items:center;overflow:hidden;position:relative;}
+  .hero img{width:80%;height:80%;object-fit:contain;mix-blend-mode:multiply;}
+  .hero .pill{position:absolute;left:1.1rem;top:1.1rem;font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;font-weight:600;color:var(--muted);background:#fff;border:1px solid var(--line2);padding:0.3rem 0.6rem;border-radius:2em;}
+  .ecohero{position:absolute;left:1.1rem;bottom:1.1rem;right:1.1rem;background:rgba(26,24,21,.86);color:#fff;border-radius:0.7rem;padding:0.7rem 0.9rem;display:flex;align-items:center;gap:0.6rem;backdrop-filter:blur(3px);}
+  .ecohero .big{font-family:var(--serif);font-weight:600;font-size:1.25rem;color:var(--lime);}
+  .ecohero .sm{font-size:0.72rem;color:#cdc5b4;line-height:1.3;}
+
+  .col{min-width:0;}
+  .eyebrow{font-size:0.66rem;letter-spacing:0.16em;text-transform:uppercase;font-weight:600;color:var(--muted);margin-bottom:0.5rem;}
+  h1.title{margin:0;font-family:var(--serif);text-transform:uppercase;line-height:1.02;}
+  h1.title .sm{display:block;font-weight:400;font-size:1.05rem;letter-spacing:0.03em;}
+  h1.title .lg{display:block;font-weight:600;font-size:1.95rem;font-style:italic;}
+  .stars{display:flex;gap:2px;margin-top:0.6rem;color:var(--ink);}.stars svg{width:14px;height:14px;}
+
+  .sec-lbl{font-size:0.72rem;letter-spacing:0.13em;text-transform:uppercase;font-weight:600;color:var(--ink);margin:1.7rem 0 0.8rem;display:flex;align-items:center;gap:0.5rem;}
+  .tw{font-size:0.54rem;font-weight:700;letter-spacing:0.04em;background:var(--lime);color:#1a1815;padding:0.1rem 0.34rem;border-radius:1em;text-transform:none;}
+
+  /* path cards (council reframe: subscription-first) */
+  .paths{display:flex;flex-direction:column;gap:0.6rem;}
+  .path{position:relative;border:1.5px solid var(--line);border-radius:0.9rem;background:#fff;padding:1rem 1.1rem;cursor:pointer;display:flex;align-items:center;gap:0.9rem;transition:border-color .15s,background .15s;}
+  .path:hover{border-color:var(--muted);}
+  .path.on{border-color:var(--ink);background:var(--fill);}
+  .path .radio{width:18px;height:18px;border-radius:50%;border:2px solid var(--line);flex:none;display:grid;place-items:center;}
+  .path.on .radio{border-color:var(--ink);}.path.on .radio::after{content:"";width:9px;height:9px;border-radius:50%;background:var(--ink);}
+  .path .body{flex:1;}
+  .path .t{font-family:var(--serif);font-weight:600;font-size:1.05rem;}
+  .path .s{font-size:0.78rem;color:var(--muted);margin-top:1px;}
+  .path .pr{font-weight:700;font-size:0.92rem;white-space:nowrap;}
+  .path .ribbon{position:absolute;top:-0.6rem;left:1rem;background:var(--lime);color:#1a1815;font-size:0.55rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:0.18rem 0.5rem;border-radius:0.3rem;}
+
+  .cfg{border-top:1px solid var(--line2);margin-top:1.6rem;}
+  .minilabel{font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:1.1rem 0 0.5rem;}
+  .row{display:flex;gap:0.5rem;flex-wrap:wrap;}
+  .scent{display:inline-flex;align-items:center;gap:0.45rem;border:1px solid var(--line);background:#fff;border-radius:0.5rem;padding:0.45rem 0.7rem;font-weight:600;font-size:0.8rem;cursor:pointer;}
+  .scent .sw{width:0.85rem;height:0.85rem;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12);}
+  .scent.on{border-color:var(--ink);background:var(--fill);}
+  .opt{border:1px solid var(--line);background:#fff;border-radius:0.55rem;padding:0.5rem 0.8rem;font-weight:600;font-size:0.78rem;cursor:pointer;display:inline-flex;flex-direction:column;line-height:1.2;}
+  .opt small{font-weight:500;font-size:0.64rem;color:var(--muted);}
+  .opt.on{background:var(--ink);color:#fff;}.opt.on small{color:#cdbfa6;}
+
+  /* subscribe block */
+  .subblock{border:1px solid var(--line);border-radius:0.8rem;overflow:hidden;margin-top:0.6rem;}
+  .planrow{display:flex;align-items:center;gap:0.7rem;padding:0.75rem 0.9rem;cursor:pointer;}
+  .planrow + .planrow{border-top:1px solid var(--line2);}
+  .planrow .radio{width:16px;height:16px;border-radius:50%;border:1.5px solid var(--line);flex:none;display:grid;place-items:center;}
+  .planrow.on .radio{border-color:var(--ink);}.planrow.on .radio::after{content:"";width:8px;height:8px;border-radius:50%;background:var(--ink);}
+  .planrow .l{flex:1;font-weight:600;font-size:0.85rem;display:flex;align-items:center;gap:0.5rem;}
+  .planrow .p{font-weight:700;font-size:0.85rem;}
+  .save{background:var(--lime);color:#1a1815;font-size:0.58rem;font-weight:700;letter-spacing:0.05em;padding:0.12rem 0.4rem;border-radius:0.3rem;}
+  .sub-on{background:var(--lime-bg);}
+  .freqline{padding:0 0.9rem 0.85rem 2.35rem;}
+  .freqline .h{font-size:0.72rem;color:var(--lime-deep);font-weight:600;margin-bottom:0.45rem;}
+  .freq{display:flex;gap:0.4rem;flex-wrap:wrap;}
+  .freq button{border:1px solid var(--line);background:#fff;border-radius:0.45rem;padding:0.3rem 0.6rem;font-size:0.74rem;font-weight:600;cursor:pointer;color:var(--ink2);}
+  .freq button.on{border-color:var(--lime-deep);background:var(--lime-bg);color:var(--lime-deep);}
+
+  /* eco projection */
+  .eco{margin-top:1.4rem;border:1px solid var(--line2);background:linear-gradient(180deg,#fbfbf2,#f5f4e4);border-radius:0.9rem;padding:1rem 1.1rem;}
+  .eco .top{display:flex;align-items:center;gap:0.6rem;font-size:0.66rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:700;color:var(--lime-deep);margin-bottom:0.5rem;}
+  .eco .row2{display:flex;gap:1.4rem;flex-wrap:wrap;}
+  .eco .stat .n{font-family:var(--serif);font-weight:600;font-size:1.5rem;color:var(--ink);}
+  .eco .stat .k{font-size:0.7rem;color:var(--muted);}
+  .eco .streak{margin-top:0.7rem;font-size:0.74rem;color:var(--muted2);}
+  .eco .streak b{color:var(--ink);}
+
+  .total{display:flex;align-items:baseline;justify-content:space-between;margin-top:1.4rem;padding-top:0.9rem;border-top:1px dashed var(--line);}
+  .total .lab{font-size:0.8rem;color:var(--muted);}
+  .total .amt{font-size:1.2rem;font-weight:700;}
+  .total .amt .calc{font-size:0.78rem;color:var(--muted);font-weight:500;margin-right:0.3rem;}
+  .cta{width:100%;margin-top:1rem;background:var(--black);color:#fff;border:none;border-radius:0.7rem;padding:1.05rem;font-family:var(--sans);font-weight:600;font-size:0.9rem;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;}
+  .cta:hover{opacity:.9;}
+  .linknote{font-size:0.74rem;color:var(--muted);margin-top:0.7rem;text-align:center;line-height:1.5;}
+  .linknote b{color:var(--ink);}
+  .changed{margin-top:2.2rem;border-top:1px solid var(--line2);padding-top:1rem;font-size:0.76rem;color:var(--muted);line-height:1.6;}
+  .changed b{color:var(--ink);}
+
+  @media (max-width:880px){.pdp{grid-template-columns:1fr;gap:1.6rem;}.gallery{position:static;}}
+</style>
+</head>
+<body>
+<div class="proto"><div class="proto-in"><b>FROM COUNCIL</b> — <span class="note">refill-as-hero · subscribe by default · a "reorder" path for existing owners · eco/plastic-saved cue · the set stays linked (no orphan refill). Built on the V2 design + real products.</span></div></div>
+
+<div class="wrap">
+  <div class="pdp">
+    <div class="gallery">
+      <div class="hero" id="hero"></div>
+    </div>
+
+    <div class="col">
+      <div class="eyebrow">Plant-based · refill forever</div>
+      <h1 class="title"><span class="sm">Multi-Surface</span><span class="lg">Cleaner</span></h1>
+      <div class="stars" id="stars"></div>
+
+      <div class="sec-lbl">How do you want to start? <span class="tw">✦ council reframe</span></div>
+      <div class="paths" id="paths"></div>
+
+      <div class="cfg" id="cfg"></div>
+
+      <!-- eco projection -->
+      <div class="eco" id="eco"></div>
+
+      <div class="total"><span class="lab" id="totalLab">Total</span><span class="amt"><span class="calc" id="calc"></span><span id="grand"></span></span></div>
+      <button class="cta" id="cta"></button>
+      <div class="linknote" id="linknote"></div>
+
+      <div class="changed">
+        <b>What changed vs V2 (per the council):</b> the refill subscription is the hero, not a neutral box (Strategist/Creative); an <b>"I already have a bottle"</b> reorder path serves existing owners (Creative); the <b>plastic-saved projection + milestone</b> reuses the achievements idea to drive subscription; and the set is shown as <b>one linked purchase</b> so removing the bottle never strands a recurring refill (Sceptic).
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const IMG={
+    plastic:"https://cdn.shopify.com/s/files/1/2121/1633/files/01SurfaceCleaner_PlasticBottle_Purify.jpg?v=1769030213",
+    glass:"https://cdn.shopify.com/s/files/1/2121/1633/files/01SurfaceCleaner_GlassBottle_Purifyconetiqueta_c59de0e5-d1e0-4622-b7db-05b2344294ad.jpg?v=1781275152",
+    refill:"https://cdn.shopify.com/s/files/1/2121/1633/files/01SurfaceCleaner_Refill4oz_Purify_c2d3b34a-f2c5-40a6-9bbe-c7d3e7a629d7.jpg?v=1769440352",
+  };
+  const SCENTS=[{id:"Purify",c:"#7dafd3"},{id:"Lift",c:"#f2da7a"},{id:"Bloom",c:"#85cac2"},{id:"Clear",c:"#e6e4dd"}];
+  const BOTTLE={plastic:{label:"Plastic Bottle",price:12},glass:{label:"Glass Bottle",price:16}};
+  const RSIZES=[{id:"4",bottles:4,price:20},{id:"8",bottles:8,price:38},{id:"16",bottles:16,price:56}];
+  const SUB=0.15, KG_PER_BOTTLE=0.03;
+  const PATHS=[
+    {k:"set",   t:"Start refilling",      s:"Bottle once + concentrate refill on a plan",    ribbon:"Most sustainable"},
+    {k:"bottle",t:"Just the bottle",      s:"One-time, no refill yet",                       ribbon:""},
+    {k:"refill",t:"I already have a bottle", s:"Skip to refills — reorder on a plan",        ribbon:""},
+  ];
+  let st={path:"set",material:"plastic",scent:"Purify",rsize:"8",plan:"sub",freq:"6",qty:1};
+  const money=n=>"$"+n.toFixed(2);
+  const rs=()=>RSIZES.find(s=>s.id===st.rsize);
+  const refillBase=()=>rs().price;
+  const refillPrice=()=> st.plan==="sub"?refillBase()*(1-SUB):refillBase();
+  const heroImg=()=> st.path==="refill"?IMG.refill:IMG[st.material];
+
+  function renderHero(){
+    const yearly = st.plan==="sub" ? Math.round(rs().bottles*(52/Number(st.freq))) : rs().bottles;
+    const showEco = st.path!=="bottle";
+    document.getElementById("hero").innerHTML=
+      `<span class="pill">${st.path==="refill"?"Concentrate Refill":BOTTLE[st.material].label}</span>`+
+      `<img src="${heroImg()}" alt=""/>`+
+      (showEco?`<div class="ecohero"><span class="big">${yearly}+</span><span class="sm">single-use bottles you won't buy ${st.plan==="sub"?"this year":""}<br/>≈ ${(yearly*KG_PER_BOTTLE).toFixed(1)} kg plastic kept out of landfill</span></div>`:"");
+  }
+  function renderStars(){document.getElementById("stars").innerHTML=Array.from({length:5},(_,i)=>`<svg viewBox="0 0 24 24" fill="${i<4?'currentColor':'none'}" stroke="currentColor" stroke-width="1.5"><path d="M12 2l2.9 6.2 6.6.8-4.9 4.6 1.3 6.6L12 17.8 6.1 20.8l1.3-6.6L2.5 9l6.6-.8z"/></svg>`).join("");}
+
+  function renderPaths(){
+    document.getElementById("paths").innerHTML=PATHS.map(p=>{
+      let price = p.k==="bottle"?money(BOTTLE[st.material].price)
+                : p.k==="refill"?"from "+money(RSIZES[0].price*(1-SUB))
+                : "from "+money(BOTTLE.plastic.price+RSIZES[0].price*(1-SUB));
+      return `<button class="path ${st.path===p.k?"on":""}" data-path="${p.k}">
+        ${p.ribbon?`<span class="ribbon">${p.ribbon}</span>`:""}
+        <span class="radio"></span>
+        <span class="body"><span class="t">${p.t}</span><span class="s">${p.s}</span></span>
+        <span class="pr">${price}</span></button>`;
+    }).join("");
+  }
+  function scentRow(){return `<div class="row">${SCENTS.map(s=>`<button class="scent ${st.scent===s.id?"on":""}" data-scent="${s.id}"><span class="sw" style="background:${s.c}"></span>${s.id}</button>`).join("")}</div>`;}
+  function materialRow(){return `<div class="row">${Object.entries(BOTTLE).map(([k,b])=>`<button class="opt ${st.material===k?"on":""}" data-mat="${k}">${b.label}<small>${money(b.price)}</small></button>`).join("")}</div>`;}
+  function rsizeRow(){return `<div class="row">${RSIZES.map(s=>`<button class="opt ${st.rsize===s.id?"on":""}" data-rs="${s.id}">Refills ${s.bottles}<small>${money(s.price)}</small></button>`).join("")}</div>`;}
+  function subBlock(){
+    return `<div class="subblock">
+      <div class="planrow ${st.plan==='sub'?'on sub-on':''}" data-plan="sub"><span class="radio"></span><span class="l">Subscribe &amp; refill <span class="save">SAVE 15%</span></span><span class="p">${money(refillBase()*(1-SUB))}</span></div>
+      ${st.plan==='sub'?`<div class="freqline"><div class="h">Deliver every · cancel or skip anytime</div><div class="freq">${["4","6","8","12"].map(f=>`<button class="${st.freq===f?'on':''}" data-f="${f}">${f} wks</button>`).join("")}</div></div>`:""}
+      <div class="planrow ${st.plan==='once'?'on':''}" data-plan="once"><span class="radio"></span><span class="l">One-time</span><span class="p">${money(refillBase())}</span></div>
+    </div>`;
+  }
+  function renderCfg(){
+    const c=document.getElementById("cfg");
+    if(st.path==="bottle"){
+      c.innerHTML=`<div class="minilabel">Material</div>${materialRow()}<div class="minilabel">Scent</div>${scentRow()}`;
+    } else if(st.path==="refill"){
+      c.innerHTML=`<div class="minilabel">Scent</div>${scentRow()}<div class="minilabel">Refill size</div>${rsizeRow()}<div class="minilabel">Plan</div>${subBlock()}`;
+    } else { // set
+      c.innerHTML=`<div class="minilabel">Bottle · material</div>${materialRow()}<div class="minilabel">Scent</div>${scentRow()}<div class="minilabel">Your refill</div>${rsizeRow()}${subBlock()}`;
+    }
+  }
+  function renderEco(){
+    const e=document.getElementById("eco");
+    if(st.path==="bottle"){ e.style.display="none"; return; } e.style.display="block";
+    const perRefill=rs().bottles;
+    const yearly = st.plan==="sub" ? Math.round(perRefill*(52/Number(st.freq))) : perRefill;
+    e.innerHTML=`<div class="top">◴ Your impact</div>
+      <div class="row2">
+        <div class="stat"><div class="n">${perRefill}</div><div class="k">bottles per refill</div></div>
+        <div class="stat"><div class="n">${yearly}</div><div class="k">bottles / year${st.plan==="sub"?"":" (one refill)"}</div></div>
+        <div class="stat"><div class="n">${(yearly*KG_PER_BOTTLE).toFixed(1)} kg</div><div class="k">plastic avoided</div></div>
+      </div>
+      <div class="streak">${st.plan==="sub"?`You'll hit <b>refill milestone badges</b> as deliveries arrive — turn refilling into a streak.`:`Switch to <b>Subscribe</b> to keep refilling automatically and grow your impact.`}</div>`;
+  }
+  function renderTotalCta(){
+    let total, calc="", cta, lab="Total", note="";
+    if(st.path==="bottle"){ total=BOTTLE[st.material].price; cta=`Add bottle · ${money(total)}`; note=`Add a refill anytime to start saving bottles.`; }
+    else if(st.path==="refill"){ total=refillPrice(); calc=""; lab=st.plan==="sub"?"Per delivery":"Total";
+      cta=st.plan==="sub"?`Start refill plan · ${money(total)}`:`Add refill · ${money(total)}`;
+      note=`Reorders the concentrate for the bottle you already own.`; }
+    else { const b=BOTTLE[st.material].price, r=refillPrice(); total=b+r; calc=`${money(b)} + ${money(r)} =`;
+      cta=st.plan==="sub"?`Start refilling · ${money(total)}`:`Add the set · ${money(total)}`;
+      note=`<b>Added as one linked set</b> — bottle (one-time) + ${st.plan==="sub"?"refill on a plan":"refill"}. Manage them together.`; }
+    document.getElementById("totalLab").textContent=lab;
+    document.getElementById("calc").textContent=calc;
+    document.getElementById("grand").textContent=money(total);
+    document.getElementById("cta").textContent=cta;
+    document.getElementById("linknote").innerHTML=note;
+  }
+  function render(){ renderHero();renderPaths();renderCfg();renderEco();renderTotalCta(); }
+
+  document.addEventListener("click",e=>{
+    const p=e.target.closest("[data-path]"); if(p){st.path=p.dataset.path; if(st.path==="refill")st.plan="sub"; render(); return;}
+    const sc=e.target.closest("[data-scent]"); if(sc){st.scent=sc.dataset.scent; render(); return;}
+    const m=e.target.closest("[data-mat]"); if(m){st.material=m.dataset.mat; render(); return;}
+    const r=e.target.closest("[data-rs]"); if(r){st.rsize=r.dataset.rs; render(); return;}
+    const pl=e.target.closest("[data-plan]"); if(pl){st.plan=pl.dataset.plan; render(); return;}
+    const f=e.target.closest("[data-f]"); if(f){st.freq=f.dataset.f; render(); return;}
+  });
+  renderStars(); render();
+</script>
+</body>
+</html>
