@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Everneat · Product Page V2+ — Surface Cleaner bundle (Figma V2 + tweaks)</title>
+<title>Everneat · Product Page V2+ — Surface Cleaner bundle (current-handle leads)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -21,10 +21,17 @@
   .proto-in{max-width:1340px;margin:0 auto;padding:0.6rem 1.5rem;font-size:0.73rem;line-height:1.5;}
   .proto b{color:var(--lime);font-weight:600;}.proto .tws{color:#9a9180;}.proto .tws i{color:#e6e2b0;font-style:normal;font-weight:600;}
 
-  .wrap{max-width:1340px;margin:0 auto;padding:2rem 1.5rem 7rem;}
-  .pdp{display:grid;grid-template-columns:1fr 500px;gap:2.4rem;align-items:start;}
+  .wrap{max-width:1340px;margin:0 auto;padding:1.5rem 1.5rem 7rem;}
+  .urlbar{display:flex;align-items:center;gap:0.7rem;flex-wrap:wrap;margin-bottom:1.4rem;}
+  .urlbar .dot{width:8px;height:8px;border-radius:50%;background:var(--lime);flex:none;}
+  .urlbar code{font-family:var(--sans);font-size:0.8rem;color:var(--muted2);background:var(--fill);border:1px solid var(--line2);border-radius:2em;padding:0.42rem 0.95rem;}
+  .urlbar code b{color:var(--ink);font-weight:600;}
+  .urlbar.flash code{animation:flash .7s ease;}
+  @keyframes flash{0%{background:#fbf7d0;border-color:var(--lime);}100%{background:var(--fill);}}
+  .urlbar .leadnote{font-size:0.72rem;color:var(--muted);font-style:italic;}
 
-  .gallery{position:sticky;top:4rem;}
+  .pdp{display:grid;grid-template-columns:1fr 500px;gap:2.4rem;align-items:start;}
+  .gallery{position:sticky;top:5rem;}
   .hero{aspect-ratio:1/1;background:var(--fill);border-radius:1.25rem;display:grid;place-items:center;overflow:hidden;position:relative;}
   .hero img{width:80%;height:80%;object-fit:contain;mix-blend-mode:multiply;}
   .hero .pill{position:absolute;left:1.1rem;top:1.1rem;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;font-weight:600;color:var(--muted);background:#fff;border:1px solid var(--line2);padding:0.3rem 0.6rem;border-radius:2em;}
@@ -70,7 +77,8 @@
   .toggle{display:grid;grid-template-columns:1fr 1fr;background:var(--fill);border-radius:0.85rem;padding:4px;}
   .toggle button{border:none;background:none;font-family:var(--sans);font-size:0.9rem;font-weight:600;color:var(--muted2);padding:0.85rem;border-radius:0.65rem;cursor:pointer;transition:all .15s;}
   .toggle button.on{background:var(--ink);color:#fff;}
-  .subsel{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;margin-top:0.6rem;}
+  .minilabel{font-size:0.66rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:1rem 0 0.5rem;}
+  .subsel{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;}
   .subsel button{border:1px solid var(--line);background:#fff;border-radius:0.7rem;padding:0.7rem;font-family:var(--sans);font-size:0.82rem;font-weight:500;color:var(--ink2);cursor:pointer;display:flex;justify-content:space-between;transition:border-color .15s;}
   .subsel button .pr{color:var(--muted);font-weight:600;}
   .subsel button.on{border-color:var(--ink);border-width:1.5px;}
@@ -86,7 +94,8 @@
   .rc-check{width:22px;height:22px;border-radius:0.4rem;background:var(--lime);display:grid;place-items:center;color:#1a1815;flex:none;cursor:pointer;}
   .rc-check.off{background:#fff;border:1.5px solid var(--line);color:transparent;}
   .rc-divider{height:1px;background:var(--line2);}
-  .rsize{display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem;padding:0.8rem 0.85rem;}
+  .rc-pad{padding:0.8rem 0.85rem;}
+  .rsize{display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem;}
   .rsize button{border:1px solid var(--line);background:#fff;border-radius:0.6rem;padding:0.5rem;cursor:pointer;text-align:center;transition:border-color .15s;}
   .rsize button.on{border-color:var(--ink);border-width:1.5px;background:var(--fill);}
   .rsize .b{display:block;font-weight:600;font-size:0.78rem;}
@@ -111,7 +120,8 @@
 
   .recap{margin-top:1.3rem;border:1px solid var(--line2);border-radius:0.8rem;padding:0.9rem;background:var(--fill);}
   .recap .row{display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;margin-bottom:0.4rem;}
-  .recap .k{color:var(--muted);min-width:3.6rem;}
+  .recap .k{color:var(--muted);min-width:4.4rem;}
+  .recap .k .lead{color:var(--lime-deep);font-weight:700;font-size:0.6rem;text-transform:uppercase;letter-spacing:0.06em;}
   .recap .v{font-weight:600;}
   .recap .v .mut{font-weight:500;color:var(--muted);}
   .total{display:flex;align-items:baseline;justify-content:space-between;margin-top:0.9rem;padding-top:0.8rem;border-top:1px dashed var(--line);font-size:0.85rem;}
@@ -148,13 +158,14 @@
   .stickybar .sb-cart{background:var(--black);color:#fff;border:none;border-radius:0.6rem;padding:0.8rem 1.6rem;font-family:var(--sans);font-weight:600;font-size:0.85rem;cursor:pointer;white-space:nowrap;}
 
   @media (max-width:900px){.pdp{grid-template-columns:1fr;gap:1.6rem;}.gallery{position:static;}.scents{gap:0.6rem;}.stickybar .sb-meta{display:none;}}
-  @media (prefers-reduced-motion:reduce){*{transition:none!important;}}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;}}
 </style>
 </head>
 <body>
-<div class="proto"><div class="proto-in"><b>PRODUCT PAGE V2+ · Surface Cleaner</b> — <span class="tws">Figma V2 + tweaks (<span class="tw">✦</span>): <i>①</i> refill size ·<i>②</i> bottles-avoided · <i>③</i> set recap + delivery progress · <i>④</i> sticky bar · <i>⑤</i> subscribe savings · <i>+</i> real per-scent photos · functional Bottle/Refill toggle · working accordions · scent check.</span></div></div>
+<div class="proto"><div class="proto-in"><b>PRODUCT PAGE V2+ · current-handle leads</b> — <span class="tws">The <b>URL handle</b> is always the primary product: Bottle (plastic/glass) leads with a refill companion; the <b>refill handle leads refill-first</b> with a bottle companion. Switching format/material changes the URL &amp; re-leads. Same set added either way.</span></div></div>
 
 <div class="wrap">
+  <div class="urlbar" id="urlbar"><span class="dot"></span><code id="url"></code><span class="leadnote">← the current handle is the primary product on this page</span></div>
   <div class="pdp">
     <div class="gallery">
       <div class="hero" id="hero"></div>
@@ -167,7 +178,7 @@
         <svg class="heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/></svg>
       </div>
       <div class="stars" id="stars"></div>
-      <div class="pricerow"><span class="price" id="price">$12.00</span><span class="price-sub" id="priceSub">16 fl oz · Plastic Bottle</span></div>
+      <div class="pricerow"><span class="price" id="price"></span><span class="price-sub" id="priceSub"></span></div>
 
       <p class="desc">A multiprobiotic, plant-derived surfactant blend that lifts dirt and grease from sealed surfaces, then keeps working after you wipe. Safe for daily use around food, kids, and pets.</p>
       <ul class="benefits">
@@ -177,54 +188,27 @@
       </ul>
 
       <div class="sec">
-        <div class="sec-head"><span class="lbl">Scent</span><span class="hint">Subtle essential oil blends</span></div>
+        <div class="sec-head"><span class="lbl">Scent</span><span class="hint">Subtle essential oil blends · shared across the set</span></div>
         <div class="scents" id="scents"></div>
         <div class="scent-cap" id="scentCap"></div>
       </div>
 
       <div class="sec">
-        <div class="sec-head"><span class="lbl">Format</span><span class="hint">Refillable packaging</span></div>
-        <div class="toggle" id="fmtToggle">
-          <button data-fmt="bottle" class="on">Bottle</button>
-          <button data-fmt="refill">Refill only</button>
+        <div class="sec-head"><span class="lbl">Format</span><span class="hint">The page leads with whichever you're viewing</span></div>
+        <div class="toggle" id="leadToggle">
+          <button data-lead="bottle" class="on">Bottle</button>
+          <button data-lead="refill">Refill</button>
         </div>
-        <div class="subsel" id="subsel">
-          <button data-mat="plastic" class="on">Plastic · 16 fl oz <span class="pr">$12</span></button>
-          <button data-mat="glass">Glass · 16 fl oz <span class="pr">$16</span></button>
-        </div>
+        <div id="primary"></div>
       </div>
 
       <div class="sec">
-        <div class="arl" id="arl">Add a refill <span class="tw">✦① ② ⑤</span></div>
-        <div class="refill-card">
-          <div class="rc-top">
-            <div class="rc-thumb"><img src="https://cdn.shopify.com/s/files/1/2121/1633/files/01SurfaceCleaner_Refill4oz_Purify_c2d3b34a-f2c5-40a6-9bbe-c7d3e7a629d7.jpg?v=1769440352" alt=""/></div>
-            <div class="rc-meta"><div class="t">Surface Cleaner Concentrate</div><div class="s" id="refillSub">8 fl oz · refills 8 bottles</div></div>
-            <div class="rc-check" id="rcCheck" title="Toggle refill"><svg viewBox="0 0 24 24" width="13" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div>
-          </div>
-          <div class="rc-divider"></div>
-          <div class="rsize" id="rsize"></div>
-          <div class="eco" id="eco"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12a8 8 0 0 1 8-8 8 8 0 0 1 7 4M20 12a8 8 0 0 1-8 8 8 8 0 0 1-7-4"/><path d="M16 8h3V5M8 16H5v3"/></svg><span id="ecoTxt"></span></div>
-          <div class="rc-divider"></div>
-          <div class="rc-opt" data-plan="once"><span class="radio"></span><span class="label">One-time</span><span class="p" id="oncePrice">$36.00</span></div>
-          <div class="rc-divider"></div>
-          <div class="sub-wrap on" id="subWrap">
-            <div class="rc-opt on" data-plan="sub"><span class="radio"></span><span class="label">Subscribe <span class="save">SAVE 15%</span></span><span class="p" id="subPrice">$30.60</span></div>
-            <div class="submeta" id="subMeta"></div>
-            <div class="freq-row">
-              <div class="freq-help">Deliver every · <a href="#">Not sure? Find your frequency →</a></div>
-              <div class="freq" id="freq">
-                <button data-f="4">4 weeks</button><button data-f="6" class="on">6 weeks</button>
-                <button data-f="8">8 weeks</button><button data-f="12">12 weeks</button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <div id="companion"></div>
 
         <div class="recap">
-          <div class="arl" style="margin-bottom:0.6rem">Your set <span class="tw">✦③</span></div>
-          <div class="row" id="recapBottleRow"><span class="k">Bottle</span><span class="v" id="recapBottle"></span></div>
-          <div class="row"><span class="k">Refill</span><span class="v" id="recapRefill"></span></div>
+          <div class="arl" style="margin-bottom:0.6rem">Your set <span class="tw">✦ set recap</span></div>
+          <div class="row"><span class="k" id="recapK1"></span><span class="v" id="recapV1"></span></div>
+          <div class="row"><span class="k" id="recapK2"></span><span class="v" id="recapV2"></span></div>
           <div class="total"><span>Total</span><span><span class="calc" id="calc"></span><span class="grand" id="grand"></span></span></div>
           <div class="progress"><div class="bar"><span id="progFill"></span></div><div class="txt" id="progTxt"></div></div>
         </div>
@@ -272,21 +256,63 @@
     {id:"Bloom",sub:"Floral",cap:"Blend of Clary Sage, Lavender, Copaiba, and Orange essential oils"},
     {id:"Clear",sub:"Unscented",cap:"Fragrance-free — no essential oils added"},
   ];
-  const BOTTLE={plastic:{label:"Plastic Bottle",price:12},glass:{label:"Glass Bottle",price:16}};
+  // the bundle = a GROUP of member listings; each is a real Shopify handle
+  const BOTTLE={
+    plastic:{label:"Plastic Bottle",price:12,handle:"surface-cleaner"},
+    glass:{label:"Glass Bottle",price:16,handle:"surface-cleaner-glass"},
+  };
+  const REFILL={label:"Concentrate Refill",handle:"surface-cleaner-concentrate-refill-in-aluminum-bottle-copy"};
   const RSIZES=[{id:"4",oz:"4 fl oz",bottles:4,price:20},{id:"8",oz:"8 fl oz",bottles:8,price:38},{id:"16",oz:"16 fl oz",bottles:16,price:56}];
   const FREE=49, SUB_RATE=0.15;
-  let st={scent:"Purify",mat:"plastic",fmt:"bottle",refill:true,rsize:"8",plan:"sub",freq:"6",qty:1};
+
+  let st={lead:"bottle",mat:"plastic",scent:"Purify",rsize:"8",plan:"sub",freq:"6",addRefill:true,addBottle:true,qty:1};
+  let lastHandle="";
   const money=n=>"$"+n.toFixed(2);
   const rs=()=>RSIZES.find(s=>s.id===st.rsize);
   const refillBase=()=>rs().price;
   const refillPrice=()=> st.plan==="sub" ? refillBase()*(1-SUB_RATE) : refillBase();
-  const isRefillOnly=()=> st.fmt==="refill";
-  const heroImg=()=> isRefillOnly() ? IMG_REFILL : IMG_BOTTLE[st.mat][st.scent];
+  const bottlePrice=()=> BOTTLE[st.mat].price;
+  const isRefillLead=()=> st.lead==="refill";
+  const currentHandle=()=> isRefillLead() ? REFILL.handle : BOTTLE[st.mat].handle;
 
+  /* ---------- reusable config blocks ---------- */
+  function matSelHTML(){
+    return `<div class="subsel">${Object.entries(BOTTLE).map(([k,b])=>
+      `<button data-mat="${k}" class="${st.mat===k?"on":""}">${b.label} <span class="pr">${money(b.price)}</span></button>`).join("")}</div>`;
+  }
+  function rsizeHTML(){
+    return `<div class="rc-pad"><div class="rsize">${RSIZES.map(s=>
+      `<button data-rsize="${s.id}" class="${st.rsize===s.id?"on":""}"><span class="b">Refills ${s.bottles}</span><span class="v">${money(s.price)}</span></button>`).join("")}</div></div>`;
+  }
+  function ecoHTML(){
+    return `<div class="eco"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12a8 8 0 0 1 8-8 8 8 0 0 1 7 4M20 12a8 8 0 0 1-8 8 8 8 0 0 1-7-4"/><path d="M16 8h3V5M8 16H5v3"/></svg><span>Replaces up to ${rs().bottles} single-use bottles</span></div>`;
+  }
+  function planHTML(){
+    return `<div class="rc-divider"></div>
+      <div class="rc-opt ${st.plan==='once'?'on':''}" data-plan="once"><span class="radio"></span><span class="label">One-time</span><span class="p">${money(refillBase())}</span></div>
+      <div class="rc-divider"></div>
+      <div class="sub-wrap ${st.plan==='sub'?'on':''}">
+        <div class="rc-opt ${st.plan==='sub'?'on':''}" data-plan="sub"><span class="radio"></span><span class="label">Subscribe <span class="save">SAVE 15%</span></span><span class="p">${money(refillBase()*(1-SUB_RATE))}</span></div>
+        ${st.plan==='sub'?`<div class="submeta">You save ${money(refillBase()*SUB_RATE)} per refill · skip or cancel anytime</div>
+        <div class="freq-row"><div class="freq-help">Deliver every · <a href="#">Not sure? Find your frequency →</a></div>
+        <div class="freq">${["4","6","8","12"].map(f=>`<button data-f="${f}" class="${st.freq===f?'on':''}">${f} weeks</button>`).join("")}</div></div>`:""}
+      </div>`;
+  }
+  // the full refill config (size + eco + plan)
+  function refillConfigHTML(){ return rsizeHTML()+ecoHTML()+planHTML(); }
+
+  /* ---------- render ---------- */
+  function renderUrl(){
+    const h=currentHandle();
+    const el=document.getElementById("url"), bar=document.getElementById("urlbar");
+    el.innerHTML=`everneat.co/products/<b>${h}</b>`;
+    if(lastHandle && lastHandle!==h){ bar.classList.remove("flash"); void bar.offsetWidth; bar.classList.add("flash"); }
+    lastHandle=h;
+  }
   function renderHero(){
-    const pill = isRefillOnly() ? "Concentrate Refill" : BOTTLE[st.mat].label;
-    document.getElementById("hero").innerHTML=`<span class="pill">${pill}</span><img src="${heroImg()}" alt=""/>`;
-    const a=heroImg(), b=isRefillOnly()?IMG_BOTTLE[st.mat][st.scent]:IMG_REFILL;
+    const lead = isRefillLead();
+    document.getElementById("hero").innerHTML=`<span class="pill">${lead?REFILL.label:BOTTLE[st.mat].label}</span><img src="${lead?IMG_REFILL:IMG_BOTTLE[st.mat][st.scent]}" alt=""/>`;
+    const a=lead?IMG_REFILL:IMG_BOTTLE[st.mat][st.scent], b=lead?IMG_BOTTLE[st.mat][st.scent]:IMG_REFILL;
     document.getElementById("thumbs").innerHTML=[a,b].map((s,i)=>`<div class="thumb ${i===0?"on":""}"><img src="${s}" alt=""/></div>`).join("");
   }
   function renderScents(){
@@ -294,72 +320,102 @@
     document.getElementById("scentCap").textContent=(SCENTS.find(s=>s.id===st.scent)||{}).cap||"";
   }
   function renderStars(){document.getElementById("stars").innerHTML=Array.from({length:5},(_,i)=>`<svg viewBox="0 0 24 24" fill="${i<4?'currentColor':'none'}" stroke="currentColor" stroke-width="1.5"><path d="M12 2l2.9 6.2 6.6.8-4.9 4.6 1.3 6.6L12 17.8 6.1 20.8l1.3-6.6L2.5 9l6.6-.8z"/></svg>`).join("");}
-  function renderFmt(){
-    document.querySelectorAll("#fmtToggle button").forEach(b=>b.classList.toggle("on",b.dataset.fmt===st.fmt));
-    document.querySelectorAll("#subsel button").forEach(b=>b.classList.toggle("on",b.dataset.mat===st.mat));
-    const ro=isRefillOnly();
-    document.getElementById("subsel").style.display=ro?"none":"grid";
-    document.getElementById("rcCheck").style.display=ro?"none":"grid";
-    document.getElementById("arl").firstChild.textContent= ro ? "Choose your refill " : "Add a refill ";
-    document.getElementById("recapBottleRow").style.display=ro?"none":"flex";
-    if(ro) st.refill=true;
-  }
-  function renderRsize(){
-    document.getElementById("rsize").innerHTML=RSIZES.map(s=>`<button class="${st.rsize===s.id?"on":""}" data-rsize="${s.id}"><span class="b">Refills ${s.bottles}</span><span class="v">${money(s.price)}</span></button>`).join("");
-    document.getElementById("refillSub").textContent=`${rs().oz} · refills ${rs().bottles} bottles`;
-  }
-  function render(){
-    const ro=isRefillOnly();
-    document.getElementById("oncePrice").textContent=money(refillBase());
-    document.getElementById("subPrice").textContent=money(refillBase()*(1-SUB_RATE));
-    document.getElementById("subMeta").textContent=`You save ${money(refillBase()*SUB_RATE)} per refill · skip or cancel anytime`;
-    document.querySelectorAll(".rc-opt").forEach(o=>o.classList.toggle("on",o.dataset.plan===st.plan));
-    document.getElementById("subWrap").classList.toggle("on",st.plan==="sub");
-    document.getElementById("rcCheck").classList.toggle("off",!st.refill);
-    document.getElementById("ecoTxt").textContent=`Replaces up to ${rs().bottles} single-use bottles`;
+  function renderLeadToggle(){document.querySelectorAll("#leadToggle button").forEach(b=>b.classList.toggle("on",b.dataset.lead===st.lead));}
 
-    // top price
-    if(ro){document.getElementById("price").textContent=money(refillPrice());document.getElementById("priceSub").textContent=`${rs().oz} · refills ${rs().bottles} bottles`;}
-    else{document.getElementById("price").textContent=money(BOTTLE[st.mat].price);document.getElementById("priceSub").textContent=`16 fl oz · ${BOTTLE[st.mat].label}`;}
+  function renderPrimary(){
+    const p=document.getElementById("primary");
+    if(isRefillLead()){
+      p.innerHTML=`<div class="minilabel">Refill size &amp; plan <span class="tw">primary</span></div><div class="refill-card">${refillConfigHTML()}</div>`;
+    } else {
+      p.innerHTML=`<div class="minilabel">Material <span class="tw">primary</span></div>${matSelHTML()}`;
+    }
+  }
+  function renderCompanion(){
+    const c=document.getElementById("companion");
+    if(isRefillLead()){
+      // companion = bottle
+      c.innerHTML=`<div class="arl">Add a bottle <span class="tw">✦ companion</span></div>
+        <div class="refill-card">
+          <div class="rc-top">
+            <div class="rc-thumb"><img src="${IMG_BOTTLE[st.mat][st.scent]}" alt=""/></div>
+            <div class="rc-meta"><div class="t">Surface Cleaner Bottle</div><div class="s">${BOTTLE[st.mat].label} · 16 fl oz · ${st.scent}</div></div>
+            <div class="rc-check ${st.addBottle?'':'off'}" data-toggle="bottle"><svg viewBox="0 0 24 24" width="13" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div>
+          </div>
+          ${st.addBottle?`<div class="rc-divider"></div><div class="rc-pad"><div class="minilabel" style="margin-top:0">Material</div>${matSelHTML()}</div>`:""}
+        </div>`;
+    } else {
+      // companion = refill
+      c.innerHTML=`<div class="arl">Add a refill <span class="tw">✦ companion</span></div>
+        <div class="refill-card">
+          <div class="rc-top">
+            <div class="rc-thumb"><img src="${IMG_REFILL}" alt=""/></div>
+            <div class="rc-meta"><div class="t">Surface Cleaner Concentrate</div><div class="s">${rs().oz} · refills ${rs().bottles} bottles</div></div>
+            <div class="rc-check ${st.addRefill?'':'off'}" data-toggle="refill"><svg viewBox="0 0 24 24" width="13" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div>
+          </div>
+          ${st.addRefill?`<div class="rc-divider"></div>${refillConfigHTML()}`:""}
+        </div>`;
+    }
+  }
 
-    // recap
-    document.getElementById("recapBottle").innerHTML=`${BOTTLE[st.mat].label} <span class="mut">· ${st.scent} · 16 fl oz</span>`;
-    document.getElementById("recapRefill").innerHTML= st.refill
-      ? `Concentrate · refills ${rs().bottles} <span class="mut">· ${st.plan==="sub"?`Subscribe, every ${st.freq} wks`:"One-time"}</span>`
-      : `<span class="mut">Not added</span>`;
+  function renderSummary(){
+    const lead=isRefillLead();
+    // price (primary)
+    if(lead){document.getElementById("price").textContent=money(refillPrice());document.getElementById("priceSub").textContent=`${rs().oz} · refills ${rs().bottles} bottles`;}
+    else{document.getElementById("price").textContent=money(bottlePrice());document.getElementById("priceSub").textContent=`16 fl oz · ${BOTTLE[st.mat].label}`;}
+
+    // recap rows: primary first (lead), then companion
+    const refillLine = `Concentrate · refills ${rs().bottles} <span class="mut">· ${st.plan==="sub"?`Subscribe, every ${st.freq} wks`:"One-time"}</span>`;
+    const bottleLine = `${BOTTLE[st.mat].label} <span class="mut">· ${st.scent} · 16 fl oz</span>`;
+    if(lead){
+      document.getElementById("recapK1").innerHTML=`Refill <span class="lead">lead</span>`;
+      document.getElementById("recapV1").innerHTML=refillLine;
+      document.getElementById("recapK2").textContent="Bottle";
+      document.getElementById("recapV2").innerHTML= st.addBottle?bottleLine:`<span class="mut">Not added</span>`;
+    } else {
+      document.getElementById("recapK1").innerHTML=`Bottle <span class="lead">lead</span>`;
+      document.getElementById("recapV1").innerHTML=bottleLine;
+      document.getElementById("recapK2").textContent="Refill";
+      document.getElementById("recapV2").innerHTML= st.addRefill?refillLine:`<span class="mut">Not added</span>`;
+    }
 
     // total
-    const bottlePart = ro ? 0 : BOTTLE[st.mat].price;
-    const total=(bottlePart + (st.refill?refillPrice():0))*st.qty;
-    if(!ro && st.refill){document.getElementById("calc").textContent=`${money(BOTTLE[st.mat].price)} + ${money(refillPrice())} =`;}
-    else{document.getElementById("calc").textContent="";}
+    let primaryP, compP, compIn;
+    if(lead){ primaryP=refillPrice(); compP=bottlePrice(); compIn=st.addBottle; }
+    else { primaryP=bottlePrice(); compP=refillPrice(); compIn=st.addRefill; }
+    const total=(primaryP+(compIn?compP:0))*st.qty;
+    document.getElementById("calc").textContent= compIn ? `${money(primaryP)} + ${money(compP)} =` : "";
     document.getElementById("grand").textContent=money(total);
 
     const pct=Math.min(100,Math.round(total/FREE*100));
     document.getElementById("progFill").style.width=pct+"%";
     document.getElementById("progTxt").innerHTML= total>=FREE ? `<b>✓ Complimentary delivery unlocked</b>` : `Add <b>${money(FREE-total)}</b> more for complimentary delivery`;
 
+    // sticky + cta
+    const both = compIn;
+    let meta;
+    if(lead) meta=`<b>Refill ${rs().bottles}</b> · ${st.plan==="sub"?"Subscribe":"One-time"}${st.addBottle?` &nbsp;+&nbsp; <b>${BOTTLE[st.mat].label}</b> · ${st.scent}`:""}`;
+    else meta=`<b>${BOTTLE[st.mat].label}</b> · ${st.scent}${st.addRefill?` &nbsp;+&nbsp; <b>Refill ${rs().bottles}</b> · ${st.plan==="sub"?"Subscribe":"One-time"}`:""}`;
+    document.getElementById("sbMeta").innerHTML=meta;
     document.getElementById("sbTotal").textContent=money(total);
-    document.getElementById("sbMeta").innerHTML= ro
-      ? `<b>Concentrate Refill ${rs().bottles}</b> · ${st.plan==="sub"?"Subscribe":"One-time"}`
-      : `<b>${BOTTLE[st.mat].label}</b> · ${st.scent}${st.refill?` &nbsp;+&nbsp; <b>Refill ${rs().bottles}</b> · ${st.plan==="sub"?"Subscribe":"One-time"}`:""}`;
-    document.getElementById("cartBtn").textContent= ro ? "Add refill to cart" : (st.refill ? "Add the set to cart" : "Add bottle to cart");
+    document.getElementById("cartBtn").textContent= both ? "Add the set to cart" : (lead ? "Add refill to cart" : "Add bottle to cart");
   }
 
+  function render(){ renderUrl();renderHero();renderLeadToggle();renderPrimary();renderCompanion();renderSummary(); }
+
   document.addEventListener("click",e=>{
-    const sc=e.target.closest("[data-scent]"); if(sc){st.scent=sc.dataset.scent;renderScents();renderHero();render();return;}
-    const fm=e.target.closest("[data-fmt]"); if(fm){st.fmt=fm.dataset.fmt;renderFmt();renderHero();render();return;}
-    const mt=e.target.closest("[data-mat]"); if(mt){st.mat=mt.dataset.mat;renderFmt();renderScents();renderHero();render();return;}
-    const rz=e.target.closest("[data-rsize]"); if(rz){st.rsize=rz.dataset.rsize;st.refill=true;renderRsize();render();return;}
-    const pl=e.target.closest("[data-plan]"); if(pl){st.plan=pl.dataset.plan;st.refill=true;render();return;}
-    const fq=e.target.closest("[data-f]"); if(fq){st.freq=fq.dataset.f;document.querySelectorAll("#freq button").forEach(b=>b.classList.toggle("on",b===fq));render();return;}
+    const ld=e.target.closest("[data-lead]"); if(ld){st.lead=ld.dataset.lead;renderScents();render();return;}
+    const sc=e.target.closest("[data-scent]"); if(sc){st.scent=sc.dataset.scent;renderScents();render();return;}
+    const mt=e.target.closest("[data-mat]"); if(mt){st.mat=mt.dataset.mat;renderScents();render();return;}
+    const rz=e.target.closest("[data-rsize]"); if(rz){st.rsize=rz.dataset.rsize;render();return;}
+    const pl=e.target.closest("[data-plan]"); if(pl){st.plan=pl.dataset.plan;render();return;}
+    const fq=e.target.closest("[data-f]"); if(fq){st.freq=fq.dataset.f;render();return;}
+    const tg=e.target.closest("[data-toggle]"); if(tg){ if(tg.dataset.toggle==="refill")st.addRefill=!st.addRefill; else st.addBottle=!st.addBottle; render(); return;}
     const ah=e.target.closest(".acc-head"); if(ah){ah.parentElement.classList.toggle("open");return;}
-    if(e.target.closest("#rcCheck")){st.refill=!st.refill;render();return;}
-    if(e.target.id==="inc"){st.qty++;document.getElementById("qty").textContent=String(st.qty).padStart(2,"0");render();return;}
-    if(e.target.id==="dec"){st.qty=Math.max(1,st.qty-1);document.getElementById("qty").textContent=String(st.qty).padStart(2,"0");render();return;}
+    if(e.target.id==="inc"){st.qty++;document.getElementById("qty").textContent=String(st.qty).padStart(2,"0");renderSummary();return;}
+    if(e.target.id==="dec"){st.qty=Math.max(1,st.qty-1);document.getElementById("qty").textContent=String(st.qty).padStart(2,"0");renderSummary();return;}
   });
 
-  renderHero();renderScents();renderStars();renderFmt();renderRsize();render();
+  renderScents();renderStars();render();
 </script>
 </body>
 </html>
