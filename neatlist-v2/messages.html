@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neatlist — Messages</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        accent: '#CCFF00',
+        'brand-text': '#365E4F',
+        'brand-muted': '#8C96A8',
+        'brand-border': '#E0E5ED',
+        'brand-card': '#F2F5FA',
+        success: '#4FAA6F',
+        verified: '#5B9EE1',
+      },
+      fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] }
+    }
+  }
+}
+</script>
+<style>
+  body { font-family: 'Plus Jakarta Sans', sans-serif; }
+  .nav-item:hover { background: rgba(255,255,255,0.08); }
+  .nav-item.active { background: rgba(204,255,0,0.12); color: #CCFF00; }
+  .thread-item:hover { background: #F2F5FA; }
+  .thread-item.active { background: #F2F5FA; }
+  .msg-input:focus { outline: none; }
+  .bubble { max-width: 72%; }
+  .chat-scroll { overflow-y: auto; flex: 1; }
+  .chat-scroll::-webkit-scrollbar { width: 4px; }
+  .chat-scroll::-webkit-scrollbar-track { background: transparent; }
+  .chat-scroll::-webkit-scrollbar-thumb { background: #E0E5ED; border-radius: 2px; }
+</style>
+</head>
+<body class="bg-white flex h-screen overflow-hidden">
+
+  <!-- Sidebar -->
+  <aside class="w-16 bg-black flex flex-col items-center py-5 gap-4 flex-shrink-0 border-r border-white/10">
+    <div class="w-9 h-9 bg-accent rounded-xl flex items-center justify-center">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8L8 2L14 8L8 14L2 8Z" fill="black"/></svg>
+    </div>
+    <div class="w-px h-4 bg-white/10"></div>
+    <a href="employer-dashboard.html" title="Dashboard" class="w-10 h-10 rounded-xl hover:bg-white/10 flex items-center justify-center transition-colors">
+      <svg class="w-5 h-5 text-white/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+    </a>
+    <a href="pipeline.html" title="Applicants" class="w-10 h-10 rounded-xl hover:bg-white/10 flex items-center justify-center transition-colors">
+      <svg class="w-5 h-5 text-white/40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    </a>
+    <a href="messages.html" title="Messages" class="w-10 h-10 rounded-xl bg-accent/20 flex items-center justify-center">
+      <svg class="w-5 h-5 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    </a>
+    <div class="mt-auto">
+      <a href="index.html" title="Sign out" class="w-10 h-10 rounded-xl hover:bg-white/10 flex items-center justify-center transition-colors">
+        <svg class="w-5 h-5 text-white/30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </a>
+    </div>
+  </aside>
+
+  <!-- Thread list -->
+  <div class="w-80 border-r border-brand-border flex flex-col flex-shrink-0">
+    <div class="px-4 py-4 border-b border-brand-border">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="font-bold text-black text-lg">Messages</h2>
+        <button class="w-8 h-8 bg-brand-card rounded-lg flex items-center justify-center hover:bg-brand-border transition-colors">
+          <svg class="w-4 h-4 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+      </div>
+      <div class="flex items-center gap-2 bg-brand-card rounded-xl px-3 py-2.5">
+        <svg class="w-4 h-4 text-brand-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" placeholder="Search conversations..." class="bg-transparent text-sm text-black placeholder-brand-muted outline-none flex-1">
+      </div>
+    </div>
+
+    <div class="overflow-y-auto flex-1">
+      <!-- Thread 1 — active -->
+      <div class="thread-item active cursor-pointer px-4 py-3.5 border-b border-brand-border" onclick="setActive(this)">
+        <div class="flex items-start gap-3">
+          <div class="relative flex-shrink-0">
+            <img src="https://i.pravatar.cc/40?img=33" class="w-10 h-10 rounded-xl object-cover">
+            <div class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-success border-2 border-white rounded-full"></div>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between">
+              <span class="font-semibold text-black text-sm">Carlos M.</span>
+              <span class="text-xs text-brand-muted">2m</span>
+            </div>
+            <div class="flex items-center gap-1 mt-0.5">
+              <span class="text-xs bg-brand-card text-brand-text px-1.5 py-0.5 rounded font-medium">HVAC Tech</span>
+            </div>
+            <div class="text-xs text-brand-muted mt-1 truncate">Sounds great! I'm available to start on Monday...</div>
+          </div>
+          <div class="w-2 h-2 bg-accent rounded-full mt-1 flex-shrink-0"></div>
+        </div>
+      </div>
+
+      <!-- Thread 2 -->
+      <div class="thread-item cursor-pointer px-4 py-3.5 border-b border-brand-border" onclick="setActive(this)">
+        <div class="flex items-start gap-3">
+          <div class="relative flex-shrink-0">
+            <img src="https://i.pravatar.cc/40?img=44" class="w-10 h-10 rounded-xl object-cover">
+            <div class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-brand-border border-2 border-white rounded-full"></div>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between">
+              <span class="font-semibold text-black text-sm">Ana G.</span>
+              <span class="text-xs text-brand-muted">1h</span>
+            </div>
+            <div class="flex items-center gap-1 mt-0.5">
+              <span class="text-xs bg-brand-card text-brand-text px-1.5 py-0.5 rounded font-medium">Lawn Care</span>
+            </div>
+            <div class="text-xs text-brand-muted mt-1 truncate">Hi, I saw your job posting and I'm very interested...</div>
+          </div>
+          <div class="w-2 h-2 bg-accent rounded-full mt-1 flex-shrink-0"></div>
+        </div>
+      </div>
+
+      <!-- Thread 3 -->
+      <div class="thread-item cursor-pointer px-4 py-3.5 border-b border-brand-border" onclick="setActive(this)">
+        <div class="flex items-start gap-3">
+          <img src="https://i.pravatar.cc/40?img=22" class="w-10 h-10 rounded-xl object-cover flex-shrink-0">
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between">
+              <span class="font-semibold text-black text-sm">Miguel R.</span>
+              <span class="text-xs text-brand-muted">3h</span>
+            </div>
+            <div class="flex items-center gap-1 mt-0.5">
+              <span class="text-xs bg-brand-card text-brand-text px-1.5 py-0.5 rounded font-medium">HVAC Tech</span>
+            </div>
+            <div class="text-xs text-brand-muted mt-1 truncate">You: Thanks for your application Miguel, we'll review...</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="thread-item cursor-pointer px-4 py-3.5 border-b border-brand-border" onclick="setActive(this)">
+        <div class="flex items-start gap-3">
+          <img src="https://i.pravatar.cc/40?img=60" class="w-10 h-10 rounded-xl object-cover flex-shrink-0">
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between">
+              <span class="font-semibold text-black text-sm">Robert N.</span>
+              <span class="text-xs text-brand-muted">Yesterday</span>
+            </div>
+            <div class="flex items-center gap-1 mt-0.5">
+              <span class="text-xs bg-success/15 text-success px-1.5 py-0.5 rounded font-medium">Hired</span>
+            </div>
+            <div class="text-xs text-brand-muted mt-1 truncate">Looking forward to starting! Will see you Monday.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chat area -->
+  <div class="flex-1 flex flex-col">
+    <!-- Chat header -->
+    <div class="border-b border-brand-border px-6 py-4 flex items-center justify-between flex-shrink-0 bg-white">
+      <div class="flex items-center gap-3">
+        <div class="relative">
+          <img src="https://i.pravatar.cc/40?img=33" class="w-10 h-10 rounded-xl object-cover">
+          <div class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-success border-2 border-white rounded-full"></div>
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <span class="font-bold text-black">Carlos M.</span>
+            <svg class="w-4 h-4 text-verified" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22C6.48 22 2 17.52 2 12S6.48 2 12 2s10 4.48 10 10-4.48 10-10 10zm-2-13l-2 2 4 4 6-6-2-2-4 4-2-2z"/></svg>
+          </div>
+          <div class="text-xs text-success font-medium">Online · HVAC Technician</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <!-- Job context pill -->
+        <div class="flex items-center gap-2 bg-brand-card border border-brand-border rounded-xl px-3 py-2">
+          <svg class="w-3.5 h-3.5 text-brand-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+          <span class="text-xs text-black font-medium">HVAC Technician</span>
+          <svg class="w-3.5 h-3.5 text-brand-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <button class="w-9 h-9 border border-brand-border rounded-xl flex items-center justify-center hover:bg-brand-card transition-colors">
+          <svg class="w-4 h-4 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Messages -->
+    <div class="chat-scroll px-6 py-5 space-y-4 bg-white">
+
+      <!-- Date divider -->
+      <div class="flex items-center gap-3">
+        <div class="flex-1 h-px bg-brand-border"></div>
+        <span class="text-xs text-brand-muted font-medium">Today</span>
+        <div class="flex-1 h-px bg-brand-border"></div>
+      </div>
+
+      <!-- Received -->
+      <div class="flex items-end gap-2.5">
+        <img src="https://i.pravatar.cc/32?img=33" class="w-8 h-8 rounded-xl object-cover flex-shrink-0 mb-1">
+        <div class="bubble">
+          <div class="bg-brand-card rounded-2xl rounded-bl-sm px-4 py-3">
+            <p class="text-sm text-black leading-relaxed">Hi! I saw your HVAC Technician posting. I have 8 years of experience and I'm EPA 608 certified. Would love to discuss more about the role.</p>
+          </div>
+          <div class="text-xs text-brand-muted mt-1 ml-1">9:12 AM</div>
+        </div>
+      </div>
+
+      <!-- Sent -->
+      <div class="flex items-end gap-2.5 justify-end">
+        <div class="bubble">
+          <div class="bg-black rounded-2xl rounded-br-sm px-4 py-3">
+            <p class="text-sm text-white leading-relaxed">Hi Carlos! Your profile looks great — especially the 8 years of experience. We'd love to schedule a quick call. Are you available this week?</p>
+          </div>
+          <div class="text-xs text-brand-muted mt-1 text-right mr-1">9:24 AM ✓</div>
+        </div>
+        <div class="w-8 h-8 bg-accent rounded-xl flex items-center justify-center flex-shrink-0 mb-1">
+          <span class="text-black font-bold text-xs">MR</span>
+        </div>
+      </div>
+
+      <!-- Received -->
+      <div class="flex items-end gap-2.5">
+        <img src="https://i.pravatar.cc/32?img=33" class="w-8 h-8 rounded-xl object-cover flex-shrink-0 mb-1">
+        <div class="bubble">
+          <div class="bg-brand-card rounded-2xl rounded-bl-sm px-4 py-3">
+            <p class="text-sm text-black leading-relaxed">Yes, I'm free Thursday or Friday afternoon. What time works best for you?</p>
+          </div>
+          <div class="text-xs text-brand-muted mt-1 ml-1">9:31 AM</div>
+        </div>
+      </div>
+
+      <!-- System message — interview scheduled -->
+      <div class="flex justify-center">
+        <div class="bg-verified/10 border border-verified/20 rounded-xl px-4 py-2.5 flex items-center gap-2">
+          <svg class="w-4 h-4 text-verified" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span class="text-xs text-verified font-semibold">AI Interview scheduled · Friday, 3:00 PM</span>
+        </div>
+      </div>
+
+      <!-- Sent -->
+      <div class="flex items-end gap-2.5 justify-end">
+        <div class="bubble">
+          <div class="bg-black rounded-2xl rounded-br-sm px-4 py-3">
+            <p class="text-sm text-white leading-relaxed">Friday 3pm works great! I've sent you an invite with the interview link. It will be an AI-assisted voice interview — takes about 20 minutes.</p>
+          </div>
+          <div class="text-xs text-brand-muted mt-1 text-right mr-1">9:45 AM ✓✓</div>
+        </div>
+        <div class="w-8 h-8 bg-accent rounded-xl flex items-center justify-center flex-shrink-0 mb-1">
+          <span class="text-black font-bold text-xs">MR</span>
+        </div>
+      </div>
+
+      <!-- Received — most recent -->
+      <div class="flex items-end gap-2.5">
+        <img src="https://i.pravatar.cc/32?img=33" class="w-8 h-8 rounded-xl object-cover flex-shrink-0 mb-1">
+        <div class="bubble">
+          <div class="bg-brand-card rounded-2xl rounded-bl-sm px-4 py-3">
+            <p class="text-sm text-black leading-relaxed">Sounds great! I'm available to start on Monday if everything goes well. Really excited about this opportunity 🙌</p>
+          </div>
+          <div class="text-xs text-brand-muted mt-1 ml-1">Just now</div>
+        </div>
+      </div>
+
+      <!-- Typing indicator -->
+      <div class="flex items-end gap-2.5">
+        <img src="https://i.pravatar.cc/32?img=33" class="w-8 h-8 rounded-xl object-cover flex-shrink-0 mb-1">
+        <div class="bg-brand-card rounded-2xl rounded-bl-sm px-4 py-3 flex gap-1 items-center">
+          <div class="w-1.5 h-1.5 bg-brand-muted rounded-full animate-bounce" style="animation-delay:0ms"></div>
+          <div class="w-1.5 h-1.5 bg-brand-muted rounded-full animate-bounce" style="animation-delay:100ms"></div>
+          <div class="w-1.5 h-1.5 bg-brand-muted rounded-full animate-bounce" style="animation-delay:200ms"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input bar -->
+    <div class="border-t border-brand-border px-4 py-3 bg-white flex-shrink-0">
+      <div class="flex items-end gap-3 bg-brand-card rounded-2xl px-4 py-3">
+        <button class="w-7 h-7 flex items-center justify-center text-brand-muted hover:text-black transition-colors flex-shrink-0">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+        </button>
+        <input type="text" placeholder="Type a message..." class="flex-1 bg-transparent text-sm text-black placeholder-brand-muted msg-input">
+        <button class="w-9 h-9 bg-black rounded-xl flex items-center justify-center hover:bg-black/80 transition-colors flex-shrink-0">
+          <svg class="w-4 h-4 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+<script>
+function setActive(el) {
+  document.querySelectorAll('.thread-item').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+</script>
+</body>
+</html>

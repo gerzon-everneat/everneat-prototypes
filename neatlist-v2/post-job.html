@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neatlist — Post a Job</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        accent: '#CCFF00',
+        'brand-text': '#365E4F',
+        'brand-muted': '#8C96A8',
+        'brand-border': '#E0E5ED',
+        'brand-card': '#F2F5FA',
+        success: '#4FAA6F',
+        verified: '#5B9EE1',
+      },
+      fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] }
+    }
+  }
+}
+</script>
+<style>
+  body { font-family: 'Plus Jakarta Sans', sans-serif; }
+  input:focus, textarea:focus, select:focus { outline: none; border-color: #CCFF00; box-shadow: 0 0 0 3px rgba(204,255,0,0.15); }
+  .skill-tag { transition: all 0.15s; cursor: pointer; user-select: none; }
+  .skill-tag.active { background: #000; color: #CCFF00; border-color: #000; }
+  .step-indicator { transition: all 0.2s; }
+  ::placeholder { color: #8C96A8; }
+  .ai-btn { transition: all 0.2s; }
+  .ai-btn:hover { background: #000; color: #CCFF00; }
+  .step-section { display: none; }
+  .step-section.active { display: block; }
+</style>
+</head>
+<body class="bg-brand-card min-h-screen">
+
+  <!-- Top nav -->
+  <nav class="bg-white border-b border-brand-border sticky top-0 z-10">
+    <div class="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <a href="employer-dashboard.html" class="flex items-center gap-1.5 text-brand-muted hover:text-black transition-colors text-sm">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+          Dashboard
+        </a>
+        <div class="w-px h-4 bg-brand-border"></div>
+        <div class="flex items-center gap-2">
+          <div class="w-7 h-7 bg-black rounded-lg flex items-center justify-center">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 8L8 2L14 8L8 14L2 8Z" fill="#CCFF00"/></svg>
+          </div>
+          <span class="font-bold text-base tracking-tight">Post a Job</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <button class="text-sm text-brand-muted hover:text-black transition-colors font-medium">Save as Draft</button>
+        <button onclick="window.location='employer-dashboard.html'" class="bg-black text-white rounded-xl px-4 py-2.5 text-sm font-semibold hover:bg-black/80 transition-colors">
+          Publish Job →
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-5xl mx-auto px-6 py-8">
+    <div class="grid grid-cols-3 gap-6">
+
+      <!-- Steps sidebar -->
+      <div class="col-span-1">
+        <div class="bg-white rounded-2xl border border-brand-border p-5 sticky top-24">
+          <div class="text-xs font-semibold text-brand-muted uppercase tracking-wider mb-4">Progress</div>
+          <div class="space-y-1">
+            <button onclick="showStep(1)" class="step-indicator w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-black bg-brand-card" id="step-btn-1">
+              <div class="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-xs font-bold flex-shrink-0">1</div>
+              Job Basics
+            </button>
+            <button onclick="showStep(2)" class="step-indicator w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-brand-muted" id="step-btn-2">
+              <div class="w-6 h-6 rounded-full bg-brand-border text-brand-muted flex items-center justify-center text-xs font-bold flex-shrink-0">2</div>
+              Description
+            </button>
+            <button onclick="showStep(3)" class="step-indicator w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-brand-muted" id="step-btn-3">
+              <div class="w-6 h-6 rounded-full bg-brand-border text-brand-muted flex items-center justify-center text-xs font-bold flex-shrink-0">3</div>
+              Skills & Requirements
+            </button>
+            <button onclick="showStep(4)" class="step-indicator w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-brand-muted" id="step-btn-4">
+              <div class="w-6 h-6 rounded-full bg-brand-border text-brand-muted flex items-center justify-center text-xs font-bold flex-shrink-0">4</div>
+              Pay & Benefits
+            </button>
+            <button onclick="showStep(5)" class="step-indicator w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-brand-muted" id="step-btn-5">
+              <div class="w-6 h-6 rounded-full bg-brand-border text-brand-muted flex items-center justify-center text-xs font-bold flex-shrink-0">5</div>
+              Review & Publish
+            </button>
+          </div>
+
+          <!-- Job strength meter -->
+          <div class="mt-6 pt-5 border-t border-brand-border">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-semibold text-black">Job Strength</span>
+              <span class="text-xs font-bold text-success">Good</span>
+            </div>
+            <div class="h-2 bg-brand-card rounded-full">
+              <div class="h-full bg-success rounded-full transition-all" style="width: 65%"></div>
+            </div>
+            <p class="text-xs text-brand-muted mt-2">Add skills to reach <span class="font-medium text-black">Excellent</span></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form area -->
+      <div class="col-span-2 space-y-5">
+
+        <!-- Step 1: Basics -->
+        <div class="step-section active" id="step-1">
+          <div class="bg-white rounded-2xl border border-brand-border p-6">
+            <h2 class="font-bold text-black text-lg mb-5">Job Basics</h2>
+            <div class="space-y-4">
+              <div>
+                <label class="block text-sm font-medium text-black mb-2">Job title <span class="text-error">*</span></label>
+                <input type="text" value="HVAC Technician" class="w-full border border-brand-border rounded-xl px-4 py-3 text-sm transition-all">
+              </div>
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-black mb-2">Job type</label>
+                  <select class="w-full border border-brand-border rounded-xl px-4 py-3 text-sm transition-all bg-white">
+                    <option>Full-time</option>
+                    <option>Part-time</option>
+                    <option>Contract</option>
+                    <option>One-time</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-black mb-2">Work schedule</label>
+                  <select class="w-full border border-brand-border rounded-xl px-4 py-3 text-sm transition-all bg-white">
+                    <option>Monday – Friday</option>
+                    <option>Weekends</option>
+                    <option>Flexible</option>
+                    <option>On-call</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-black mb-2">Location <span class="text-error">*</span></label>
+                <input type="text" value="123 Main St, Miami, FL 33101" class="w-full border border-brand-border rounded-xl px-4 py-3 text-sm transition-all">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-black mb-2">Number of openings</label>
+                <div class="flex items-center gap-3">
+                  <button class="w-10 h-10 border border-brand-border rounded-xl flex items-center justify-center text-xl text-brand-muted hover:bg-brand-card transition-colors" onclick="changeCount(-1)">−</button>
+                  <div class="w-16 text-center font-bold text-black text-lg" id="opening-count">1</div>
+                  <button class="w-10 h-10 border border-brand-border rounded-xl flex items-center justify-center text-xl text-brand-muted hover:bg-brand-card transition-colors" onclick="changeCount(1)">+</button>
+                </div>
+              </div>
+            </div>
+            <button onclick="showStep(2)" class="mt-6 bg-black text-white rounded-xl px-6 py-3 text-sm font-semibold hover:bg-black/80 transition-colors">
+              Next: Description →
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 2: Description -->
+        <div class="step-section" id="step-2">
+          <div class="bg-white rounded-2xl border border-brand-border p-6">
+            <div class="flex items-center justify-between mb-5">
+              <h2 class="font-bold text-black text-lg">Job Description</h2>
+              <button class="ai-btn flex items-center gap-2 border border-brand-border rounded-xl px-3 py-2 text-sm font-medium text-black transition-all">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                Generate with AI
+              </button>
+            </div>
+            <div class="bg-accent/10 border border-accent/30 rounded-xl p-3 mb-4">
+              <div class="flex items-start gap-2">
+                <svg class="w-4 h-4 text-black mt-0.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                <div class="text-xs text-black">
+                  <span class="font-semibold">AI tip:</span> Jobs with detailed descriptions get 3× more qualified applicants. Click "Generate with AI" to auto-write one based on your job title.
+                </div>
+              </div>
+            </div>
+            <textarea rows="8" class="w-full border border-brand-border rounded-xl px-4 py-3 text-sm text-brand-text leading-relaxed resize-none transition-all" placeholder="Describe the role, responsibilities, and what a typical day looks like...">We're looking for a skilled HVAC Technician to join the Sunshine Property Group team. You'll be responsible for maintaining, repairing, and installing HVAC systems across our residential and commercial portfolio in Miami-Dade County.
+
+Responsibilities:
+• Install, maintain, and repair HVAC systems
+• Diagnose equipment faults and perform corrective maintenance
+• Handle refrigerant safely in compliance with EPA 608 regulations
+• Complete service records and communicate with property managers
+• Available for on-call emergency repairs (rotational)</textarea>
+            <div class="flex items-center justify-between mt-2">
+              <span class="text-xs text-brand-muted">Minimum 100 characters recommended</span>
+              <span class="text-xs text-brand-muted">487 / 2000</span>
+            </div>
+            <button onclick="showStep(3)" class="mt-6 bg-black text-white rounded-xl px-6 py-3 text-sm font-semibold hover:bg-black/80 transition-colors">
+              Next: Skills →
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 3: Skills -->
+        <div class="step-section" id="step-3">
+          <div class="bg-white rounded-2xl border border-brand-border p-6">
+            <h2 class="font-bold text-black text-lg mb-5">Skills & Requirements</h2>
+            <div class="space-y-5">
+              <div>
+                <label class="block text-sm font-medium text-black mb-3">Required skills</label>
+                <div class="flex flex-wrap gap-2">
+                  <span class="skill-tag active border border-black text-xs font-semibold px-3 py-1.5 rounded-full" onclick="this.classList.toggle('active')">HVAC</span>
+                  <span class="skill-tag active border border-black text-xs font-semibold px-3 py-1.5 rounded-full" onclick="this.classList.toggle('active')">EPA 608</span>
+                  <span class="skill-tag border border-brand-border text-brand-muted text-xs font-medium px-3 py-1.5 rounded-full" onclick="this.classList.toggle('active')">Refrigerant</span>
+                  <span class="skill-tag border border-brand-border text-brand-muted text-xs font-medium px-3 py-1.5 rounded-full" onclick="this.classList.toggle('active')">Electrical</span>
+                  <span class="skill-tag border border-brand-border text-brand-muted text-xs font-medium px-3 py-1.5 rounded-full" onclick="this.classList.toggle('active')">Plumbing</span>
+                  <span class="skill-tag border border-brand-border text-brand-muted text-xs font-medium px-3 py-1.5 rounded-full" onclick="this.classList.toggle('active')">Duct Work</span>
+                  <span class="skill-tag border border-brand-border text-brand-muted text-xs font-medium px-3 py-1.5 rounded-full" onclick="this.classList.toggle('active')">Commercial</span>
+                  <span class="skill-tag border border-brand-border text-brand-muted text-xs font-medium px-3 py-1.5 rounded-full" onclick="this.classList.toggle('active')">Residential</span>
+                  <button class="border border-dashed border-brand-border text-brand-muted text-xs font-medium px-3 py-1.5 rounded-full flex items-center gap-1 hover:border-black hover:text-black transition-colors">
+                    <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Add skill
+                  </button>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-black mb-2">Min. years of experience</label>
+                  <select class="w-full border border-brand-border rounded-xl px-4 py-3 text-sm transition-all bg-white">
+                    <option>No minimum</option>
+                    <option>1+ year</option>
+                    <option>2+ years</option>
+                    <option selected>5+ years</option>
+                    <option>10+ years</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-black mb-2">Education level</label>
+                  <select class="w-full border border-brand-border rounded-xl px-4 py-3 text-sm transition-all bg-white">
+                    <option>No requirement</option>
+                    <option>High school diploma</option>
+                    <option selected>Trade certification</option>
+                    <option>Associate's degree</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-black mb-3">Additional requirements</label>
+                <div class="space-y-2.5">
+                  <label class="flex items-center gap-3 cursor-pointer">
+                    <div class="w-5 h-5 rounded bg-black flex items-center justify-center flex-shrink-0">
+                      <svg class="w-3 h-3 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <span class="text-sm text-black">Valid driver's license</span>
+                  </label>
+                  <label class="flex items-center gap-3 cursor-pointer">
+                    <div class="w-5 h-5 rounded bg-black flex items-center justify-center flex-shrink-0">
+                      <svg class="w-3 h-3 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <span class="text-sm text-black">Background check required</span>
+                  </label>
+                  <label class="flex items-center gap-3 cursor-pointer">
+                    <div class="w-5 h-5 rounded border border-brand-border flex-shrink-0"></div>
+                    <span class="text-sm text-black">Drug test required</span>
+                  </label>
+                  <label class="flex items-center gap-3 cursor-pointer">
+                    <div class="w-5 h-5 rounded border border-brand-border flex-shrink-0"></div>
+                    <span class="text-sm text-black">Own tools required</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <button onclick="showStep(4)" class="mt-6 bg-black text-white rounded-xl px-6 py-3 text-sm font-semibold hover:bg-black/80 transition-colors">
+              Next: Pay & Benefits →
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 4: Pay -->
+        <div class="step-section" id="step-4">
+          <div class="bg-white rounded-2xl border border-brand-border p-6">
+            <h2 class="font-bold text-black text-lg mb-5">Pay & Benefits</h2>
+            <div class="space-y-5">
+              <div>
+                <label class="block text-sm font-medium text-black mb-3">Pay type</label>
+                <div class="grid grid-cols-3 gap-2">
+                  <button class="border-2 border-black rounded-xl py-2.5 text-sm font-semibold text-black">Hourly</button>
+                  <button class="border border-brand-border rounded-xl py-2.5 text-sm font-medium text-brand-muted hover:border-black hover:text-black transition-colors">Salary</button>
+                  <button class="border border-brand-border rounded-xl py-2.5 text-sm font-medium text-brand-muted hover:border-black hover:text-black transition-colors">Flat rate</button>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-black mb-2">Minimum ($)</label>
+                  <div class="flex items-center border border-brand-border rounded-xl overflow-hidden">
+                    <span class="px-3 py-3 text-brand-muted text-sm border-r border-brand-border bg-brand-card">$</span>
+                    <input type="number" value="26" class="flex-1 px-4 py-3 text-sm text-black outline-none border-none">
+                    <span class="px-3 py-3 text-brand-muted text-sm">/hr</span>
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-sm font-medium text-black mb-2">Maximum ($)</label>
+                  <div class="flex items-center border border-brand-border rounded-xl overflow-hidden">
+                    <span class="px-3 py-3 text-brand-muted text-sm border-r border-brand-border bg-brand-card">$</span>
+                    <input type="number" value="32" class="flex-1 px-4 py-3 text-sm text-black outline-none border-none">
+                    <span class="px-3 py-3 text-brand-muted text-sm">/hr</span>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-black mb-3">Benefits offered</label>
+                <div class="grid grid-cols-2 gap-2.5">
+                  <label class="flex items-center gap-3 p-3 border border-brand-border rounded-xl cursor-pointer hover:border-black transition-colors">
+                    <div class="w-5 h-5 rounded bg-black flex items-center justify-center flex-shrink-0">
+                      <svg class="w-3 h-3 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <span class="text-sm text-black">Health insurance</span>
+                  </label>
+                  <label class="flex items-center gap-3 p-3 border border-brand-border rounded-xl cursor-pointer hover:border-black transition-colors">
+                    <div class="w-5 h-5 rounded bg-black flex items-center justify-center flex-shrink-0">
+                      <svg class="w-3 h-3 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <span class="text-sm text-black">Paid time off</span>
+                  </label>
+                  <label class="flex items-center gap-3 p-3 border border-brand-border rounded-xl cursor-pointer hover:border-black transition-colors">
+                    <div class="w-5 h-5 rounded border border-brand-border flex-shrink-0"></div>
+                    <span class="text-sm text-black">401(k)</span>
+                  </label>
+                  <label class="flex items-center gap-3 p-3 border border-brand-border rounded-xl cursor-pointer hover:border-black transition-colors">
+                    <div class="w-5 h-5 rounded border border-brand-border flex-shrink-0"></div>
+                    <span class="text-sm text-black">Company vehicle</span>
+                  </label>
+                  <label class="flex items-center gap-3 p-3 border border-brand-border rounded-xl cursor-pointer hover:border-black transition-colors">
+                    <div class="w-5 h-5 rounded border border-brand-border flex-shrink-0"></div>
+                    <span class="text-sm text-black">Tool allowance</span>
+                  </label>
+                  <label class="flex items-center gap-3 p-3 border border-brand-border rounded-xl cursor-pointer hover:border-black transition-colors">
+                    <div class="w-5 h-5 rounded border border-brand-border flex-shrink-0"></div>
+                    <span class="text-sm text-black">Overtime pay</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <button onclick="showStep(5)" class="mt-6 bg-black text-white rounded-xl px-6 py-3 text-sm font-semibold hover:bg-black/80 transition-colors">
+              Next: Review →
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 5: Review -->
+        <div class="step-section" id="step-5">
+          <div class="bg-white rounded-2xl border border-brand-border p-6">
+            <div class="flex items-center gap-3 mb-5">
+              <div class="w-10 h-10 bg-accent rounded-xl flex items-center justify-center">
+                <svg class="w-5 h-5 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div>
+                <h2 class="font-bold text-black text-lg">Ready to publish!</h2>
+                <div class="text-brand-muted text-sm">Review your job posting before it goes live</div>
+              </div>
+            </div>
+
+            <div class="bg-brand-card rounded-2xl p-5 space-y-3 mb-5">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-black rounded-xl flex items-center justify-center text-accent font-bold text-xs flex-shrink-0">SP</div>
+                <div>
+                  <div class="font-bold text-black">HVAC Technician</div>
+                  <div class="text-brand-muted text-sm">Sunshine Property Group · Miami, FL</div>
+                </div>
+                <span class="ml-auto text-xs bg-success/15 text-success font-semibold px-2.5 py-1 rounded-full">Will go live</span>
+              </div>
+              <div class="border-t border-brand-border pt-3 grid grid-cols-2 gap-2 text-sm">
+                <div><span class="text-brand-muted">Type:</span> <span class="text-black font-medium ml-1">Full-time</span></div>
+                <div><span class="text-brand-muted">Pay:</span> <span class="text-black font-medium ml-1">$26–$32/hr</span></div>
+                <div><span class="text-brand-muted">Openings:</span> <span class="text-black font-medium ml-1">1</span></div>
+                <div><span class="text-brand-muted">Experience:</span> <span class="text-black font-medium ml-1">5+ years</span></div>
+              </div>
+            </div>
+
+            <div class="space-y-2 mb-6">
+              <div class="flex items-center gap-2 text-sm">
+                <svg class="w-4 h-4 text-success" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span class="text-black">Job will be indexed on Google Search</span>
+              </div>
+              <div class="flex items-center gap-2 text-sm">
+                <svg class="w-4 h-4 text-success" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span class="text-black">AI will match and notify 140+ matching professionals</span>
+              </div>
+              <div class="flex items-center gap-2 text-sm">
+                <svg class="w-4 h-4 text-success" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span class="text-black">Applicants can quick-apply in under 30 seconds</span>
+              </div>
+            </div>
+
+            <a href="employer-dashboard.html">
+              <button class="w-full bg-black text-white rounded-xl py-4 font-bold text-sm">
+                Publish Job Now
+              </button>
+            </a>
+            <button class="w-full text-brand-muted text-sm py-2 mt-2 hover:text-black transition-colors">Save as Draft</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+<script>
+let openingCount = 1;
+function changeCount(d) {
+  openingCount = Math.max(1, openingCount + d);
+  document.getElementById('opening-count').textContent = openingCount;
+}
+
+let currentStep = 1;
+function showStep(n) {
+  document.querySelectorAll('.step-section').forEach(s => s.classList.remove('active'));
+  document.getElementById('step-' + n).classList.add('active');
+  document.querySelectorAll('[id^=step-btn-]').forEach((btn, i) => {
+    const idx = i + 1;
+    const dot = btn.querySelector('div');
+    if (idx < n) {
+      btn.className = 'step-indicator w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-black';
+      dot.className = 'w-6 h-6 rounded-full bg-success flex items-center justify-center text-xs font-bold flex-shrink-0 text-white';
+      dot.innerHTML = '<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
+    } else if (idx === n) {
+      btn.className = 'step-indicator w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-black bg-brand-card';
+      dot.className = 'w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-xs font-bold flex-shrink-0';
+      dot.textContent = idx;
+    } else {
+      btn.className = 'step-indicator w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-brand-muted';
+      dot.className = 'w-6 h-6 rounded-full bg-brand-border text-brand-muted flex items-center justify-center text-xs font-bold flex-shrink-0';
+      dot.textContent = idx;
+    }
+  });
+  currentStep = n;
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>

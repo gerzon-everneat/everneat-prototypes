@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neatlist — Get Started</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        accent: '#CCFF00',
+        'brand-text': '#365E4F',
+        'brand-muted': '#8C96A8',
+        'brand-border': '#E0E5ED',
+        'brand-card': '#F2F5FA',
+      },
+      fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] }
+    }
+  }
+}
+</script>
+<style>
+  body { font-family: 'Plus Jakarta Sans', sans-serif; }
+  .role-card { transition: all 0.2s cubic-bezier(0.4,0,0.2,1); cursor: pointer; }
+  .role-card:hover { transform: translateY(-2px); }
+  .role-card.selected { border-color: #000; background: #000; }
+  .role-card.selected .role-title { color: #fff; }
+  .role-card.selected .role-desc { color: rgba(255,255,255,0.6); }
+  .role-card.selected .role-icon { background: #CCFF00; }
+  .role-card.selected .role-icon svg { color: #000; }
+  .step { display: none; }
+  .step.active { display: block; }
+  input:focus, select:focus { outline: none; border-color: #CCFF00; box-shadow: 0 0 0 3px rgba(204,255,0,0.15); }
+  .skill-tag { transition: all 0.15s; cursor: pointer; }
+  .skill-tag.active { background: #000; color: #CCFF00; border-color: #000; }
+  .btn-primary { transition: all 0.2s; }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+  ::placeholder { color: #8C96A8; }
+</style>
+</head>
+<body class="bg-white min-h-screen">
+
+  <!-- Top bar -->
+  <header class="border-b border-brand-border px-8 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <div class="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8L8 2L14 8L8 14L2 8Z" fill="#CCFF00"/></svg>
+      </div>
+      <span class="font-bold text-xl tracking-tight">Neatlist</span>
+    </div>
+    <a href="index.html" class="text-sm text-brand-muted hover:text-black transition-colors">Already have an account? <span class="text-black font-medium">Sign in</span></a>
+  </header>
+
+  <!-- Progress -->
+  <div class="max-w-2xl mx-auto px-6 pt-8">
+    <div class="flex items-center gap-2 mb-10" id="progress-bar">
+      <div class="step-dot flex-1 h-1.5 rounded-full bg-black transition-all" id="dot-1"></div>
+      <div class="step-dot flex-1 h-1.5 rounded-full bg-brand-border transition-all" id="dot-2"></div>
+      <div class="step-dot flex-1 h-1.5 rounded-full bg-brand-border transition-all" id="dot-3"></div>
+      <div class="step-dot flex-1 h-1.5 rounded-full bg-brand-border transition-all" id="dot-4"></div>
+    </div>
+
+    <!-- Step 1: Role -->
+    <div class="step active" id="step-1">
+      <div class="text-center mb-10">
+        <div class="inline-flex items-center gap-2 bg-brand-card rounded-full px-4 py-1.5 text-sm text-brand-muted font-medium mb-4">Step 1 of 4</div>
+        <h1 class="text-3xl font-bold text-black">How are you using Neatlist?</h1>
+        <p class="text-brand-muted mt-2">You can always switch later from settings</p>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <div class="role-card border-2 border-brand-border rounded-2xl p-6" onclick="selectRole(this, 'employer')">
+          <div class="role-icon w-12 h-12 bg-brand-card rounded-xl flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
+          </div>
+          <div class="role-title font-bold text-black text-lg">I want to hire</div>
+          <div class="role-desc text-brand-muted text-sm mt-1 leading-relaxed">Post jobs and find verified home service professionals for your properties or business</div>
+          <div class="mt-4 flex flex-wrap gap-1.5">
+            <span class="text-xs bg-brand-card text-brand-muted px-2.5 py-1 rounded-full">Post Jobs</span>
+            <span class="text-xs bg-brand-card text-brand-muted px-2.5 py-1 rounded-full">Manage Pipeline</span>
+            <span class="text-xs bg-brand-card text-brand-muted px-2.5 py-1 rounded-full">AI Matching</span>
+          </div>
+        </div>
+
+        <div class="role-card border-2 border-brand-border rounded-2xl p-6" onclick="selectRole(this, 'provider')">
+          <div class="role-icon w-12 h-12 bg-brand-card rounded-xl flex items-center justify-center mb-4">
+            <svg class="w-6 h-6 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+          </div>
+          <div class="role-title font-bold text-black text-lg">I want to find work</div>
+          <div class="role-desc text-brand-muted text-sm mt-1 leading-relaxed">Discover jobs that match your skills and location, apply fast, and grow your client base</div>
+          <div class="mt-4 flex flex-wrap gap-1.5">
+            <span class="text-xs bg-brand-card text-brand-muted px-2.5 py-1 rounded-full">Browse Jobs</span>
+            <span class="text-xs bg-brand-card text-brand-muted px-2.5 py-1 rounded-full">Quick Apply</span>
+            <span class="text-xs bg-brand-card text-brand-muted px-2.5 py-1 rounded-full">AI Matched</span>
+          </div>
+        </div>
+      </div>
+
+      <button onclick="nextStep(2)" class="btn-primary w-full bg-black text-white rounded-xl py-4 font-semibold mt-8" id="role-btn" disabled style="opacity:0.4">
+        Continue
+      </button>
+    </div>
+
+    <!-- Step 2: Basic info -->
+    <div class="step" id="step-2">
+      <div class="text-center mb-10">
+        <div class="inline-flex items-center gap-2 bg-brand-card rounded-full px-4 py-1.5 text-sm text-brand-muted font-medium mb-4">Step 2 of 4</div>
+        <h1 class="text-3xl font-bold text-black">Create your account</h1>
+        <p class="text-brand-muted mt-2">Takes less than 2 minutes</p>
+      </div>
+
+      <div class="space-y-4">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-black mb-2">First name</label>
+            <input type="text" placeholder="Maria" class="w-full border border-brand-border rounded-xl px-4 py-3 text-sm transition-all">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-black mb-2">Last name</label>
+            <input type="text" placeholder="Rodriguez" class="w-full border border-brand-border rounded-xl px-4 py-3 text-sm transition-all">
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-black mb-2">Email address</label>
+          <input type="email" placeholder="maria@company.com" class="w-full border border-brand-border rounded-xl px-4 py-3 text-sm transition-all">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-black mb-2">Phone number</label>
+          <div class="flex gap-2">
+            <select class="border border-brand-border rounded-xl px-3 py-3 text-sm transition-all bg-white">
+              <option>🇺🇸 +1</option>
+              <option>🇲🇽 +52</option>
+            </select>
+            <input type="tel" placeholder="(305) 555-0100" class="flex-1 border border-brand-border rounded-xl px-4 py-3 text-sm transition-all">
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-black mb-2">Password</label>
+          <input type="password" placeholder="At least 8 characters" class="w-full border border-brand-border rounded-xl px-4 py-3 text-sm transition-all">
+        </div>
+      </div>
+
+      <button onclick="nextStep(3)" class="btn-primary w-full bg-black text-white rounded-xl py-4 font-semibold mt-8">Continue</button>
+      <p class="text-center text-xs text-brand-muted mt-4">By continuing you agree to our <a href="#" class="underline text-brand-text">Terms</a> and <a href="#" class="underline text-brand-text">Privacy Policy</a></p>
+    </div>
+
+    <!-- Step 3: Role-specific setup (Employer shown) -->
+    <div class="step" id="step-3">
+      <div class="text-center mb-10">
+        <div class="inline-flex items-center gap-2 bg-brand-card rounded-full px-4 py-1.5 text-sm text-brand-muted font-medium mb-4">Step 3 of 4</div>
+        <h1 class="text-3xl font-bold text-black">Tell us about your business</h1>
+        <p class="text-brand-muted mt-2">So professionals know who they're working with</p>
+      </div>
+
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-black mb-2">Business name</label>
+          <input type="text" placeholder="Sunshine Property Group" class="w-full border border-brand-border rounded-xl px-4 py-3 text-sm transition-all">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-black mb-2">Business type</label>
+          <select class="w-full border border-brand-border rounded-xl px-4 py-3 text-sm transition-all bg-white text-black">
+            <option value="" disabled selected>Select type</option>
+            <option>Property Management Company</option>
+            <option>Homeowner</option>
+            <option>Landlord / Real Estate Investor</option>
+            <option>General Contractor</option>
+            <option>HOA / Community Association</option>
+          </select>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-black mb-2">Industry</label>
+            <select class="w-full border border-brand-border rounded-xl px-4 py-3 text-sm transition-all bg-white">
+              <option>Real Estate</option>
+              <option>Construction</option>
+              <option>Hospitality</option>
+              <option>Retail</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-black mb-2">Team size</label>
+            <select class="w-full border border-brand-border rounded-xl px-4 py-3 text-sm transition-all bg-white">
+              <option>Just me</option>
+              <option>2–10</option>
+              <option>11–50</option>
+              <option>51–200</option>
+              <option>200+</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-black mb-2">Service address (primary)</label>
+          <input type="text" placeholder="123 Main St, Miami, FL 33101" class="w-full border border-brand-border rounded-xl px-4 py-3 text-sm transition-all">
+        </div>
+      </div>
+
+      <button onclick="nextStep(4)" class="btn-primary w-full bg-black text-white rounded-xl py-4 font-semibold mt-8">Continue</button>
+    </div>
+
+    <!-- Step 4: Done -->
+    <div class="step" id="step-4">
+      <div class="text-center py-10">
+        <div class="w-20 h-20 bg-accent rounded-full flex items-center justify-center mx-auto mb-6">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h1 class="text-3xl font-bold text-black">You're all set!</h1>
+        <p class="text-brand-muted mt-3 text-lg">Your account is ready. Let's find you the right professionals.</p>
+
+        <div class="bg-brand-card rounded-2xl p-6 mt-8 text-left space-y-3">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-success/15 flex items-center justify-center flex-shrink-0">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4FAA6F" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <span class="text-sm text-black font-medium">Account created</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-success/15 flex items-center justify-center flex-shrink-0">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4FAA6F" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <span class="text-sm text-black font-medium">Business profile set up</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full bg-brand-border/50 flex items-center justify-center flex-shrink-0">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8C96A8" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <span class="text-sm text-brand-muted">Phone verification (recommended)</span>
+          </div>
+        </div>
+
+        <a href="employer-dashboard.html" class="btn-primary block w-full bg-black text-white rounded-xl py-4 font-semibold mt-6">
+          Go to Dashboard →
+        </a>
+        <button class="w-full text-brand-muted text-sm mt-3 hover:text-black transition-colors">Verify phone later</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+let currentRole = null;
+let currentStep = 1;
+
+function selectRole(el, role) {
+  document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  currentRole = role;
+  const btn = document.getElementById('role-btn');
+  btn.disabled = false;
+  btn.style.opacity = '1';
+}
+
+function nextStep(step) {
+  document.getElementById('step-' + currentStep).classList.remove('active');
+  document.getElementById('step-' + step).classList.add('active');
+
+  // Update progress dots
+  for(let i = 1; i <= 4; i++) {
+    const dot = document.getElementById('dot-' + i);
+    if (i < step) dot.style.background = '#000';
+    else if (i === step) dot.style.background = '#000';
+    else dot.style.background = '#E0E5ED';
+  }
+  currentStep = step;
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>

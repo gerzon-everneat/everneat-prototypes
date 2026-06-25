@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neatlist — HVAC Technician at Sunshine Property Group</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        accent: '#CCFF00',
+        'brand-text': '#365E4F',
+        'brand-muted': '#8C96A8',
+        'brand-border': '#E0E5ED',
+        'brand-card': '#F2F5FA',
+        success: '#4FAA6F',
+        verified: '#5B9EE1',
+        warning: '#D97B21',
+      },
+      fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] }
+    }
+  }
+}
+</script>
+<style>
+  body { font-family: 'Plus Jakarta Sans', sans-serif; }
+  .apply-modal { display: none; }
+  .apply-modal.open { display: flex; }
+  .btn-primary { transition: all 0.2s; }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+  input:focus, textarea:focus { outline: none; border-color: #CCFF00; box-shadow: 0 0 0 3px rgba(204,255,0,0.15); }
+</style>
+</head>
+<body class="bg-brand-card min-h-screen">
+
+  <!-- Navbar -->
+  <nav class="bg-white border-b border-brand-border sticky top-0 z-10">
+    <div class="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <a href="provider-dashboard.html" class="flex items-center gap-1.5 text-brand-muted hover:text-black transition-colors text-sm">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+          Back to jobs
+        </a>
+        <div class="w-px h-4 bg-brand-border"></div>
+        <div class="flex items-center gap-2">
+          <div class="w-7 h-7 bg-black rounded-lg flex items-center justify-center">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 8L8 2L14 8L8 14L2 8Z" fill="#CCFF00"/></svg>
+          </div>
+          <span class="font-bold text-base tracking-tight">Neatlist</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <button class="flex items-center gap-2 border border-brand-border rounded-xl px-4 py-2.5 text-sm font-medium text-black hover:bg-brand-card transition-colors">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          Save
+        </button>
+        <button onclick="openApply()" class="btn-primary bg-black text-white rounded-xl px-5 py-2.5 text-sm font-semibold">
+          Apply Now
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="max-w-5xl mx-auto px-6 py-8">
+    <div class="grid grid-cols-3 gap-6">
+
+      <!-- Main content (2/3) -->
+      <div class="col-span-2 space-y-5">
+
+        <!-- Job header card -->
+        <div class="bg-white rounded-2xl border border-brand-border p-6">
+          <div class="flex items-start gap-4">
+            <div class="w-16 h-16 bg-black rounded-2xl flex items-center justify-center flex-shrink-0">
+              <span class="text-accent font-bold text-lg">SP</span>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-start justify-between">
+                <div>
+                  <h1 class="text-2xl font-bold text-black">HVAC Technician</h1>
+                  <div class="flex items-center gap-2 mt-1">
+                    <span class="text-brand-text font-medium text-base">Sunshine Property Group</span>
+                    <svg class="w-4 h-4 text-verified" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22C6.48 22 2 17.52 2 12S6.48 2 12 2s10 4.48 10 10-4.48 10-10 10zm-2-13l-2 2 4 4 6-6-2-2-4 4-2-2z"/></svg>
+                  </div>
+                </div>
+                <span class="bg-accent text-black text-sm font-bold px-3 py-1.5 rounded-full">98% match</span>
+              </div>
+
+              <!-- Meta row -->
+              <div class="flex flex-wrap gap-4 mt-4">
+                <div class="flex items-center gap-1.5 text-brand-muted text-sm">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  Miami, FL · 2.3 miles away
+                </div>
+                <div class="flex items-center gap-1.5 text-brand-muted text-sm">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+                  Full-time
+                </div>
+                <div class="flex items-center gap-1.5 text-brand-muted text-sm">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                  $26 – $32 / hour
+                </div>
+                <div class="flex items-center gap-1.5 text-brand-muted text-sm">
+                  <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  Posted 2 days ago
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tags -->
+          <div class="flex flex-wrap gap-2 mt-5 pt-5 border-t border-brand-border">
+            <span class="bg-brand-card text-brand-text text-sm font-medium px-3 py-1.5 rounded-full">HVAC</span>
+            <span class="bg-brand-card text-brand-text text-sm font-medium px-3 py-1.5 rounded-full">EPA 608 Certified</span>
+            <span class="bg-brand-card text-brand-text text-sm font-medium px-3 py-1.5 rounded-full">Residential</span>
+            <span class="bg-brand-card text-brand-text text-sm font-medium px-3 py-1.5 rounded-full">Commercial</span>
+            <span class="bg-brand-card text-brand-text text-sm font-medium px-3 py-1.5 rounded-full">Refrigerant Handling</span>
+          </div>
+        </div>
+
+        <!-- Why you match -->
+        <div class="bg-black rounded-2xl p-5">
+          <div class="flex items-center gap-2 mb-4">
+            <div class="w-7 h-7 bg-accent rounded-lg flex items-center justify-center">
+              <svg class="w-3.5 h-3.5 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            </div>
+            <span class="text-white font-semibold">Why you're a 98% match</span>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="bg-white/5 rounded-xl p-3">
+              <div class="flex items-center gap-2 mb-1">
+                <svg class="w-3.5 h-3.5 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <span class="text-white/60 text-xs font-medium">Skills</span>
+              </div>
+              <div class="text-white text-sm">HVAC, EPA 608 — exact match</div>
+            </div>
+            <div class="bg-white/5 rounded-xl p-3">
+              <div class="flex items-center gap-2 mb-1">
+                <svg class="w-3.5 h-3.5 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <span class="text-white/60 text-xs font-medium">Location</span>
+              </div>
+              <div class="text-white text-sm">Within your 10 mi service area</div>
+            </div>
+            <div class="bg-white/5 rounded-xl p-3">
+              <div class="flex items-center gap-2 mb-1">
+                <svg class="w-3.5 h-3.5 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <span class="text-white/60 text-xs font-medium">Pay</span>
+              </div>
+              <div class="text-white text-sm">Within your $25–$35/hr range</div>
+            </div>
+            <div class="bg-white/5 rounded-xl p-3">
+              <div class="flex items-center gap-2 mb-1">
+                <svg class="w-3.5 h-3.5 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <span class="text-white/60 text-xs font-medium">Experience</span>
+              </div>
+              <div class="text-white text-sm">8 yrs → requires 5+ yrs</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Job description -->
+        <div class="bg-white rounded-2xl border border-brand-border p-6">
+          <h2 class="font-bold text-black text-lg mb-4">Job Description</h2>
+          <div class="space-y-4 text-brand-text text-sm leading-relaxed">
+            <p>We're looking for a skilled HVAC Technician to join the Sunshine Property Group team. You'll be responsible for maintaining, repairing, and installing HVAC systems across our residential and commercial portfolio in Miami-Dade County.</p>
+            <div>
+              <h3 class="font-semibold text-black mb-2">Responsibilities</h3>
+              <ul class="space-y-1.5">
+                <li class="flex gap-2"><span class="text-brand-muted mt-0.5">•</span> Install, maintain, and repair HVAC systems in residential and commercial properties</li>
+                <li class="flex gap-2"><span class="text-brand-muted mt-0.5">•</span> Diagnose equipment faults and perform corrective maintenance</li>
+                <li class="flex gap-2"><span class="text-brand-muted mt-0.5">•</span> Handle refrigerant safely in compliance with EPA 608 regulations</li>
+                <li class="flex gap-2"><span class="text-brand-muted mt-0.5">•</span> Complete service records and communicate updates to property managers</li>
+                <li class="flex gap-2"><span class="text-brand-muted mt-0.5">•</span> Available for on-call emergency repairs (rotational)</li>
+              </ul>
+            </div>
+            <div>
+              <h3 class="font-semibold text-black mb-2">Requirements</h3>
+              <ul class="space-y-1.5">
+                <li class="flex gap-2"><span class="text-brand-muted mt-0.5">•</span> 5+ years of HVAC experience</li>
+                <li class="flex gap-2"><span class="text-brand-muted mt-0.5">•</span> EPA Section 608 certification (required)</li>
+                <li class="flex gap-2"><span class="text-brand-muted mt-0.5">•</span> Valid Florida driver's license and reliable transportation</li>
+                <li class="flex gap-2"><span class="text-brand-muted mt-0.5">•</span> Ability to lift 50+ lbs and work in confined spaces</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Benefits -->
+        <div class="bg-white rounded-2xl border border-brand-border p-6">
+          <h2 class="font-bold text-black text-lg mb-4">Compensation & Benefits</h2>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="flex items-center gap-3 p-3 bg-brand-card rounded-xl">
+              <div class="w-8 h-8 bg-success/15 rounded-lg flex items-center justify-center">
+                <svg class="w-4 h-4 text-success" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              </div>
+              <div>
+                <div class="text-sm font-semibold text-black">$26–$32/hr</div>
+                <div class="text-xs text-brand-muted">Competitive pay</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 p-3 bg-brand-card rounded-xl">
+              <div class="w-8 h-8 bg-verified/15 rounded-lg flex items-center justify-center">
+                <svg class="w-4 h-4 text-verified" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+              </div>
+              <div>
+                <div class="text-sm font-semibold text-black">Health Insurance</div>
+                <div class="text-xs text-brand-muted">Medical, dental, vision</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 p-3 bg-brand-card rounded-xl">
+              <div class="w-8 h-8 bg-accent/20 rounded-lg flex items-center justify-center">
+                <svg class="w-4 h-4 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              </div>
+              <div>
+                <div class="text-sm font-semibold text-black">PTO + Holidays</div>
+                <div class="text-xs text-brand-muted">2 weeks + 10 holidays</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 p-3 bg-brand-card rounded-xl">
+              <div class="w-8 h-8 bg-warning/15 rounded-lg flex items-center justify-center">
+                <svg class="w-4 h-4 text-warning" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+              </div>
+              <div>
+                <div class="text-sm font-semibold text-black">Overtime Available</div>
+                <div class="text-xs text-brand-muted">1.5x on evenings/weekends</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right sidebar (1/3) -->
+      <div class="space-y-5">
+        <!-- Apply CTA -->
+        <div class="bg-white rounded-2xl border border-brand-border p-5 sticky top-20">
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-sm text-brand-muted">12 applicants</span>
+            <span class="text-xs bg-success/15 text-success font-semibold px-2.5 py-1 rounded-full">Open</span>
+          </div>
+          <button onclick="openApply()" class="btn-primary w-full bg-black text-white rounded-xl py-3.5 font-semibold text-sm mb-3">
+            Apply Now — Quick Apply
+          </button>
+          <div class="text-center text-xs text-brand-muted mb-4">Your profile is sent directly to the employer</div>
+          <button class="w-full border border-brand-border text-black rounded-xl py-3 font-medium text-sm hover:bg-brand-card transition-colors">
+            Message Employer
+          </button>
+
+          <div class="border-t border-brand-border mt-4 pt-4 space-y-2.5">
+            <div class="flex items-center justify-between text-sm">
+              <span class="text-brand-muted">Response time</span>
+              <span class="text-black font-medium">Usually within 24h</span>
+            </div>
+            <div class="flex items-center justify-between text-sm">
+              <span class="text-brand-muted">Start date</span>
+              <span class="text-black font-medium">ASAP</span>
+            </div>
+            <div class="flex items-center justify-between text-sm">
+              <span class="text-brand-muted">Schedule</span>
+              <span class="text-black font-medium">Mon–Fri</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Company card -->
+        <div class="bg-white rounded-2xl border border-brand-border p-5">
+          <h3 class="font-semibold text-black mb-3">About the Employer</h3>
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 bg-black rounded-xl flex items-center justify-center">
+              <span class="text-accent font-bold text-xs">SP</span>
+            </div>
+            <div>
+              <div class="font-medium text-black text-sm">Sunshine Property Group</div>
+              <div class="flex items-center gap-1">
+                <svg class="w-3 h-3 text-verified" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22C6.48 22 2 17.52 2 12S6.48 2 12 2s10 4.48 10 10-4.48 10-10 10zm-2-13l-2 2 4 4 6-6-2-2-4 4-2-2z"/></svg>
+                <span class="text-xs text-verified">Verified employer</span>
+              </div>
+            </div>
+          </div>
+          <div class="space-y-2 text-sm">
+            <div class="flex items-center gap-2 text-brand-muted">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+              Property Management
+            </div>
+            <div class="flex items-center gap-2 text-brand-muted">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              51–200 employees
+            </div>
+            <div class="flex items-center gap-2 text-brand-muted">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Miami, FL
+            </div>
+          </div>
+          <div class="mt-3 pt-3 border-t border-brand-border">
+            <div class="text-xs text-brand-muted">4.8 ★ employer rating · 47 reviews</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Apply modal -->
+  <div id="apply-modal" class="apply-modal fixed inset-0 bg-black/50 backdrop-blur-sm z-50 items-end justify-center">
+    <div class="bg-white rounded-t-3xl w-full max-w-2xl mx-auto p-6 pb-8 animate-slide-up">
+      <div class="flex items-center justify-between mb-6">
+        <h3 class="font-bold text-black text-xl">Quick Apply</h3>
+        <button onclick="closeApply()" class="w-8 h-8 bg-brand-card rounded-lg flex items-center justify-center">
+          <svg class="w-4 h-4 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <!-- Profile preview -->
+      <div class="bg-brand-card rounded-2xl p-4 flex items-center gap-3 mb-5">
+        <img src="https://i.pravatar.cc/48?img=33" class="w-12 h-12 rounded-xl object-cover">
+        <div>
+          <div class="font-semibold text-black">Carlos M. — Your profile</div>
+          <div class="text-brand-muted text-xs mt-0.5">HVAC Technician · 8 yrs experience · Miami, FL</div>
+          <div class="flex items-center gap-1.5 mt-1">
+            <div class="w-1.5 h-1.5 bg-success rounded-full"></div>
+            <span class="text-xs text-success font-medium">Profile 78% complete</span>
+          </div>
+        </div>
+        <div class="ml-auto">
+          <span class="bg-accent text-black text-xs font-bold px-2.5 py-1 rounded-full">98% match</span>
+        </div>
+      </div>
+
+      <div class="space-y-4 mb-5">
+        <div>
+          <label class="block text-sm font-medium text-black mb-2">Why are you a good fit? <span class="text-brand-muted font-normal">(optional)</span></label>
+          <textarea rows="3" placeholder="Briefly describe why you're a great match for this role..." class="w-full border border-brand-border rounded-xl px-4 py-3 text-sm text-black placeholder-brand-muted resize-none transition-all"></textarea>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-black mb-2">Expected hourly rate</label>
+          <div class="flex items-center gap-2 border border-brand-border rounded-xl px-4 py-3">
+            <span class="text-brand-muted font-medium">$</span>
+            <input type="number" placeholder="28" class="flex-1 bg-transparent text-sm text-black outline-none">
+            <span class="text-brand-muted text-sm">/ hour</span>
+          </div>
+        </div>
+      </div>
+
+      <button onclick="closeApply(); alert('Application submitted! 🎉')" class="w-full bg-black text-white rounded-xl py-4 font-bold text-sm">
+        Submit Application
+      </button>
+      <p class="text-center text-xs text-brand-muted mt-3">Sunshine Property Group will typically respond within 24 hours</p>
+    </div>
+  </div>
+
+<script>
+function openApply() { document.getElementById('apply-modal').classList.add('open'); }
+function closeApply() { document.getElementById('apply-modal').classList.remove('open'); }
+</script>
+</body>
+</html>

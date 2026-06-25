@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neatlist — Find Jobs</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        accent: '#CCFF00',
+        'brand-text': '#365E4F',
+        'brand-muted': '#8C96A8',
+        'brand-border': '#E0E5ED',
+        'brand-card': '#F2F5FA',
+        success: '#4FAA6F',
+        verified: '#5B9EE1',
+        warning: '#D97B21',
+      },
+      fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] }
+    }
+  }
+}
+</script>
+<style>
+  body { font-family: 'Plus Jakarta Sans', sans-serif; }
+  .nav-item:hover { background: rgba(255,255,255,0.08); }
+  .nav-item.active { background: rgba(204,255,0,0.12); color: #CCFF00; }
+  .job-card { transition: all 0.2s cubic-bezier(0.4,0,0.2,1); cursor: pointer; }
+  .job-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); border-color: #000; }
+  .tab { transition: all 0.15s; }
+  .tab.active { color: #000; border-bottom-color: #000; }
+  .filter-chip { transition: all 0.15s; cursor: pointer; }
+  .filter-chip.active { background: #000; color: #CCFF00; border-color: #000; }
+  input:focus { outline: none; box-shadow: 0 0 0 3px rgba(204,255,0,0.15); border-color: #CCFF00; }
+  .save-btn { transition: all 0.15s; }
+  .save-btn:hover { color: #000; }
+</style>
+</head>
+<body class="bg-white flex h-screen overflow-hidden">
+
+  <!-- Sidebar -->
+  <aside class="w-64 bg-black flex flex-col flex-shrink-0">
+    <div class="px-6 py-5 border-b border-white/10">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 bg-accent rounded-lg flex items-center justify-center">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 8L8 2L14 8L8 14L2 8Z" fill="black"/></svg>
+        </div>
+        <span class="text-white font-bold text-lg tracking-tight">Neatlist</span>
+      </div>
+    </div>
+
+    <div class="px-4 pt-4 pb-2">
+      <div class="flex items-center gap-2 bg-white/5 rounded-xl px-3 py-2.5">
+        <img src="https://i.pravatar.cc/32?img=33" class="w-8 h-8 rounded-lg object-cover flex-shrink-0">
+        <div class="min-w-0">
+          <div class="text-white text-sm font-medium truncate">Carlos M.</div>
+          <div class="flex items-center gap-1">
+            <div class="w-1.5 h-1.5 bg-accent rounded-full"></div>
+            <div class="text-white/40 text-xs">Open to work</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <nav class="flex-1 px-3 py-2 space-y-0.5">
+      <a href="provider-dashboard.html" class="nav-item active flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Browse Jobs
+      </a>
+      <a href="#" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/60 hover:text-white">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        My Applications
+        <span class="ml-auto bg-white/20 text-white text-xs font-bold px-2 py-0.5 rounded-full">5</span>
+      </a>
+      <a href="messages.html" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/60 hover:text-white">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Messages
+        <span class="ml-auto bg-accent text-black text-xs font-bold px-2 py-0.5 rounded-full">2</span>
+      </a>
+      <a href="#" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/60 hover:text-white">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+        Saved Jobs
+      </a>
+      <div class="pt-3 pb-1 px-3">
+        <div class="text-white/25 text-xs font-medium uppercase tracking-wider">Profile</div>
+      </div>
+      <a href="#" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/60 hover:text-white">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        My Profile
+      </a>
+      <a href="#" class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/60 hover:text-white">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        Verification
+        <span class="ml-auto w-2 h-2 bg-warning rounded-full"></span>
+      </a>
+    </nav>
+
+    <!-- Profile completion -->
+    <div class="px-4 py-4 border-t border-white/10">
+      <div class="bg-white/5 rounded-xl p-3">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-white/60 text-xs font-medium">Profile strength</span>
+          <span class="text-accent text-xs font-bold">78%</span>
+        </div>
+        <div class="h-1.5 bg-white/10 rounded-full">
+          <div class="h-full bg-accent rounded-full" style="width: 78%"></div>
+        </div>
+        <div class="text-white/40 text-xs mt-2">Add your certifications to reach 100%</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="flex-1 flex flex-col overflow-hidden">
+    <!-- Header -->
+    <div class="border-b border-brand-border px-6 py-4 flex-shrink-0 bg-white">
+      <!-- AI match banner -->
+      <div class="bg-black rounded-2xl px-5 py-3.5 flex items-center justify-between mb-4">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 bg-accent rounded-lg flex items-center justify-center flex-shrink-0">
+            <svg class="w-4 h-4 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </div>
+          <div>
+            <div class="text-white font-semibold text-sm">14 new AI-matched jobs today</div>
+            <div class="text-white/50 text-xs">Based on your skills, location & availability</div>
+          </div>
+        </div>
+        <button class="bg-accent text-black text-xs font-bold px-4 py-2 rounded-xl">View Matches</button>
+      </div>
+
+      <!-- Search row -->
+      <div class="flex items-center gap-3">
+        <div class="flex-1 flex items-center gap-3 bg-brand-card rounded-xl px-4 py-3 border border-transparent focus-within:border-accent focus-within:bg-white transition-all">
+          <svg class="w-5 h-5 text-brand-muted flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" placeholder="Search by skill, job title, or keyword..." class="flex-1 bg-transparent text-sm text-black placeholder-brand-muted outline-none">
+        </div>
+        <div class="flex items-center gap-2 bg-brand-card rounded-xl px-4 py-3 border border-transparent">
+          <svg class="w-4 h-4 text-brand-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <span class="text-sm text-black font-medium">Miami, FL</span>
+          <svg class="w-4 h-4 text-brand-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <button class="flex items-center gap-2 bg-black text-white rounded-xl px-4 py-3 text-sm font-semibold">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Search
+        </button>
+      </div>
+
+      <!-- Filter chips -->
+      <div class="flex items-center gap-2 mt-3 overflow-x-auto pb-1">
+        <span class="filter-chip active border border-black bg-black text-accent text-xs font-semibold px-3 py-1.5 rounded-full whitespace-nowrap">All Jobs</span>
+        <span class="filter-chip border border-brand-border text-brand-muted text-xs font-medium px-3 py-1.5 rounded-full whitespace-nowrap hover:border-black hover:text-black">AI Matched</span>
+        <span class="filter-chip border border-brand-border text-brand-muted text-xs font-medium px-3 py-1.5 rounded-full whitespace-nowrap hover:border-black hover:text-black">Full-time</span>
+        <span class="filter-chip border border-brand-border text-brand-muted text-xs font-medium px-3 py-1.5 rounded-full whitespace-nowrap hover:border-black hover:text-black">Contract</span>
+        <span class="filter-chip border border-brand-border text-brand-muted text-xs font-medium px-3 py-1.5 rounded-full whitespace-nowrap hover:border-black hover:text-black">Part-time</span>
+        <span class="filter-chip border border-brand-border text-brand-muted text-xs font-medium px-3 py-1.5 rounded-full whitespace-nowrap hover:border-black hover:text-black">$20–$30/hr</span>
+        <span class="filter-chip border border-brand-border text-brand-muted text-xs font-medium px-3 py-1.5 rounded-full whitespace-nowrap hover:border-black hover:text-black">Within 10 mi</span>
+        <button class="border border-dashed border-brand-border text-brand-muted text-xs font-medium px-3 py-1.5 rounded-full whitespace-nowrap flex items-center gap-1 hover:border-black hover:text-black transition-colors">
+          <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          More filters
+        </button>
+      </div>
+    </div>
+
+    <!-- Job listing -->
+    <div class="flex-1 overflow-y-auto px-6 py-5">
+      <div class="flex items-center justify-between mb-4">
+        <div class="text-sm text-brand-muted">Showing <span class="text-black font-semibold">142 jobs</span> near Miami, FL</div>
+        <select class="border border-brand-border rounded-xl px-3 py-2 text-sm text-black bg-white outline-none">
+          <option>Most relevant</option>
+          <option>Newest first</option>
+          <option>Highest pay</option>
+          <option>Closest</option>
+        </select>
+      </div>
+
+      <div class="space-y-3">
+
+        <!-- Featured / AI match job -->
+        <div class="job-card bg-black rounded-2xl p-5" onclick="window.location='job-detail.html'">
+          <div class="flex items-start justify-between">
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 bg-accent rounded-xl flex items-center justify-center flex-shrink-0">
+                <span class="text-black font-bold text-sm">SP</span>
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <h3 class="font-bold text-white text-base">HVAC Technician</h3>
+                  <span class="text-xs bg-accent text-black font-bold px-2 py-0.5 rounded-full">98% match</span>
+                </div>
+                <div class="text-white/60 text-sm mt-0.5">Sunshine Property Group</div>
+                <div class="flex items-center gap-3 mt-2">
+                  <span class="text-white/50 text-xs flex items-center gap-1">
+                    <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    Miami, FL · 2.3 mi
+                  </span>
+                  <span class="text-white/50 text-xs">Full-time</span>
+                  <span class="text-white/50 text-xs">$26–$32/hr</span>
+                </div>
+              </div>
+            </div>
+            <button class="save-btn text-white/30">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+            </button>
+          </div>
+          <div class="flex flex-wrap gap-1.5 mt-4">
+            <span class="text-xs bg-white/10 text-white/70 px-2.5 py-1 rounded-full">HVAC</span>
+            <span class="text-xs bg-white/10 text-white/70 px-2.5 py-1 rounded-full">EPA 608</span>
+            <span class="text-xs bg-white/10 text-white/70 px-2.5 py-1 rounded-full">Residential</span>
+          </div>
+          <div class="flex items-center justify-between mt-4 pt-4 border-t border-white/10">
+            <span class="text-white/40 text-xs">Posted 2 days ago · 12 applicants</span>
+            <button class="bg-accent text-black text-xs font-bold px-4 py-2 rounded-xl">Quick Apply</button>
+          </div>
+        </div>
+
+        <!-- Regular cards -->
+        <div class="job-card bg-white border border-brand-border rounded-2xl p-5" onclick="window.location='job-detail.html'">
+          <div class="flex items-start justify-between">
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 bg-brand-card rounded-xl flex items-center justify-center flex-shrink-0">
+                <span class="text-brand-text font-bold text-sm">MG</span>
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <h3 class="font-bold text-black text-base">HVAC Service Technician</h3>
+                  <span class="text-xs bg-brand-card text-black font-semibold px-2 py-0.5 rounded-full">91% match</span>
+                </div>
+                <div class="text-brand-muted text-sm mt-0.5">Miami Gardens Properties</div>
+                <div class="flex items-center gap-3 mt-2">
+                  <span class="text-brand-muted text-xs flex items-center gap-1">
+                    <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    Hialeah, FL · 5.1 mi
+                  </span>
+                  <span class="text-brand-muted text-xs">Contract</span>
+                  <span class="text-brand-muted text-xs">$24–$28/hr</span>
+                </div>
+              </div>
+            </div>
+            <button class="save-btn text-brand-border">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+            </button>
+          </div>
+          <div class="flex flex-wrap gap-1.5 mt-3">
+            <span class="text-xs bg-brand-card text-brand-text px-2.5 py-1 rounded-full">HVAC</span>
+            <span class="text-xs bg-brand-card text-brand-text px-2.5 py-1 rounded-full">Commercial</span>
+            <span class="text-xs bg-brand-card text-brand-text px-2.5 py-1 rounded-full">Troubleshooting</span>
+          </div>
+          <div class="flex items-center justify-between mt-3 pt-3 border-t border-brand-border">
+            <span class="text-brand-muted text-xs">Posted 3 days ago · 8 applicants</span>
+            <button class="bg-black text-white text-xs font-bold px-4 py-2 rounded-xl">Apply Now</button>
+          </div>
+        </div>
+
+        <div class="job-card bg-white border border-brand-border rounded-2xl p-5" onclick="window.location='job-detail.html'">
+          <div class="flex items-start justify-between">
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 bg-verified/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                <span class="text-verified font-bold text-sm">BH</span>
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <h3 class="font-bold text-black text-base">HVAC Install & Service Lead</h3>
+                  <span class="text-xs bg-brand-card text-black font-semibold px-2 py-0.5 rounded-full">87% match</span>
+                </div>
+                <div class="text-brand-muted text-sm mt-0.5">Brickell Home Services</div>
+                <div class="flex items-center gap-3 mt-2">
+                  <span class="text-brand-muted text-xs flex items-center gap-1">
+                    <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    Brickell, FL · 3.8 mi
+                  </span>
+                  <span class="text-brand-muted text-xs">Full-time</span>
+                  <span class="text-brand-muted text-xs">$30–$40/hr</span>
+                </div>
+              </div>
+            </div>
+            <button class="save-btn text-brand-border">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+            </button>
+          </div>
+          <div class="flex flex-wrap gap-1.5 mt-3">
+            <span class="text-xs bg-brand-card text-brand-text px-2.5 py-1 rounded-full">HVAC Lead</span>
+            <span class="text-xs bg-brand-card text-brand-text px-2.5 py-1 rounded-full">Installation</span>
+            <span class="text-xs bg-brand-card text-brand-text px-2.5 py-1 rounded-full">Team Management</span>
+          </div>
+          <div class="flex items-center justify-between mt-3 pt-3 border-t border-brand-border">
+            <span class="text-brand-muted text-xs">Posted 1 week ago · 21 applicants</span>
+            <button class="bg-black text-white text-xs font-bold px-4 py-2 rounded-xl">Apply Now</button>
+          </div>
+        </div>
+
+        <div class="job-card bg-white border border-brand-border rounded-2xl p-5" onclick="window.location='job-detail.html'">
+          <div class="flex items-start justify-between">
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 bg-success/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                <span class="text-success font-bold text-sm">DC</span>
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <h3 class="font-bold text-black text-base">Refrigeration Technician</h3>
+                  <span class="text-xs bg-brand-card text-black font-semibold px-2 py-0.5 rounded-full">82% match</span>
+                </div>
+                <div class="text-brand-muted text-sm mt-0.5">Doral Commercial HVAC</div>
+                <div class="flex items-center gap-3 mt-2">
+                  <span class="text-brand-muted text-xs flex items-center gap-1">
+                    <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    Doral, FL · 8.2 mi
+                  </span>
+                  <span class="text-brand-muted text-xs">Full-time</span>
+                  <span class="text-brand-muted text-xs">$28–$35/hr</span>
+                </div>
+              </div>
+            </div>
+            <button class="save-btn text-brand-border">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+            </button>
+          </div>
+          <div class="flex flex-wrap gap-1.5 mt-3">
+            <span class="text-xs bg-brand-card text-brand-text px-2.5 py-1 rounded-full">Refrigeration</span>
+            <span class="text-xs bg-brand-card text-brand-text px-2.5 py-1 rounded-full">Commercial</span>
+          </div>
+          <div class="flex items-center justify-between mt-3 pt-3 border-t border-brand-border">
+            <div class="flex items-center gap-2">
+              <span class="text-brand-muted text-xs">4 days ago · 6 applicants</span>
+              <span class="text-xs bg-warning/15 text-warning font-semibold px-2 py-0.5 rounded-full">Invited</span>
+            </div>
+            <button class="bg-black text-white text-xs font-bold px-4 py-2 rounded-xl">View Invite</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>
