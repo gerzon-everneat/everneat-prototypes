@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=390, initial-scale=1.0, maximum-scale=1.0">
+<title>Neatlist Mobile — Employer Dashboard</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: { accent: '#CCFF00', 'brand-text': '#365E4F', 'brand-muted': '#8C96A8', 'brand-border': '#E0E5ED', 'brand-card': '#F2F5FA', success: '#4FAA6F', verified: '#5B9EE1', warning: '#D97B21', error: '#FF4444' },
+      fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] }
+    }
+  }
+}
+</script>
+<style>
+  body { font-family: 'Plus Jakarta Sans', sans-serif; max-width: 390px; margin: 0 auto; background: #F2F5FA; }
+  .card:active { transform: scale(0.98); }
+  .tab-dot { display: none; width: 4px; height: 4px; background: #CCFF00; border-radius: 50%; margin: 2px auto 0; }
+  .tab-btn.active .tab-dot { display: block; }
+</style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Status bar -->
+  <div class="bg-black h-12 flex items-end px-5 pb-2 flex-shrink-0">
+    <div class="flex items-center justify-between w-full">
+      <span class="text-white font-semibold text-sm">9:41</span>
+      <div class="flex items-center gap-1">
+        <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="currentColor"><path d="M1.5 8.5C5 5 10 3 12 3s7 2 10.5 5.5L21 11c-2.5-2.5-5.5-4-9-4s-6.5 1.5-9 4L1.5 8.5z"/><path d="M5 12.5c1.8-1.8 4.2-3 7-3s5.2 1.2 7 3L17.5 15c-1.4-1.4-3.2-2-5.5-2s-4.1.6-5.5 2L5 12.5z"/><circle cx="12" cy="18" r="2"/></svg>
+        <svg class="w-6 h-3 text-white" viewBox="0 0 24 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3.5" stroke="currentColor"/><rect x="22" y="3.5" width="2" height="5" rx="1" fill="currentColor" opacity="0.4"/><rect x="1.5" y="1.5" width="16" height="9" rx="2.5" fill="currentColor"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header (black) -->
+  <div class="bg-black px-5 pb-6 flex-shrink-0">
+    <div class="flex items-center justify-between pt-4 mb-5">
+      <div>
+        <div class="text-white/50 text-sm">Good morning,</div>
+        <h1 class="text-white text-2xl font-bold">Maria 👋</h1>
+      </div>
+      <div class="flex items-center gap-2">
+        <button class="relative w-9 h-9 bg-white/10 rounded-xl flex items-center justify-center">
+          <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-accent rounded-full"></span>
+        </button>
+        <div class="w-9 h-9 bg-accent rounded-xl flex items-center justify-center">
+          <span class="text-black font-bold text-xs">MR</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats row -->
+    <div class="grid grid-cols-3 gap-3">
+      <div class="bg-white/10 rounded-2xl p-3 text-center">
+        <div class="text-accent text-2xl font-bold">7</div>
+        <div class="text-white/50 text-xs mt-0.5">Active Jobs</div>
+      </div>
+      <div class="bg-white/10 rounded-2xl p-3 text-center">
+        <div class="text-accent text-2xl font-bold">24</div>
+        <div class="text-white/50 text-xs mt-0.5">Applicants</div>
+      </div>
+      <div class="bg-white/10 rounded-2xl p-3 text-center">
+        <div class="text-accent text-2xl font-bold">3</div>
+        <div class="text-white/50 text-xs mt-0.5">Hired</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scrollable content -->
+  <div class="flex-1 overflow-y-auto px-5 py-4 space-y-4 pb-24">
+
+    <!-- Quick action -->
+    <a href="../post-job.html" class="card block bg-black rounded-2xl px-4 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-accent rounded-xl flex items-center justify-center flex-shrink-0">
+            <svg class="w-5 h-5 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </div>
+          <div>
+            <div class="text-white font-semibold text-sm">Post a new job</div>
+            <div class="text-white/50 text-xs">AI will match 140+ professionals</div>
+          </div>
+        </div>
+        <svg class="w-5 h-5 text-white/30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </a>
+
+    <!-- New applicants -->
+    <div>
+      <div class="flex items-center justify-between mb-3">
+        <span class="font-bold text-black text-base">New Applicants</span>
+        <a href="../pipeline.html" class="text-brand-text text-sm font-medium">View all</a>
+      </div>
+
+      <div class="space-y-3">
+        <div class="card bg-white rounded-2xl border border-brand-border p-4 cursor-pointer" onclick="window.location='../pipeline.html'">
+          <div class="flex items-start gap-3">
+            <img src="https://i.pravatar.cc/44?img=33" class="w-11 h-11 rounded-xl object-cover flex-shrink-0">
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-1.5">
+                  <span class="font-semibold text-black text-sm">Carlos M.</span>
+                  <svg class="w-3.5 h-3.5 text-verified" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22C6.48 22 2 17.52 2 12S6.48 2 12 2s10 4.48 10 10-4.48 10-10 10zm-2-13l-2 2 4 4 6-6-2-2-4 4-2-2z"/></svg>
+                </div>
+                <span class="text-xs bg-accent text-black font-bold px-2 py-0.5 rounded-full">98%</span>
+              </div>
+              <div class="text-brand-muted text-xs mt-0.5">HVAC Tech · 8 yrs · Miami · $28/hr</div>
+              <div class="text-brand-muted text-xs mt-0.5">→ HVAC Technician · 2h ago</div>
+            </div>
+          </div>
+          <div class="flex gap-2 mt-3">
+            <button class="flex-1 bg-black text-white text-xs font-bold py-2.5 rounded-xl">Review</button>
+            <button class="flex-1 bg-brand-card text-black text-xs font-medium py-2.5 rounded-xl">Pass</button>
+          </div>
+        </div>
+
+        <div class="card bg-white rounded-2xl border border-brand-border p-4 cursor-pointer" onclick="window.location='../pipeline.html'">
+          <div class="flex items-start gap-3">
+            <img src="https://i.pravatar.cc/44?img=44" class="w-11 h-11 rounded-xl object-cover flex-shrink-0">
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between">
+                <span class="font-semibold text-black text-sm">Ana G.</span>
+                <span class="text-xs bg-brand-card text-black font-semibold px-2 py-0.5 rounded-full">91%</span>
+              </div>
+              <div class="text-brand-muted text-xs mt-0.5">HVAC Tech · 5 yrs · Doral · $25/hr</div>
+              <div class="text-brand-muted text-xs mt-0.5">→ HVAC Technician · 5h ago</div>
+            </div>
+          </div>
+          <div class="flex gap-2 mt-3">
+            <button class="flex-1 bg-black text-white text-xs font-bold py-2.5 rounded-xl">Review</button>
+            <button class="flex-1 bg-brand-card text-black text-xs font-medium py-2.5 rounded-xl">Pass</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active jobs -->
+    <div>
+      <div class="flex items-center justify-between mb-3">
+        <span class="font-bold text-black text-base">Active Jobs</span>
+        <span class="text-brand-text text-sm font-medium">7 open</span>
+      </div>
+      <div class="space-y-2.5">
+        <div class="card bg-white rounded-2xl border border-brand-border p-4 cursor-pointer flex items-center gap-3">
+          <div class="flex-1">
+            <div class="flex items-center gap-2">
+              <span class="font-semibold text-black text-sm">HVAC Technician</span>
+              <span class="text-xs bg-success/15 text-success font-semibold px-1.5 py-0.5 rounded-full">Open</span>
+            </div>
+            <div class="text-brand-muted text-xs mt-0.5">Miami, FL · 12 applicants</div>
+          </div>
+          <svg class="w-5 h-5 text-brand-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="card bg-white rounded-2xl border border-brand-border p-4 cursor-pointer flex items-center gap-3">
+          <div class="flex-1">
+            <div class="flex items-center gap-2">
+              <span class="font-semibold text-black text-sm">House Cleaner (Weekly)</span>
+              <span class="text-xs bg-success/15 text-success font-semibold px-1.5 py-0.5 rounded-full">Open</span>
+            </div>
+            <div class="text-brand-muted text-xs mt-0.5">Coral Gables · 7 applicants</div>
+          </div>
+          <svg class="w-5 h-5 text-brand-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div class="card bg-white rounded-2xl border border-brand-border p-4 cursor-pointer flex items-center gap-3">
+          <div class="flex-1">
+            <div class="flex items-center gap-2">
+              <span class="font-semibold text-black text-sm">Lawn Care Specialist</span>
+              <span class="text-xs bg-warning/15 text-warning font-semibold px-1.5 py-0.5 rounded-full">Reviewing</span>
+            </div>
+            <div class="text-brand-muted text-xs mt-0.5">Brickell · 7 applicants</div>
+          </div>
+          <svg class="w-5 h-5 text-brand-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI recommended pros -->
+    <div>
+      <div class="flex items-center justify-between mb-3">
+        <span class="font-bold text-black text-base">AI Matches for HVAC</span>
+        <span class="text-brand-text text-sm font-medium">See all</span>
+      </div>
+      <div class="flex gap-3 overflow-x-auto pb-1 -mx-1 px-1" style="scrollbar-width:none">
+        <div class="flex-shrink-0 w-44 bg-white border border-brand-border rounded-2xl p-3">
+          <img src="https://i.pravatar.cc/48?img=20" class="w-12 h-12 rounded-xl object-cover mb-2">
+          <div class="font-semibold text-black text-sm">Carlos M.</div>
+          <div class="text-brand-muted text-xs">8 yrs · $28/hr</div>
+          <div class="mt-2 mb-2"><span class="text-xs bg-accent text-black font-bold px-2 py-0.5 rounded-full">98%</span></div>
+          <button class="w-full bg-black text-white text-xs font-bold py-2 rounded-xl">Invite</button>
+        </div>
+        <div class="flex-shrink-0 w-44 bg-white border border-brand-border rounded-2xl p-3">
+          <img src="https://i.pravatar.cc/48?img=22" class="w-12 h-12 rounded-xl object-cover mb-2">
+          <div class="font-semibold text-black text-sm">Miguel R.</div>
+          <div class="text-brand-muted text-xs">10 yrs · $30/hr</div>
+          <div class="mt-2 mb-2"><span class="text-xs bg-brand-card text-black font-bold px-2 py-0.5 rounded-full">97%</span></div>
+          <button class="w-full bg-black text-white text-xs font-bold py-2 rounded-xl">Invite</button>
+        </div>
+        <div class="flex-shrink-0 w-44 bg-white border border-brand-border rounded-2xl p-3">
+          <img src="https://i.pravatar.cc/48?img=60" class="w-12 h-12 rounded-xl object-cover mb-2">
+          <div class="font-semibold text-black text-sm">James T.</div>
+          <div class="text-brand-muted text-xs">5 yrs · $24/hr</div>
+          <div class="mt-2 mb-2"><span class="text-xs bg-brand-card text-black font-bold px-2 py-0.5 rounded-full">88%</span></div>
+          <button class="w-full bg-black text-white text-xs font-bold py-2 rounded-xl">Invite</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom nav -->
+  <div class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[390px] bg-white border-t border-brand-border flex items-center justify-around px-4 pt-3 pb-6">
+    <a href="employer-home.html" class="tab-btn active flex flex-col items-center gap-0.5">
+      <svg class="w-6 h-6 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      <span class="text-xs font-medium text-black">Home</span>
+      <div class="tab-dot"></div>
+    </a>
+    <a href="../pipeline.html" class="tab-btn flex flex-col items-center gap-0.5 relative">
+      <div class="relative">
+        <svg class="w-6 h-6 text-brand-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <span class="absolute -top-1 -right-1 w-4 h-4 bg-accent text-black text-[9px] font-bold rounded-full flex items-center justify-center">24</span>
+      </div>
+      <span class="text-xs font-medium text-brand-muted">Applicants</span>
+      <div class="tab-dot"></div>
+    </a>
+    <a href="../post-job.html" class="tab-btn flex flex-col items-center gap-0.5">
+      <div class="w-12 h-12 bg-black rounded-2xl flex items-center justify-center -mt-6 shadow-xl border-4 border-white">
+        <svg class="w-6 h-6 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </div>
+      <span class="text-xs font-medium text-brand-muted mt-1">Post Job</span>
+      <div class="tab-dot"></div>
+    </a>
+    <a href="messages-mobile.html" class="tab-btn flex flex-col items-center gap-0.5">
+      <div class="relative">
+        <svg class="w-6 h-6 text-brand-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span class="absolute -top-1 -right-1 w-4 h-4 bg-accent text-black text-[9px] font-bold rounded-full flex items-center justify-center">3</span>
+      </div>
+      <span class="text-xs font-medium text-brand-muted">Messages</span>
+      <div class="tab-dot"></div>
+    </a>
+    <a href="#" class="tab-btn flex flex-col items-center gap-0.5">
+      <div class="w-6 h-6 bg-accent rounded-full flex items-center justify-center">
+        <span class="text-black font-bold text-[10px]">MR</span>
+      </div>
+      <span class="text-xs font-medium text-brand-muted">Profile</span>
+      <div class="tab-dot"></div>
+    </a>
+  </div>
+
+</body>
+</html>

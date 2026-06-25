@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=390, initial-scale=1.0, maximum-scale=1.0">
+<title>Neatlist Mobile — Find Jobs</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: { accent: '#CCFF00', 'brand-text': '#365E4F', 'brand-muted': '#8C96A8', 'brand-border': '#E0E5ED', 'brand-card': '#F2F5FA', success: '#4FAA6F', verified: '#5B9EE1', warning: '#D97B21' },
+      fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] }
+    }
+  }
+}
+</script>
+<style>
+  body { font-family: 'Plus Jakarta Sans', sans-serif; max-width: 390px; margin: 0 auto; background: #F2F5FA; }
+  .card { transition: transform 0.15s; }
+  .card:active { transform: scale(0.98); }
+  .tab-btn { transition: all 0.15s; }
+  .tab-btn.active { color: #000; }
+  .tab-btn.active .tab-icon { color: #000; }
+  .tab-btn.active .tab-dot { display: block; }
+  .tab-dot { display: none; width: 4px; height: 4px; background: #CCFF00; border-radius: 50%; margin: 2px auto 0; }
+  .chip.active { background: #000; color: #CCFF00; border-color: #000; }
+  input:focus { outline: none; }
+</style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Status bar -->
+  <div class="bg-white h-12 flex items-end px-6 pb-2 flex-shrink-0">
+    <div class="flex items-center justify-between w-full">
+      <span class="text-black font-semibold text-sm">9:41</span>
+      <div class="flex items-center gap-1.5">
+        <svg class="w-4 h-4 text-black" viewBox="0 0 24 24" fill="currentColor"><path d="M1.5 8.5C5 5 10 3 12 3s7 2 10.5 5.5L21 11c-2.5-2.5-5.5-4-9-4s-6.5 1.5-9 4L1.5 8.5z"/><path d="M5 12.5c1.8-1.8 4.2-3 7-3s5.2 1.2 7 3L17.5 15c-1.4-1.4-3.2-2-5.5-2s-4.1.6-5.5 2L5 12.5z"/><circle cx="12" cy="18" r="2"/></svg>
+        <svg class="w-6 h-3 text-black" viewBox="0 0 24 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3.5" stroke="currentColor"/><rect x="22" y="3.5" width="2" height="5" rx="1" fill="currentColor" opacity="0.4"/><rect x="1.5" y="1.5" width="16" height="9" rx="2.5" fill="currentColor"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <div class="bg-white px-5 pt-4 pb-3 flex-shrink-0">
+    <div class="flex items-center justify-between mb-4">
+      <div>
+        <div class="text-brand-muted text-sm">Good morning,</div>
+        <h1 class="text-black text-xl font-bold">Carlos 👋</h1>
+      </div>
+      <div class="relative">
+        <img src="https://i.pravatar.cc/40?img=33" class="w-10 h-10 rounded-full object-cover">
+        <div class="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 bg-accent border-2 border-white rounded-full"></div>
+      </div>
+    </div>
+
+    <!-- Search -->
+    <div class="flex items-center gap-2 bg-brand-card rounded-2xl px-4 py-3.5 border border-brand-border">
+      <svg class="w-4 h-4 text-brand-muted flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" placeholder="Search jobs, skills, companies..." class="flex-1 bg-transparent text-sm text-black placeholder-brand-muted">
+      <div class="w-8 h-8 bg-black rounded-xl flex items-center justify-center flex-shrink-0">
+        <svg class="w-4 h-4 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+      </div>
+    </div>
+
+    <!-- Filter chips -->
+    <div class="flex gap-2 mt-3 overflow-x-auto pb-1 -mx-1 px-1" style="scrollbar-width:none">
+      <span class="chip active flex-shrink-0 border border-black bg-black text-accent text-xs font-bold px-3 py-1.5 rounded-full">All</span>
+      <span class="chip flex-shrink-0 border border-brand-border text-brand-muted text-xs font-medium px-3 py-1.5 rounded-full">AI Matched</span>
+      <span class="chip flex-shrink-0 border border-brand-border text-brand-muted text-xs font-medium px-3 py-1.5 rounded-full">Full-time</span>
+      <span class="chip flex-shrink-0 border border-brand-border text-brand-muted text-xs font-medium px-3 py-1.5 rounded-full">Contract</span>
+      <span class="chip flex-shrink-0 border border-brand-border text-brand-muted text-xs font-medium px-3 py-1.5 rounded-full">$20–$30</span>
+      <span class="chip flex-shrink-0 border border-brand-border text-brand-muted text-xs font-medium px-3 py-1.5 rounded-full">10 mi</span>
+    </div>
+  </div>
+
+  <!-- Scrollable content -->
+  <div class="flex-1 overflow-y-auto px-5 py-4 space-y-3 pb-24">
+
+    <!-- AI match banner -->
+    <div class="bg-black rounded-2xl px-4 py-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-accent rounded-xl flex items-center justify-center flex-shrink-0">
+          <svg class="w-5 h-5 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        </div>
+        <div class="flex-1">
+          <div class="text-white font-semibold text-sm">14 new matches today</div>
+          <div class="text-white/50 text-xs">Based on your HVAC skills near Miami</div>
+        </div>
+        <svg class="w-5 h-5 text-white/30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </div>
+
+    <!-- Section label -->
+    <div class="flex items-center justify-between pt-1">
+      <span class="text-black font-bold text-base">Recommended for you</span>
+      <span class="text-brand-text text-sm font-medium">See all</span>
+    </div>
+
+    <!-- Featured job card (black) -->
+    <div class="card bg-black rounded-2xl p-4 cursor-pointer" onclick="window.location='job-detail.html'">
+      <div class="flex items-start justify-between mb-3">
+        <div class="w-12 h-12 bg-accent rounded-xl flex items-center justify-center flex-shrink-0">
+          <span class="text-black font-bold text-sm">SP</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs bg-accent text-black font-bold px-2.5 py-1 rounded-full">98% match</span>
+          <button class="w-8 h-8 bg-white/10 rounded-xl flex items-center justify-center">
+            <svg class="w-4 h-4 text-white/50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          </button>
+        </div>
+      </div>
+      <h3 class="text-white font-bold text-lg leading-tight">HVAC Technician</h3>
+      <div class="text-white/60 text-sm mt-0.5">Sunshine Property Group</div>
+      <div class="flex items-center gap-3 mt-3">
+        <span class="text-white/50 text-xs flex items-center gap-1">
+          <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Miami · 2.3 mi
+        </span>
+        <span class="text-white/50 text-xs">Full-time</span>
+        <span class="text-white/50 text-xs">$26–$32/hr</span>
+      </div>
+      <div class="flex flex-wrap gap-1.5 mt-3">
+        <span class="text-xs bg-white/10 text-white/70 px-2.5 py-1 rounded-full">HVAC</span>
+        <span class="text-xs bg-white/10 text-white/70 px-2.5 py-1 rounded-full">EPA 608</span>
+      </div>
+      <div class="flex items-center justify-between mt-4 pt-3 border-t border-white/10">
+        <span class="text-white/40 text-xs">2 days ago · 12 applied</span>
+        <button class="bg-accent text-black text-xs font-bold px-4 py-2 rounded-xl">Quick Apply</button>
+      </div>
+    </div>
+
+    <!-- Regular cards -->
+    <div class="card bg-white rounded-2xl border border-brand-border p-4 cursor-pointer" onclick="window.location='job-detail.html'">
+      <div class="flex items-start justify-between mb-3">
+        <div class="w-11 h-11 bg-brand-card rounded-xl flex items-center justify-center flex-shrink-0">
+          <span class="text-brand-text font-bold text-sm">MG</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs bg-brand-card text-black font-semibold px-2 py-0.5 rounded-full">91%</span>
+          <button class="w-7 h-7 bg-brand-card rounded-xl flex items-center justify-center">
+            <svg class="w-3.5 h-3.5 text-brand-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          </button>
+        </div>
+      </div>
+      <h3 class="text-black font-bold text-base">HVAC Service Tech</h3>
+      <div class="text-brand-muted text-sm mt-0.5">Miami Gardens Properties</div>
+      <div class="flex items-center gap-3 mt-2">
+        <span class="text-brand-muted text-xs">Hialeah · 5 mi</span>
+        <span class="text-brand-muted text-xs">Contract</span>
+        <span class="text-brand-muted text-xs">$24–$28/hr</span>
+      </div>
+      <div class="flex items-center justify-between mt-3 pt-3 border-t border-brand-border">
+        <span class="text-brand-muted text-xs">3 days ago</span>
+        <button class="bg-black text-white text-xs font-bold px-3 py-1.5 rounded-xl">Apply</button>
+      </div>
+    </div>
+
+    <div class="card bg-white rounded-2xl border border-brand-border p-4 cursor-pointer" onclick="window.location='job-detail.html'">
+      <div class="flex items-start justify-between mb-3">
+        <div class="w-11 h-11 bg-verified/10 rounded-xl flex items-center justify-center flex-shrink-0">
+          <span class="text-verified font-bold text-sm">BH</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs bg-brand-card text-black font-semibold px-2 py-0.5 rounded-full">87%</span>
+          <button class="w-7 h-7 bg-brand-card rounded-xl flex items-center justify-center">
+            <svg class="w-3.5 h-3.5 text-brand-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="flex items-center gap-1.5 mb-0.5">
+        <h3 class="text-black font-bold text-base">HVAC Install Lead</h3>
+        <span class="text-xs bg-warning/15 text-warning font-semibold px-1.5 py-0.5 rounded-full">Invited</span>
+      </div>
+      <div class="text-brand-muted text-sm">Brickell Home Services</div>
+      <div class="flex items-center gap-3 mt-2">
+        <span class="text-brand-muted text-xs">Brickell · 3.8 mi</span>
+        <span class="text-brand-muted text-xs">Full-time</span>
+        <span class="text-brand-muted text-xs">$30–$40/hr</span>
+      </div>
+      <div class="flex gap-2 mt-3 pt-3 border-t border-brand-border">
+        <button class="flex-1 border border-brand-border text-black text-xs font-medium py-2 rounded-xl">Decline</button>
+        <button class="flex-1 bg-black text-white text-xs font-bold py-2 rounded-xl">View Invite</button>
+      </div>
+    </div>
+
+    <div class="card bg-white rounded-2xl border border-brand-border p-4 cursor-pointer" onclick="window.location='job-detail.html'">
+      <div class="flex items-start justify-between mb-3">
+        <div class="w-11 h-11 bg-success/10 rounded-xl flex items-center justify-center flex-shrink-0">
+          <span class="text-success font-bold text-sm">DC</span>
+        </div>
+        <span class="text-xs bg-brand-card text-black font-semibold px-2 py-0.5 rounded-full">82%</span>
+      </div>
+      <h3 class="text-black font-bold text-base">Refrigeration Tech</h3>
+      <div class="text-brand-muted text-sm mt-0.5">Doral Commercial HVAC</div>
+      <div class="flex items-center gap-3 mt-2">
+        <span class="text-brand-muted text-xs">Doral · 8 mi</span>
+        <span class="text-brand-muted text-xs">Full-time · $28–$35/hr</span>
+      </div>
+      <div class="flex items-center justify-between mt-3 pt-3 border-t border-brand-border">
+        <span class="text-brand-muted text-xs">1 week ago</span>
+        <button class="bg-black text-white text-xs font-bold px-3 py-1.5 rounded-xl">Apply</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom nav -->
+  <div class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[390px] bg-white border-t border-brand-border flex items-center justify-around px-4 pt-3 pb-6">
+    <a href="provider-home.html" class="tab-btn active flex flex-col items-center gap-0.5">
+      <svg class="tab-icon w-6 h-6 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <span class="text-xs font-medium text-black">Browse</span>
+      <div class="tab-dot"></div>
+    </a>
+    <a href="#" class="tab-btn flex flex-col items-center gap-0.5">
+      <svg class="tab-icon w-6 h-6 text-brand-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      <span class="text-xs font-medium text-brand-muted">Applied</span>
+      <div class="tab-dot"></div>
+    </a>
+    <a href="messages-mobile.html" class="tab-btn flex flex-col items-center gap-0.5 relative">
+      <div class="relative">
+        <svg class="tab-icon w-6 h-6 text-brand-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span class="absolute -top-1 -right-1 w-4 h-4 bg-accent text-black text-[9px] font-bold rounded-full flex items-center justify-center">2</span>
+      </div>
+      <span class="text-xs font-medium text-brand-muted">Messages</span>
+      <div class="tab-dot"></div>
+    </a>
+    <a href="#" class="tab-btn flex flex-col items-center gap-0.5">
+      <img src="https://i.pravatar.cc/24?img=33" class="w-6 h-6 rounded-full object-cover">
+      <span class="text-xs font-medium text-brand-muted">Profile</span>
+      <div class="tab-dot"></div>
+    </a>
+  </div>
+
+</body>
+</html>
