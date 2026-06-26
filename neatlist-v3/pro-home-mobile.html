@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Neatlist — Home (Mobile)</title>
+  <link rel="stylesheet" href="tokens.css" />
+  <style>
+    body {
+      background: #1a1a1a;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 40px 16px;
+    }
+
+    /* ── Phone frame ── */
+    .phone {
+      width: 390px;
+      min-height: 844px;
+      background: var(--bg-secondary);
+      border-radius: 48px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.08);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Status bar */
+    .status-bar {
+      background: var(--black);
+      padding: 14px 28px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .status-time { color: var(--white); font-size: 15px; font-weight: 700; letter-spacing: -0.2px; }
+    .status-icons { display: flex; align-items: center; gap: 6px; }
+    .status-icons svg { color: var(--white); }
+
+    /* Scrollable body */
+    .phone-body {
+      flex: 1;
+      overflow-y: auto;
+      background: var(--bg-secondary);
+      padding-bottom: 80px; /* bottom nav clearance */
+    }
+    .phone-body::-webkit-scrollbar { display: none; }
+
+    /* Top bar */
+    .topbar {
+      background: var(--black);
+      padding: 16px 20px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .topbar-left {}
+    .topbar-logo {
+      font-size: 13px; font-weight: 800; color: rgba(255,255,255,0.45);
+      letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 2px;
+    }
+    .logo-dot-sm {
+      display: inline-block;
+      width: 5px; height: 5px;
+      background: var(--lime);
+      border-radius: 50%;
+      margin-left: 2px;
+      vertical-align: middle;
+    }
+    .topbar-greeting {
+      font-size: 20px; font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.3px;
+    }
+    .bell-btn {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      border: none;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .bell-dot {
+      width: 8px; height: 8px;
+      background: var(--lime);
+      border: 2px solid var(--black);
+      border-radius: 50%;
+      position: absolute; top: 7px; right: 7px;
+    }
+
+    /* Nudge banner */
+    .nudge-banner {
+      margin: 12px 16px 0;
+      background: hsl(38 90% 96%);
+      border: 1.5px solid hsl(38 90% 78%);
+      border-radius: var(--radius);
+      padding: 11px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: hsl(38 60% 28%);
+      font-weight: 500;
+    }
+    .nudge-banner strong { font-weight: 700; }
+    .nudge-dismiss {
+      margin-left: auto;
+      background: none; border: none;
+      color: hsl(38 60% 50%);
+      font-size: 16px; line-height: 1;
+      cursor: pointer;
+      flex-shrink: 0;
+      padding: 0 2px;
+    }
+
+    /* Sections */
+    .section { padding: 20px 16px 0; }
+    .section-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .section-title { font-size: 15px; font-weight: 800; color: var(--black); letter-spacing: -0.2px; }
+    .see-all { font-size: 12px; font-weight: 600; color: var(--fg-muted); text-decoration: none; }
+
+    /* Job card (mobile compact) */
+    .job-card {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      display: block;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    .job-card:active { background: var(--bg-secondary); }
+
+    .job-card-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .company-logo {
+      width: 36px; height: 36px;
+      border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 800;
+      color: var(--white);
+      flex-shrink: 0;
+    }
+    .job-meta { flex: 1; min-width: 0; }
+    .company-name { font-size: 11px; color: var(--fg-muted); font-weight: 500; }
+    .job-title { font-size: 14px; font-weight: 700; color: var(--black); line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .salary { font-size: 12px; color: var(--fg-muted); margin-top: 1px; }
+    .match-badge {
+      background: var(--lime);
+      color: var(--lime-text);
+      font-size: 11px; font-weight: 800;
+      padding: 3px 9px;
+      border-radius: var(--radius-full);
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    .job-card-footer {
+      display: flex; align-items: center; gap: 8px;
+    }
+    .job-tag {
+      font-size: 11px; font-weight: 600;
+      background: var(--bg-secondary);
+      color: var(--fg-muted);
+      padding: 3px 9px;
+      border-radius: var(--radius-full);
+    }
+    .job-actions {
+      margin-left: auto;
+      display: flex; gap: 6px; align-items: center;
+    }
+    .save-btn {
+      width: 30px; height: 30px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-secondary);
+      border: none;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+    }
+
+    /* Applications list */
+    .app-list {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .app-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .app-row:last-child { border-bottom: none; }
+    .app-info {}
+    .app-title { font-size: 13px; font-weight: 600; color: var(--black); }
+    .app-company { font-size: 11px; color: var(--fg-muted); margin-top: 1px; }
+
+    /* Bottom navigation */
+    .bottom-nav {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: var(--white);
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 10px 0 18px;
+      flex-shrink: 0;
+    }
+    .nav-tab {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      cursor: pointer;
+      text-decoration: none;
+      flex: 1;
+    }
+    .nav-tab-icon {
+      width: 24px; height: 24px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--fg-subtle);
+    }
+    .nav-tab.active .nav-tab-icon { color: var(--black); }
+    .nav-tab-label {
+      font-size: 10px; font-weight: 600;
+      color: var(--fg-subtle);
+    }
+    .nav-tab.active .nav-tab-label { color: var(--black); }
+    .nav-tab.active .nav-tab-dot {
+      width: 4px; height: 4px;
+      background: var(--lime);
+      border-radius: 50%;
+      margin-top: 1px;
+    }
+
+    /* AI tip */
+    .ai-tip {
+      margin: 0 16px 16px;
+      background: var(--black);
+      border-radius: var(--radius-lg);
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .ai-tip-icon {
+      width: 36px; height: 36px;
+      background: var(--lime);
+      border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; flex-shrink: 0;
+    }
+    .ai-tip-label { font-size: 10px; font-weight: 700; color: var(--lime); letter-spacing: 0.06em; text-transform: uppercase; }
+    .ai-tip-body { font-size: 12px; color: rgba(255,255,255,0.8); font-weight: 500; line-height: 1.4; margin-top: 2px; }
+    .ai-tip-body strong { color: var(--white); }
+  </style>
+</head>
+<body>
+
+  <div class="phone">
+
+    <!-- Status bar -->
+    <div class="status-bar">
+      <span class="status-time">9:41</span>
+      <div class="status-icons">
+        <!-- Signal -->
+        <svg width="16" height="12" fill="currentColor" viewBox="0 0 16 12">
+          <rect x="0" y="8" width="3" height="4" rx="0.5"/>
+          <rect x="4.5" y="5" width="3" height="7" rx="0.5"/>
+          <rect x="9" y="2" width="3" height="10" rx="0.5"/>
+          <rect x="13.5" y="0" width="3" height="12" rx="0.5" opacity="0.3"/>
+        </svg>
+        <!-- WiFi -->
+        <svg width="16" height="12" fill="none" viewBox="0 0 24 18" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" d="M1 6C5 2 19 2 23 6M5 10c2.5-2.5 11.5-2.5 14 0M9 14c1.5-1.5 5.5-1.5 7 0"/>
+          <circle cx="12.5" cy="17" r="1.5" fill="currentColor" stroke="none"/>
+        </svg>
+        <!-- Battery -->
+        <svg width="24" height="12" fill="none" viewBox="0 0 24 12">
+          <rect x="0.5" y="0.5" width="20" height="11" rx="2.5" stroke="currentColor" stroke-width="1"/>
+          <rect x="2" y="2" width="14" height="8" rx="1.5" fill="currentColor"/>
+          <path d="M22 4v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Scrollable body -->
+    <div class="phone-body">
+
+      <!-- Top bar -->
+      <div class="topbar">
+        <div class="topbar-left">
+          <div class="topbar-logo">Neatlist<span class="logo-dot-sm"></span></div>
+          <div class="topbar-greeting">Hi, Maria</div>
+        </div>
+        <button class="bell-btn" aria-label="Notifications">
+          <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 00-9.33-5.001A6 6 0 006 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+          <span class="bell-dot"></span>
+        </button>
+      </div>
+
+      <!-- Profile nudge -->
+      <div class="nudge-banner" id="nudge">
+        <span><i data-lucide="alert-triangle" style="width:14px;height:14px;flex-shrink:0;"></i></span>
+        <span><strong>3 fields</strong> left to unlock more matches.</span>
+        <button class="nudge-dismiss" onclick="document.getElementById('nudge').remove()" aria-label="Dismiss">×</button>
+      </div>
+
+      <!-- Top matches -->
+      <div class="section">
+        <div class="section-header">
+          <span class="section-title">Top matches for you</span>
+          <a class="see-all" href="#">See all →</a>
+        </div>
+
+        <!-- Job card 1 -->
+        <a class="job-card" href="job-detail-mobile.html">
+          <div class="job-card-header">
+            <div class="company-logo" style="background:#6366f1;">A</div>
+            <div class="job-meta">
+              <div class="company-name">Acme Corp</div>
+              <div class="job-title">Senior Product Designer</div>
+              <div class="salary">$110k–$140k · Remote</div>
+            </div>
+            <span class="match-badge">97%</span>
+          </div>
+          <div class="job-card-footer">
+            <span class="job-tag">Remote</span>
+            <span class="job-tag">2d ago</span>
+            <div class="job-actions" onclick="event.preventDefault()">
+              <button class="btn btn-primary btn-sm">Apply</button>
+              <button class="save-btn" aria-label="Save">
+                <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+              </button>
+            </div>
+          </div>
+        </a>
+
+        <!-- Job card 2 -->
+        <a class="job-card" href="job-detail-mobile.html">
+          <div class="job-card-header">
+            <div class="company-logo" style="background:#f97316;">N</div>
+            <div class="job-meta">
+              <div class="company-name">Notion</div>
+              <div class="job-title">Lead UX Designer</div>
+              <div class="salary">$120k–$155k · Hybrid</div>
+            </div>
+            <span class="match-badge">93%</span>
+          </div>
+          <div class="job-card-footer">
+            <span class="job-tag">Hybrid</span>
+            <span class="job-tag">1d ago</span>
+            <div class="job-actions" onclick="event.preventDefault()">
+              <button class="btn btn-primary btn-sm">Apply</button>
+              <button class="save-btn" aria-label="Save">
+                <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+              </button>
+            </div>
+          </div>
+        </a>
+
+        <!-- Job card 3 -->
+        <a class="job-card" href="job-detail-mobile.html">
+          <div class="job-card-header">
+            <div class="company-logo" style="background:#0ea5e9;">L</div>
+            <div class="job-meta">
+              <div class="company-name">Linear</div>
+              <div class="job-title">Product Design Manager</div>
+              <div class="salary">$130k–$165k · Remote</div>
+            </div>
+            <span class="match-badge">89%</span>
+          </div>
+          <div class="job-card-footer">
+            <span class="job-tag">Remote</span>
+            <span class="job-tag">3d ago</span>
+            <div class="job-actions" onclick="event.preventDefault()">
+              <button class="btn btn-primary btn-sm">Apply</button>
+              <button class="save-btn" aria-label="Save">
+                <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+              </button>
+            </div>
+          </div>
+        </a>
+
+      </div><!-- /section matches -->
+
+      <!-- AI tip -->
+      <div class="section" style="padding-bottom:16px;">
+        <div class="ai-tip">
+          <div class="ai-tip-icon"><i data-lucide="mic" style="width:16px;height:16px;color:var(--lime-text);"></i></div>
+          <div>
+            <div class="ai-tip-label">AI Interview Ready</div>
+            <div class="ai-tip-body"><strong>Senior Designer at Acme</strong> — complete your interview to move to the shortlist.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- My applications -->
+      <div class="section" style="padding-bottom:24px;">
+        <div class="section-header">
+          <span class="section-title">My applications</span>
+          <a class="see-all" href="#">View all →</a>
+        </div>
+        <div class="app-list">
+          <div class="app-row">
+            <div class="app-info">
+              <div class="app-title">Senior Product Designer</div>
+              <div class="app-company">Acme Corp</div>
+            </div>
+            <span class="badge badge-applied">Applied</span>
+          </div>
+          <div class="app-row">
+            <div class="app-info">
+              <div class="app-title">Design Systems Lead</div>
+              <div class="app-company">Stripe</div>
+            </div>
+            <span class="badge" style="background:hsl(270 80% 94%);color:hsl(270 80% 40%);">Interview</span>
+          </div>
+          <div class="app-row">
+            <div class="app-info">
+              <div class="app-title">Head of Design</div>
+              <div class="app-company">Arc Browser</div>
+            </div>
+            <span class="badge" style="background:hsl(0 0% 93%);color:hsl(0 0% 40%);">Awaiting</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /phone-body -->
+
+    <!-- Bottom nav -->
+    <nav class="bottom-nav">
+      <a class="nav-tab active" href="#">
+        <div class="nav-tab-icon">
+          <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0h6"/></svg>
+        </div>
+        <span class="nav-tab-label">Home</span>
+        <div class="nav-tab-dot"></div>
+      </a>
+      <a class="nav-tab" href="#">
+        <div class="nav-tab-icon">
+          <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg>
+        </div>
+        <span class="nav-tab-label">Search</span>
+      </a>
+      <a class="nav-tab" href="#">
+        <div class="nav-tab-icon">
+          <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+        </div>
+        <span class="nav-tab-label">Applied</span>
+      </a>
+      <a class="nav-tab" href="#">
+        <div class="nav-tab-icon">
+          <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+        </div>
+        <span class="nav-tab-label">Messages</span>
+      </a>
+      <a class="nav-tab" href="#">
+        <div class="nav-tab-icon">
+          <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="7" r="4"/><path stroke-linecap="round" d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg>
+        </div>
+        <span class="nav-tab-label">Profile</span>
+      </a>
+    </nav>
+
+  </div><!-- /phone -->
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

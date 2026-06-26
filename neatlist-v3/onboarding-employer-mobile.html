@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neatlist — Employer Onboarding (Mobile)</title>
+  <link rel="stylesheet" href="tokens.css">
+  <style>
+    body {
+      background: #1a1a1a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 40px 16px;
+    }
+
+    /* ── Phone shell ── */
+    .phone {
+      width: 390px;
+      min-height: 844px;
+      background: var(--bg);
+      border-radius: 48px;
+      box-shadow:
+        0 0 0 10px #0a0a0a,
+        0 0 0 12px #2a2a2a,
+        0 24px 80px rgba(0,0,0,0.6);
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Status bar */
+    .status-bar {
+      height: 50px;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px 0 32px;
+      flex-shrink: 0;
+    }
+    .status-time {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--black);
+      letter-spacing: -0.02em;
+    }
+    .status-icons {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .status-icons svg { width: 16px; height: 16px; }
+
+    /* ── Screen content ── */
+    .screen {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 0 24px;
+      overflow-y: auto;
+    }
+
+    /* Top nav */
+    .top-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 0 20px;
+    }
+    .back-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--bg-secondary);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .back-btn svg { width: 18px; height: 18px; }
+    .nav-logo {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--black);
+      letter-spacing: -0.03em;
+    }
+    .nav-skip {
+      font-size: 13px;
+      color: var(--fg-muted);
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    /* Step indicator */
+    .step-indicator {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 28px;
+    }
+    .step-pip {
+      height: 4px;
+      border-radius: 2px;
+      background: var(--border);
+      flex: 1;
+      transition: var(--transition);
+    }
+    .step-pip.done { background: rgba(204,255,0,0.6); }
+    .step-pip.active { background: var(--black); }
+
+    /* Headings */
+    .screen-eyebrow {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--fg-subtle);
+      margin-bottom: 6px;
+    }
+    .screen-heading {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--black);
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 6px;
+    }
+    .screen-sub {
+      font-size: 14px;
+      color: var(--fg-muted);
+      margin-bottom: 28px;
+    }
+
+    /* Role cards — stacked */
+    .role-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .role-card {
+      border: 2px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px 18px;
+      cursor: pointer;
+      transition: var(--transition);
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      position: relative;
+    }
+    .role-card:active { transform: scale(0.98); }
+    .role-card.selected {
+      border-color: var(--lime);
+      background: rgba(204,255,0,0.07);
+    }
+    .role-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius);
+      background: var(--bg-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+    .role-card.selected .role-icon {
+      background: var(--lime-dim);
+    }
+    .role-text { flex: 1; }
+    .role-card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 2px;
+    }
+    .role-card-desc {
+      font-size: 13px;
+      color: var(--fg-muted);
+      line-height: 1.45;
+    }
+    .role-check {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: var(--transition);
+    }
+    .role-card.selected .role-check {
+      background: var(--lime);
+      border-color: var(--lime);
+    }
+    .role-check svg { width: 11px; height: 11px; opacity: 0; transition: var(--transition); }
+    .role-card.selected .role-check svg { opacity: 1; }
+
+    /* Step 3 preview (grayed) */
+    .next-step-preview {
+      border: 1.5px dashed var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      opacity: 0.45;
+      pointer-events: none;
+      margin-bottom: 24px;
+    }
+    .next-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--fg-subtle);
+      margin-bottom: 12px;
+    }
+    .preview-row {
+      height: 38px;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-sm);
+      margin-bottom: 8px;
+    }
+    .preview-row:last-child { margin-bottom: 0; }
+    .preview-row.half { width: 55%; }
+
+    /* Bottom actions */
+    .bottom-actions {
+      margin-top: auto;
+      padding-bottom: 12px;
+    }
+    .btn-continue {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      background: var(--black);
+      color: var(--white);
+      border: none;
+      border-radius: var(--radius);
+      padding: 16px;
+      font-family: var(--font);
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    .btn-continue:active { background: #222; }
+    .btn-continue svg { width: 16px; height: 16px; }
+
+    /* Home indicator */
+    .home-indicator {
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      background: var(--bg);
+    }
+    .home-bar {
+      width: 134px;
+      height: 5px;
+      background: var(--black);
+      border-radius: 3px;
+      opacity: 0.2;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="phone">
+
+    <!-- Status bar -->
+    <div class="status-bar">
+      <span class="status-time">9:41</span>
+      <div class="status-icons">
+        <!-- Signal -->
+        <svg viewBox="0 0 16 16" fill="currentColor"><rect x="1" y="10" width="2" height="4" rx="0.5"/><rect x="4.5" y="7.5" width="2" height="6.5" rx="0.5"/><rect x="8" y="5" width="2" height="9" rx="0.5"/><rect x="11.5" y="2" width="2" height="12" rx="0.5" opacity="0.3"/></svg>
+        <!-- Wifi -->
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M1 5.5C3.5 3 6.5 1.5 8 1.5s4.5 1.5 7 4" opacity="0.3"/><path d="M3 8C4.5 6.5 6.2 5.5 8 5.5s3.5 1 5 2.5"/><path d="M5.5 10.5C6.2 9.8 7.1 9.5 8 9.5s1.8.3 2.5 1"/><circle cx="8" cy="13" r="1" fill="currentColor" stroke="none"/></svg>
+        <!-- Battery -->
+        <svg viewBox="0 0 20 12" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="0.65" y="0.65" width="16.7" height="10.7" rx="2.5"/><rect x="17.8" y="3.5" width="1.8" height="5" rx="1" fill="currentColor" stroke="none"/><rect x="2" y="2" width="12" height="8" rx="1.5" fill="currentColor" stroke="none"/></svg>
+      </div>
+    </div>
+
+    <!-- Screen -->
+    <div class="screen">
+
+      <div class="top-nav">
+        <button class="back-btn" onclick="history.back()">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 3L5 8l5 5"/>
+          </svg>
+        </button>
+        <span class="nav-logo">Neatlist</span>
+        <a href="#" class="nav-skip">Skip</a>
+      </div>
+
+      <!-- Step indicator: 3 pips -->
+      <div class="step-indicator">
+        <div class="step-pip done"></div>
+        <div class="step-pip active"></div>
+        <div class="step-pip"></div>
+      </div>
+
+      <p class="screen-eyebrow">Step 2 of 3</p>
+      <h1 class="screen-heading">What are you here to do?</h1>
+      <p class="screen-sub">Pick one — you can add the other later.</p>
+
+      <!-- Role cards -->
+      <div class="role-cards">
+        <label class="role-card selected" for="m-role-hire">
+          <input type="radio" id="m-role-hire" name="role" value="hire" style="display:none" checked>
+          <div class="role-icon"><i data-lucide="briefcase" style="width:28px;height:28px;"></i></div>
+          <div class="role-text">
+            <div class="role-card-title">I want to HIRE</div>
+            <div class="role-card-desc">Post jobs, review candidates, build your team.</div>
+          </div>
+          <div class="role-check">
+            <svg viewBox="0 0 12 12" fill="none" stroke="#111a00" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 6l3 3 5-5"/>
+            </svg>
+          </div>
+        </label>
+
+        <label class="role-card" for="m-role-work">
+          <input type="radio" id="m-role-work" name="role" value="work" style="display:none">
+          <div class="role-icon"><i data-lucide="banknote" style="width:28px;height:28px;"></i></div>
+          <div class="role-text">
+            <div class="role-card-title">I want to FIND WORK</div>
+            <div class="role-card-desc">Browse roles and get found by employers.</div>
+          </div>
+          <div class="role-check">
+            <svg viewBox="0 0 12 12" fill="none" stroke="#111a00" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 6l3 3 5-5"/>
+            </svg>
+          </div>
+        </label>
+      </div>
+
+      <!-- Step 3 upcoming preview -->
+      <div class="next-step-preview">
+        <p class="next-label">Up next — Company details</p>
+        <div class="preview-row"></div>
+        <div class="preview-row half"></div>
+        <div class="preview-row"></div>
+      </div>
+
+      <!-- CTA -->
+      <div class="bottom-actions">
+        <a href="onboarding-pro-web.html" class="btn-continue">
+          Continue
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 8h10M9 4l4 4-4 4"/>
+          </svg>
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Home indicator -->
+    <div class="home-indicator">
+      <div class="home-bar"></div>
+    </div>
+
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>lucide.createIcons();</script>
+  <script>
+    // ponytail: same 5-line toggle as the web file
+    document.querySelectorAll('.role-card').forEach(card => {
+      card.addEventListener('click', () => {
+        document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        card.querySelector('input[type=radio]').checked = true;
+      });
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Senior Product Designer — Acme Corp · Neatlist</title>
+  <link rel="stylesheet" href="tokens.css" />
+  <style>
+    html, body { height: 100%; }
+    body { display: flex; background: var(--bg-secondary); }
+
+    /* ── Sidebar (mirrors pro-home) ── */
+    .sidebar {
+      width: 240px;
+      min-height: 100vh;
+      background: var(--black);
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      flex-shrink: 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    .sidebar-logo {
+      padding: 28px 24px 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sidebar-logo span { font-size: 20px; font-weight: 800; color: var(--white); letter-spacing: -0.5px; }
+    .logo-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--lime); display: inline-block; margin-left: 2px; vertical-align: middle; }
+    .sidebar-nav { display: flex; flex-direction: column; gap: 2px; padding: 0 12px; flex: 1; }
+    .nav-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 12px; border-radius: var(--radius-sm);
+      color: rgba(255,255,255,0.55); font-size: 14px; font-weight: 500;
+      text-decoration: none; cursor: pointer; transition: var(--transition);
+    }
+    .nav-item:hover { background: rgba(255,255,255,0.07); color: var(--white); }
+    .nav-item.active { background: var(--lime); color: var(--lime-text); font-weight: 700; }
+    .nav-item.active svg { color: var(--lime-text); }
+    .nav-icon { width: 18px; height: 18px; flex-shrink: 0; }
+    .sidebar-profile {
+      margin: 16px 12px 24px;
+      background: rgba(255,255,255,0.06);
+      border-radius: var(--radius);
+      padding: 16px;
+    }
+    .profile-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .avatar {
+      width: 38px; height: 38px; border-radius: 50%; background: var(--lime);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 800; color: var(--lime-text); flex-shrink: 0;
+    }
+    .profile-name { font-size: 13px; font-weight: 700; color: var(--white); }
+    .profile-role { font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 1px; }
+    .profile-badges { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 10px; }
+    .progress-label { display: flex; justify-content: space-between; font-size: 11px; color: rgba(255,255,255,0.5); margin-bottom: 5px; }
+    .progress-bar-bg { background: rgba(255,255,255,0.1); border-radius: var(--radius-full); height: 5px; margin-bottom: 10px; }
+    .progress-bar-fill { height: 5px; background: var(--lime); border-radius: var(--radius-full); width: 75%; }
+    .complete-link { font-size: 12px; font-weight: 600; color: var(--lime); text-decoration: none; }
+    .complete-link:hover { text-decoration: underline; }
+
+    /* ── Content area ── */
+    .content-area {
+      flex: 1;
+      display: flex;
+      min-width: 0;
+      padding: 32px 32px 48px;
+      gap: 28px;
+      align-items: flex-start;
+    }
+
+    /* ── Main body ── */
+    .main-body {
+      flex: 1;
+      min-width: 0;
+      max-width: 680px;
+    }
+
+    .back-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px; font-weight: 600; color: var(--fg-muted);
+      text-decoration: none; margin-bottom: 24px;
+      transition: var(--transition);
+    }
+    .back-link:hover { color: var(--black); }
+
+    /* Company header */
+    .company-header {
+      display: flex; align-items: flex-start; gap: 16px;
+      margin-bottom: 20px;
+    }
+    .company-logo-lg {
+      width: 60px; height: 60px; border-radius: var(--radius);
+      background: #6366f1;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 800; color: #fff;
+      flex-shrink: 0;
+    }
+    .company-meta {}
+    .company-name-row {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 4px;
+    }
+    .company-name-text { font-size: 15px; font-weight: 600; color: var(--fg-muted); }
+    .company-location { font-size: 13px; color: var(--fg-subtle); margin-top: 2px; }
+
+    .job-title-h1 {
+      font-size: 28px; font-weight: 800; color: var(--black);
+      letter-spacing: -0.5px; line-height: 1.2; margin-bottom: 16px;
+    }
+
+    /* Tags row */
+    .tags-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+    .tag {
+      font-size: 12px; font-weight: 600;
+      background: var(--white); color: var(--fg-muted);
+      border: 1.5px solid var(--border);
+      padding: 5px 12px; border-radius: var(--radius-full);
+    }
+    .tag-salary { background: var(--bg-secondary); border-color: var(--border-strong); color: var(--fg); font-weight: 700; }
+
+    /* Match banner */
+    .match-banner {
+      background: var(--lime);
+      color: var(--lime-text);
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      font-size: 14px; font-weight: 700;
+      margin-bottom: 24px;
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex; gap: 0;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 28px;
+    }
+    .tab {
+      padding: 10px 20px;
+      font-size: 14px; font-weight: 600;
+      color: var(--fg-muted);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      transition: var(--transition);
+      text-decoration: none;
+    }
+    .tab:hover { color: var(--black); }
+    .tab.active { color: var(--black); border-bottom-color: var(--black); }
+
+    /* Content sections */
+    .section-block { margin-bottom: 28px; }
+    .section-block h3 {
+      font-size: 16px; font-weight: 800; color: var(--black);
+      letter-spacing: -0.2px; margin-bottom: 12px;
+    }
+    .section-block p {
+      font-size: 14px; color: var(--fg); line-height: 1.7;
+      margin-bottom: 12px;
+    }
+    .section-block p:last-child { margin-bottom: 0; }
+    .section-block ul {
+      padding-left: 0; list-style: none;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .section-block ul li {
+      font-size: 14px; color: var(--fg); line-height: 1.6;
+      display: flex; align-items: flex-start; gap: 8px;
+    }
+    .section-block ul li::before {
+      content: '';
+      display: block; width: 6px; height: 6px;
+      background: var(--lime); border-radius: 50%;
+      margin-top: 8px; flex-shrink: 0;
+    }
+
+    /* ── Right sticky sidebar ── */
+    .right-sidebar {
+      width: 280px;
+      flex-shrink: 0;
+      position: sticky;
+      top: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .sidebar-card {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+    }
+    .sidebar-card h4 {
+      font-size: 13px; font-weight: 800; color: var(--black);
+      letter-spacing: -0.1px; margin-bottom: 14px;
+      text-transform: uppercase; letter-spacing: 0.05em; font-size: 11px;
+      color: var(--fg-subtle);
+    }
+
+    .apply-title { font-size: 16px; font-weight: 800; color: var(--black); margin-bottom: 12px; letter-spacing: -0.2px; }
+    .apply-meta { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+    .apply-meta-row { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--fg-muted); }
+    .apply-meta-row strong { color: var(--fg); font-weight: 600; }
+    .meta-icon { width: 14px; height: 14px; color: var(--fg-subtle); flex-shrink: 0; }
+    .deadline-note {
+      font-size: 12px; color: var(--fg-subtle);
+      margin-bottom: 16px; padding: 8px 12px;
+      background: var(--bg-secondary); border-radius: var(--radius-sm);
+      display: flex; align-items: center; gap: 6px;
+    }
+
+    .btn-apply-full {
+      width: 100%; margin-bottom: 8px;
+    }
+    .btn-save-full { width: 100%; }
+
+    /* Match breakdown */
+    .match-list { display: flex; flex-direction: column; gap: 8px; }
+    .match-row {
+      display: flex; align-items: flex-start; gap: 8px;
+      font-size: 13px;
+    }
+    .match-icon-ok { color: var(--success); flex-shrink: 0; margin-top: 1px; }
+    .match-icon-miss { color: var(--fg-subtle); flex-shrink: 0; margin-top: 1px; }
+    .match-label { color: var(--fg); font-weight: 500; }
+    .match-sub { font-size: 11px; color: var(--fg-subtle); }
+    .match-action-link { font-size: 11px; color: var(--blue); font-weight: 600; text-decoration: none; }
+    .match-action-link:hover { text-decoration: underline; }
+
+    /* Similar jobs */
+    .similar-jobs { display: flex; flex-direction: column; gap: 10px; }
+    .similar-job-item {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; padding: 10px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--border);
+      transition: var(--transition);
+    }
+    .similar-job-item:hover { border-color: var(--black); }
+    .sj-logo {
+      width: 32px; height: 32px; border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 800; color: #fff; flex-shrink: 0;
+    }
+    .sj-info {}
+    .sj-title { font-size: 12px; font-weight: 700; color: var(--black); line-height: 1.3; }
+    .sj-company { font-size: 11px; color: var(--fg-subtle); }
+    .sj-match { margin-left: auto; font-size: 11px; font-weight: 800; background: var(--lime); color: var(--lime-text); padding: 2px 7px; border-radius: var(--radius-full); flex-shrink: 0; }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span>Neatlist<span class="logo-dot"></span></span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="nav-item" href="pro-home-web.html">
+        <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0h6"/></svg>
+        Home
+      </a>
+      <a class="nav-item active" href="#">
+        <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path stroke-linecap="round" d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+        Jobs
+      </a>
+      <a class="nav-item" href="#">
+        <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+        Applications
+      </a>
+      <a class="nav-item" href="#">
+        <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+        Messages
+      </a>
+      <a class="nav-item" href="#">
+        <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="7" r="4"/><path stroke-linecap="round" d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg>
+        Profile
+      </a>
+    </nav>
+
+    <div class="sidebar-profile">
+      <div class="profile-row">
+        <div class="avatar">MS</div>
+        <div>
+          <div class="profile-name">Maria Santos</div>
+          <div class="profile-role">Product Designer</div>
+        </div>
+      </div>
+      <div class="profile-badges">
+        <span class="badge badge-verified" style="font-size:10px;padding:2px 8px;">
+          <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+          Verified
+        </span>
+      </div>
+      <div class="progress-label"><span>Profile complete</span><span>75%</span></div>
+      <div class="progress-bar-bg"><div class="progress-bar-fill"></div></div>
+      <a class="complete-link" href="#">Complete profile →</a>
+    </div>
+  </aside>
+
+  <!-- Two-column content area -->
+  <div class="content-area">
+
+    <!-- Main body -->
+    <div class="main-body">
+
+      <a class="back-link" href="pro-home-web.html">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+        Back to matches
+      </a>
+
+      <!-- Company header -->
+      <div class="company-header">
+        <div class="company-logo-lg">A</div>
+        <div class="company-meta">
+          <div class="company-name-row">
+            <span class="company-name-text">Acme Corp</span>
+            <span class="badge badge-verified" style="font-size:10px;padding:2px 8px;">
+              <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              Verified
+            </span>
+          </div>
+          <div class="company-location">
+            <svg style="display:inline;vertical-align:middle;margin-right:4px;" width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z"/><circle cx="12" cy="11" r="3"/></svg>
+            San Francisco, CA · Remote OK
+          </div>
+        </div>
+      </div>
+
+      <h1 class="job-title-h1">Senior Product Designer</h1>
+
+      <!-- Tags -->
+      <div class="tags-row">
+        <span class="tag"><i data-lucide="globe" style="width:12px;height:12px;vertical-align:middle;margin-right:3px;"></i>Remote</span>
+        <span class="tag">Full-time</span>
+        <span class="tag tag-salary">$120k–$150k / yr</span>
+        <span class="tag">Posted 2 days ago</span>
+      </div>
+
+      <!-- Match banner -->
+      <div class="match-banner">
+        <i data-lucide="target" style="width:16px;height:16px;flex-shrink:0;"></i> 97% match — based on your skills and location
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <a class="tab active" href="#">Overview</a>
+        <a class="tab" href="#">Requirements</a>
+        <a class="tab" href="#">Company</a>
+        <a class="tab" href="#">Reviews</a>
+      </div>
+
+      <!-- About the role -->
+      <div class="section-block">
+        <h3>About the role</h3>
+        <p>Acme Corp is looking for a Senior Product Designer to join our growing design team. You'll work closely with product managers, engineers, and stakeholders to craft experiences that millions of users rely on every day. This role sits at the center of our product org and has direct impact on our core product roadmap.</p>
+        <p>We're a remote-friendly team that values autonomy, clear communication, and shipping quality work. You'll have the freedom to define processes, influence design systems, and raise the bar for craft across the organization. We move fast, but never at the expense of thoughtfulness or accessibility.</p>
+        <p>Our product serves over 2 million professionals across 40+ countries. Every design decision you make is an opportunity to improve the daily work lives of real people. We take that responsibility seriously, and we hope you do too.</p>
+        <p>If you care deeply about the intersection of utility and delight, have strong opinions loosely held, and thrive in collaborative, low-ego environments — we'd love to hear from you.</p>
+      </div>
+
+      <!-- What you'll do -->
+      <div class="section-block">
+        <h3>What you'll do</h3>
+        <ul>
+          <li>Lead end-to-end design for one of our core product areas — from discovery through delivery and iteration</li>
+          <li>Collaborate with PMs and engineers in weekly planning cycles to define scope, identify edge cases, and ship polished experiences</li>
+          <li>Contribute to and evolve our design system, ensuring components are accessible, scalable, and well-documented</li>
+          <li>Run user research sessions, synthesize findings, and present insights to product and leadership teams</li>
+          <li>Mentor junior designers through structured critique, design reviews, and pair-design sessions</li>
+        </ul>
+      </div>
+
+      <!-- Nice to have -->
+      <div class="section-block">
+        <h3>Nice to have</h3>
+        <ul>
+          <li>Experience designing for B2B SaaS products or productivity tools with complex information architectures</li>
+          <li>Familiarity with front-end development (HTML/CSS basics) and ability to collaborate closely with engineers on implementation details</li>
+          <li>Previous experience building or maintaining a design system at scale</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Right sticky sidebar -->
+    <aside class="right-sidebar">
+
+      <!-- Apply card -->
+      <div class="sidebar-card">
+        <div class="apply-title">Apply to this role</div>
+        <div class="apply-meta">
+          <div class="apply-meta-row">
+            <svg class="meta-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <strong>$120k – $150k</strong><span>per year</span>
+          </div>
+          <div class="apply-meta-row">
+            <svg class="meta-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path stroke-linecap="round" d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+            <strong>Full-time</strong>
+          </div>
+          <div class="apply-meta-row">
+            <svg class="meta-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z"/><circle cx="12" cy="11" r="3"/></svg>
+            <strong>Remote OK</strong><span>San Francisco preferred</span>
+          </div>
+        </div>
+        <div class="deadline-note">
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path stroke-linecap="round" d="M16 2v4M8 2v4M3 10h18"/></svg>
+          Applications close Jul 15
+        </div>
+        <a href="pro-home-web.html" class="btn btn-primary btn-lg btn-apply-full">Apply now</a>
+        <button class="btn btn-outline btn-save-full" style="margin-top:8px;">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+          Save job
+        </button>
+      </div>
+
+      <!-- AI Match breakdown -->
+      <div class="sidebar-card">
+        <h4>AI Match Breakdown</h4>
+        <div class="match-list">
+          <div class="match-row">
+            <svg class="match-icon-ok" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            <div>
+              <div class="match-label">Product Design</div>
+              <div class="match-sub">Expert level · 7 yrs</div>
+            </div>
+          </div>
+          <div class="match-row">
+            <svg class="match-icon-ok" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            <div>
+              <div class="match-label">San Francisco area</div>
+              <div class="match-sub">Location match</div>
+            </div>
+          </div>
+          <div class="match-row">
+            <svg class="match-icon-ok" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            <div>
+              <div class="match-label">5+ years experience</div>
+              <div class="match-sub">Meets requirement</div>
+            </div>
+          </div>
+          <div class="match-row">
+            <svg class="match-icon-miss" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+            <div>
+              <div class="match-label" style="color:var(--fg-muted);">Figma</div>
+              <div class="match-sub">Not in profile · <a class="match-action-link" href="#">Add to profile</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Similar jobs -->
+      <div class="sidebar-card">
+        <h4>Similar Jobs</h4>
+        <div class="similar-jobs">
+          <a class="similar-job-item" href="#">
+            <div class="sj-logo" style="background:#f97316;">N</div>
+            <div class="sj-info">
+              <div class="sj-title">Lead UX Designer</div>
+              <div class="sj-company">Notion</div>
+            </div>
+            <span class="sj-match">93%</span>
+          </a>
+          <a class="similar-job-item" href="#">
+            <div class="sj-logo" style="background:#0ea5e9;">L</div>
+            <div class="sj-info">
+              <div class="sj-title">Product Design Manager</div>
+              <div class="sj-company">Linear</div>
+            </div>
+            <span class="sj-match">89%</span>
+          </a>
+        </div>
+      </div>
+
+    </aside>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

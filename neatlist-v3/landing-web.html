@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Neatlist — Landing (Web)</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  /* NAV */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); padding: 0 48px; height: 64px; display: flex; align-items: center; justify-content: space-between; }
+  .nav-logo { font-size: 20px; font-weight: 800; color: var(--black); letter-spacing: -0.5px; display: flex; align-items: center; gap: 8px; }
+  .nav-logo-dot { width: 8px; height: 8px; background: var(--lime); border-radius: 50%; }
+  .nav-links { display: flex; align-items: center; gap: 32px; }
+  .nav-links a { font-size: 14px; font-weight: 500; color: var(--fg-muted); text-decoration: none; transition: var(--transition); }
+  .nav-links a:hover { color: var(--black); }
+  .nav-cta { display: flex; align-items: center; gap: 12px; }
+
+  /* HERO */
+  .hero { padding: 160px 48px 100px; max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  .hero-eyebrow { display: inline-flex; align-items: center; gap: 8px; background: var(--lime-dim); border: 1px solid rgba(204,255,0,0.3); border-radius: var(--radius-full); padding: 5px 14px; margin-bottom: 24px; font-size: 12px; font-weight: 700; color: #557700; letter-spacing: 0.06em; }
+  .hero h1 { font-size: 56px; font-weight: 800; line-height: 1.1; letter-spacing: -1.5px; color: var(--black); margin-bottom: 20px; }
+  .hero h1 em { color: var(--black); font-style: normal; background: var(--lime); padding: 0 4px; border-radius: 4px; }
+  .hero p { font-size: 18px; color: var(--fg-muted); line-height: 1.7; margin-bottom: 40px; max-width: 480px; }
+  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+  .hero-social { margin-top: 40px; display: flex; align-items: center; gap: 12px; }
+  .hero-social span { font-size: 13px; color: var(--fg-subtle); }
+  .avatars { display: flex; }
+  .avatars .av { width: 32px; height: 32px; border-radius: 50%; border: 2px solid #fff; margin-left: -8px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #fff; }
+  .avatars .av:first-child { margin-left: 0; }
+
+  /* HERO VISUAL */
+  .hero-visual { position: relative; }
+  .app-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; box-shadow: var(--shadow-lg); }
+  .app-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+  .app-card-title { font-size: 15px; font-weight: 700; }
+  .job-item { display: flex; align-items: center; gap: 14px; padding: 14px; border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; transition: var(--transition); cursor: pointer; }
+  .job-item:hover { border-color: var(--lime); background: var(--lime-dim); }
+  .job-avatar { width: 42px; height: 42px; border-radius: 10px; background: var(--bg-secondary); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .job-info { flex: 1; }
+  .job-title { font-size: 14px; font-weight: 600; color: var(--black); }
+  .job-meta { font-size: 12px; color: var(--fg-muted); margin-top: 2px; }
+  .job-match { background: var(--lime); color: var(--lime-text); padding: 3px 10px; border-radius: var(--radius-full); font-size: 11px; font-weight: 800; }
+  .float-card { position: absolute; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 18px; box-shadow: var(--shadow-md); display: flex; align-items: center; gap: 10px; }
+  .float-card-1 { top: -24px; right: -24px; }
+  .float-card-2 { bottom: -24px; left: -24px; }
+  .float-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+  .float-label { font-size: 12px; font-weight: 700; color: var(--black); }
+  .float-sub { font-size: 11px; color: var(--fg-muted); }
+
+  /* LOGOS STRIP */
+  .logos-strip { background: var(--bg-secondary); padding: 28px 48px; text-align: center; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .logos-strip p { font-size: 12px; font-weight: 600; color: var(--fg-subtle); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 20px; }
+  .logos-row { display: flex; align-items: center; justify-content: center; gap: 48px; flex-wrap: wrap; }
+  .logo-item { font-size: 16px; font-weight: 800; color: var(--border-strong); letter-spacing: -0.5px; }
+
+  /* TWO SIDES */
+  .two-sides { max-width: 1200px; margin: 0 auto; padding: 100px 48px; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .side-card { border-radius: var(--radius-lg); padding: 48px; position: relative; overflow: hidden; }
+  .side-card-employer { background: var(--black); color: var(--white); }
+  .side-card-pro { background: var(--lime); color: var(--lime-text); }
+  .side-tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 20px; opacity: 0.6; }
+  .side-card h2 { font-size: 32px; font-weight: 800; line-height: 1.2; letter-spacing: -0.5px; margin-bottom: 16px; }
+  .side-card p { font-size: 15px; line-height: 1.7; opacity: 0.75; margin-bottom: 32px; }
+  .side-card .btn { margin-top: 8px; }
+  .side-card-employer .btn { background: var(--lime); color: var(--lime-text); }
+  .side-card-employer .btn:hover { background: #bbee00; }
+  .side-card-pro .btn { background: var(--black); color: var(--white); }
+  .feature-list { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; }
+  .feature-list li { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 500; }
+  .feature-list li .check-icon { flex-shrink: 0; }
+  .side-card-employer .feature-list li .check-icon { color: var(--lime); }
+
+  /* HOW IT WORKS */
+  .how { max-width: 1200px; margin: 0 auto; padding: 0 48px 100px; }
+  .section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; color: var(--fg-subtle); text-transform: uppercase; margin-bottom: 12px; }
+  .section-title { font-size: 40px; font-weight: 800; letter-spacing: -1px; color: var(--black); margin-bottom: 16px; }
+  .section-sub { font-size: 16px; color: var(--fg-muted); max-width: 480px; margin-bottom: 60px; }
+  .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .step-card { padding: 32px; border: 1px solid var(--border); border-radius: var(--radius-lg); position: relative; }
+  .step-num { width: 40px; height: 40px; background: var(--lime); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800; color: var(--lime-text); margin-bottom: 20px; }
+  .step-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+  .step-card p { font-size: 14px; color: var(--fg-muted); line-height: 1.6; }
+
+  /* AI SECTION */
+  .ai-section { background: var(--black); padding: 100px 48px; text-align: center; }
+  .ai-section .section-label { color: rgba(255,255,255,0.4); }
+  .ai-section .section-title { color: var(--white); }
+  .ai-section .section-sub { color: rgba(255,255,255,0.5); margin: 0 auto 60px; }
+  .ai-features { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .ai-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-lg); padding: 32px; text-align: left; }
+  .ai-card .icon { font-size: 28px; margin-bottom: 16px; }
+  .ai-card h3 { font-size: 16px; font-weight: 700; color: var(--white); margin-bottom: 8px; }
+  .ai-card p { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.6; }
+  .ai-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--lime-dim); border: 1px solid rgba(204,255,0,0.3); border-radius: var(--radius-full); padding: 4px 14px; font-size: 11px; font-weight: 700; color: var(--lime); margin-bottom: 24px; }
+
+  /* CTA */
+  .cta { max-width: 800px; margin: 0 auto; padding: 100px 48px; text-align: center; }
+  .cta h2 { font-size: 48px; font-weight: 800; letter-spacing: -1px; margin-bottom: 16px; }
+  .cta p { font-size: 17px; color: var(--fg-muted); margin-bottom: 40px; }
+  .cta-actions { display: flex; gap: 14px; justify-content: center; }
+
+  /* FOOTER */
+  footer { border-top: 1px solid var(--border); padding: 40px 48px; display: flex; align-items: center; justify-content: space-between; }
+  footer .footer-logo { font-size: 16px; font-weight: 800; }
+  footer .footer-links { display: flex; gap: 24px; }
+  footer .footer-links a { font-size: 13px; color: var(--fg-muted); text-decoration: none; }
+  footer .footer-copy { font-size: 12px; color: var(--fg-subtle); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo"><div class="nav-logo-dot"></div>Neatlist</div>
+  <div class="nav-links">
+    <a href="#">For Employers</a>
+    <a href="#">For Professionals</a>
+    <a href="#">Pricing</a>
+    <a href="#">Blog</a>
+  </div>
+  <div class="nav-cta">
+    <a href="auth-web.html" class="btn btn-ghost btn-sm">Log in</a>
+    <a href="auth-web.html" class="btn btn-primary btn-sm">Get started</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-eyebrow"><i data-lucide="sparkles" style="width:14px;height:14px;"></i> Now with AI matching</div>
+    <h1>Hire smarter.<br /><em>Get hired</em> faster.</h1>
+    <p>Neatlist connects employers with verified professionals using intelligent matching — so the right people find each other, not just the available ones.</p>
+    <div class="hero-actions">
+      <a href="onboarding-employer-web.html" class="btn btn-primary btn-lg">Post a job</a>
+      <a href="onboarding-pro-web.html" class="btn btn-outline btn-lg">Find work</a>
+    </div>
+    <div class="hero-social">
+      <div class="avatars">
+        <div class="av" style="background:#6366f1">A</div>
+        <div class="av" style="background:#f59e0b">B</div>
+        <div class="av" style="background:#10b981">C</div>
+        <div class="av" style="background:#ef4444">D</div>
+      </div>
+      <span>Join 12,000+ professionals already on Neatlist</span>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="float-card float-card-1">
+      <div class="float-icon" style="background:var(--lime-dim)"><i data-lucide="sparkles" style="width:18px;height:18px;color:#557700;"></i></div>
+      <div>
+        <div class="float-label">AI Match Found</div>
+        <div class="float-sub">98% compatibility score</div>
+      </div>
+    </div>
+    <div class="app-card">
+      <div class="app-card-header">
+        <span class="app-card-title">Top matches for you</span>
+        <span class="badge badge-new">3 new</span>
+      </div>
+      <div class="job-item">
+        <div class="job-avatar"><i data-lucide="building-2" style="width:20px;height:20px;color:var(--fg-subtle);"></i></div>
+        <div class="job-info">
+          <div class="job-title">Senior Product Designer</div>
+          <div class="job-meta">Acme Corp · Remote · $120k–$150k</div>
+        </div>
+        <div class="job-match">97%</div>
+      </div>
+      <div class="job-item">
+        <div class="job-avatar"><i data-lucide="lightbulb" style="width:20px;height:20px;color:var(--fg-subtle);"></i></div>
+        <div class="job-info">
+          <div class="job-title">UX Lead</div>
+          <div class="job-meta">Studio Bright · Hybrid · $110k</div>
+        </div>
+        <div class="job-match">94%</div>
+      </div>
+      <div class="job-item">
+        <div class="job-avatar"><i data-lucide="rocket" style="width:20px;height:20px;color:var(--fg-subtle);"></i></div>
+        <div class="job-info">
+          <div class="job-title">Design Systems Engineer</div>
+          <div class="job-meta">LaunchPad · On-site · $130k</div>
+        </div>
+        <div class="job-match">91%</div>
+      </div>
+    </div>
+    <div class="float-card float-card-2">
+      <div class="float-icon" style="background:hsl(142 71% 90%)"><i data-lucide="check" style="width:18px;height:18px;color:hsl(142 71% 30%);"></i></div>
+      <div>
+        <div class="float-label">Interview Scheduled</div>
+        <div class="float-sub">Tomorrow at 10:00 AM</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOGOS -->
+<div class="logos-strip">
+  <p>Trusted by teams at</p>
+  <div class="logos-row">
+    <div class="logo-item">Acme</div>
+    <div class="logo-item">StudioBright</div>
+    <div class="logo-item">LaunchPad</div>
+    <div class="logo-item">Nexora</div>
+    <div class="logo-item">Buildco</div>
+    <div class="logo-item">Stackwise</div>
+  </div>
+</div>
+
+<!-- TWO SIDES -->
+<div class="two-sides">
+  <div class="side-card side-card-employer">
+    <div class="side-tag">For Employers</div>
+    <h2>Find the right hire in days, not months.</h2>
+    <p>Post once, let AI surface your best-fit candidates. Review, interview, and hire — all in one place.</p>
+    <ul class="feature-list">
+      <li><i data-lucide="check" class="check-icon" style="width:13px;height:13px;"></i>AI-generated job descriptions</li>
+      <li><i data-lucide="check" class="check-icon" style="width:13px;height:13px;"></i>Verified professional profiles</li>
+      <li><i data-lucide="check" class="check-icon" style="width:13px;height:13px;"></i>Built-in AI screening interviews</li>
+      <li><i data-lucide="check" class="check-icon" style="width:13px;height:13px;"></i>Visual candidate pipeline (kanban)</li>
+    </ul>
+    <a href="onboarding-employer-web.html" class="btn btn-lg">Post a job →</a>
+  </div>
+  <div class="side-card side-card-pro">
+    <div class="side-tag">For Professionals</div>
+    <h2>Land the job that actually fits you.</h2>
+    <p>Get matched to roles based on your skills, location, and availability — not just keywords.</p>
+    <ul class="feature-list">
+      <li><i data-lucide="check" class="check-icon" style="width:13px;height:13px;"></i>Push-matched job recommendations</li>
+      <li><i data-lucide="check" class="check-icon" style="width:13px;height:13px;"></i>AI-assisted interview prep</li>
+      <li><i data-lucide="check" class="check-icon" style="width:13px;height:13px;"></i>Real-time application status</li>
+      <li><i data-lucide="check" class="check-icon" style="width:13px;height:13px;"></i>Verified badge boosts visibility</li>
+    </ul>
+    <a href="onboarding-pro-web.html" class="btn btn-lg">Find work →</a>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="how">
+  <div class="section-label">How it works</div>
+  <div class="section-title">Three steps to your next hire.</div>
+  <p class="section-sub">Simple for employers. Powerful for professionals. AI working behind the scenes for both.</p>
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-num">1</div>
+      <h3>Create your profile</h3>
+      <p>Employers post jobs in minutes. Professionals build a verified profile that speaks for them.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">2</div>
+      <h3>AI does the matching</h3>
+      <p>Our engine scores compatibility across skills, location, availability, and budget — instantly.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">3</div>
+      <h3>Connect and hire</h3>
+      <p>Message, schedule interviews, track applications, and make the hire — all inside Neatlist.</p>
+    </div>
+  </div>
+</div>
+
+<!-- AI SECTION -->
+<div class="ai-section">
+  <div class="ai-badge"><i data-lucide="sparkles" style="width:12px;height:12px;"></i> Powered by AI</div>
+  <div class="section-label">Intelligence layer</div>
+  <div class="section-title">AI that actually helps.</div>
+  <p class="section-sub">Not just filters and keywords — real intelligence that understands context, skills, and fit.</p>
+  <div class="ai-features">
+    <div class="ai-card">
+      <div class="icon"><i data-lucide="brain" style="width:28px;height:28px;color:var(--lime);"></i></div>
+      <h3>Semantic job matching</h3>
+      <p>Goes beyond keyword matching — understands skills, experience depth, and role fit.</p>
+    </div>
+    <div class="ai-card">
+      <div class="icon"><i data-lucide="mic" style="width:28px;height:28px;color:var(--lime);"></i></div>
+      <h3>AI interview screening</h3>
+      <p>ElevenLabs + Deepgram powered voice interviews. Transcribed, scored, and summarised for employers.</p>
+    </div>
+    <div class="ai-card">
+      <div class="icon"><i data-lucide="edit-3" style="width:28px;height:28px;color:var(--lime);"></i></div>
+      <h3>Job description writer</h3>
+      <p>Generate a complete, bias-free job description from a few bullet points in seconds.</p>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta">
+  <h2>Ready to find your next great hire?</h2>
+  <p>Join thousands of employers and professionals who use Neatlist to make better matches.</p>
+  <div class="cta-actions">
+    <a href="onboarding-employer-web.html" class="btn btn-primary btn-lg">Post a job free</a>
+    <a href="onboarding-pro-web.html" class="btn btn-outline btn-lg">Create your profile</a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">Neatlist</div>
+  <div class="footer-links">
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+    <a href="#">Help</a>
+    <a href="#">Contact</a>
+  </div>
+  <div class="footer-copy">© 2026 Neatlist</div>
+</footer>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>lucide.createIcons();</script>
+</body>
+</html>

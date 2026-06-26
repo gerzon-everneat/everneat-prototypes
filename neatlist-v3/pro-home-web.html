@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Neatlist — Home</title>
+  <link rel="stylesheet" href="tokens.css" />
+  <style>
+    html, body { height: 100%; }
+    body { display: flex; background: var(--bg-secondary); }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: 240px;
+      min-height: 100vh;
+      background: var(--black);
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      flex-shrink: 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidebar-logo {
+      padding: 28px 24px 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sidebar-logo span {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.5px;
+    }
+    .logo-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--lime);
+      display: inline-block;
+      margin-left: 2px;
+      vertical-align: middle;
+    }
+
+    .sidebar-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: 0 12px;
+      flex: 1;
+    }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      color: rgba(255,255,255,0.55);
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .nav-item:hover { background: rgba(255,255,255,0.07); color: var(--white); }
+    .nav-item.active {
+      background: var(--lime);
+      color: var(--lime-text);
+      font-weight: 700;
+    }
+    .nav-item.active svg { color: var(--lime-text); }
+    .nav-icon { width: 18px; height: 18px; flex-shrink: 0; }
+
+    .sidebar-profile {
+      margin: 16px 12px 24px;
+      background: rgba(255,255,255,0.06);
+      border-radius: var(--radius);
+      padding: 16px;
+    }
+    .profile-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .avatar {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      background: var(--lime);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 800;
+      color: var(--lime-text);
+      flex-shrink: 0;
+    }
+    .profile-name { font-size: 13px; font-weight: 700; color: var(--white); }
+    .profile-role { font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 1px; }
+    .profile-badges { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 10px; }
+    .progress-label {
+      display: flex; justify-content: space-between;
+      font-size: 11px; color: rgba(255,255,255,0.5);
+      margin-bottom: 5px;
+    }
+    .progress-bar-bg {
+      background: rgba(255,255,255,0.1);
+      border-radius: var(--radius-full);
+      height: 5px;
+      margin-bottom: 10px;
+    }
+    .progress-bar-fill {
+      height: 5px;
+      background: var(--lime);
+      border-radius: var(--radius-full);
+      width: 75%;
+    }
+    .complete-link {
+      font-size: 12px; font-weight: 600;
+      color: var(--lime);
+      text-decoration: none;
+    }
+    .complete-link:hover { text-decoration: underline; }
+
+    /* ── Main ── */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      max-width: 900px;
+      padding: 0 32px 48px;
+    }
+
+    /* Top bar */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 28px 0 24px;
+    }
+    .topbar-greeting { font-size: 22px; font-weight: 800; color: var(--black); letter-spacing: -0.3px; }
+    .topbar-right { display: flex; align-items: center; gap: 12px; }
+    .bell-btn {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      position: relative;
+      transition: var(--transition);
+    }
+    .bell-btn:hover { border-color: var(--black); }
+    .bell-dot {
+      width: 8px; height: 8px;
+      background: var(--lime);
+      border: 2px solid var(--bg-secondary);
+      border-radius: 50%;
+      position: absolute;
+      top: 7px; right: 7px;
+    }
+
+    /* Nudge banner */
+    .nudge-banner {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: hsl(38 90% 96%);
+      border: 1.5px solid hsl(38 90% 80%);
+      border-radius: var(--radius);
+      padding: 12px 16px;
+      margin-bottom: 24px;
+      font-size: 13px;
+      color: hsl(38 60% 30%);
+      font-weight: 500;
+    }
+    .nudge-banner strong { font-weight: 700; }
+    .nudge-banner a { color: hsl(38 90% 30%); font-weight: 700; text-decoration: underline; }
+    .nudge-icon { font-size: 16px; flex-shrink: 0; }
+
+    /* Section header */
+    .section-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .section-title { font-size: 17px; font-weight: 800; color: var(--black); letter-spacing: -0.2px; }
+    .see-all { font-size: 13px; font-weight: 600; color: var(--fg-muted); text-decoration: none; }
+    .see-all:hover { color: var(--black); }
+
+    /* Job cards */
+    .jobs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 36px;
+    }
+
+    .job-card {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      text-decoration: none;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+    .job-card:hover {
+      border-color: var(--black);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-1px);
+    }
+
+    .job-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+    .company-row { display: flex; align-items: center; gap: 10px; }
+    .company-logo {
+      width: 40px; height: 40px;
+      border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; font-weight: 800;
+      color: var(--white);
+      flex-shrink: 0;
+    }
+    .company-name { font-size: 12px; color: var(--fg-muted); font-weight: 500; }
+    .job-title { font-size: 15px; font-weight: 700; color: var(--black); margin-top: 2px; line-height: 1.3; }
+
+    .match-badge {
+      display: inline-flex; align-items: center;
+      background: var(--lime);
+      color: var(--lime-text);
+      font-size: 11px; font-weight: 800;
+      padding: 3px 9px;
+      border-radius: var(--radius-full);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .job-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag {
+      font-size: 11px; font-weight: 600;
+      background: var(--bg-secondary);
+      color: var(--fg-muted);
+      padding: 3px 9px;
+      border-radius: var(--radius-full);
+    }
+
+    .job-card-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 4px;
+    }
+    .posted-date { font-size: 11px; color: var(--fg-subtle); }
+    .job-actions { display: flex; align-items: center; gap: 8px; }
+    .save-btn {
+      width: 32px; height: 32px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-secondary);
+      border: none;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+      flex-shrink: 0;
+    }
+    .save-btn:hover { background: var(--border); }
+
+    /* Applications */
+    .applications-list {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .app-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      transition: var(--transition);
+    }
+    .app-row:last-child { border-bottom: none; }
+    .app-row:hover { background: var(--bg-secondary); }
+    .app-info { display: flex; flex-direction: column; gap: 2px; }
+    .app-title { font-size: 14px; font-weight: 600; color: var(--black); }
+    .app-company { font-size: 12px; color: var(--fg-muted); }
+    .app-right { display: flex; align-items: center; gap: 8px; }
+    .app-date { font-size: 11px; color: var(--fg-subtle); }
+
+    .apps-footer {
+      padding: 12px 20px;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: flex-end;
+    }
+
+    /* AI tip card */
+    .ai-tip {
+      background: var(--black);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .ai-tip-icon {
+      width: 40px; height: 40px;
+      background: var(--lime);
+      border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .ai-tip-text { flex: 1; }
+    .ai-tip-label { font-size: 11px; font-weight: 700; color: var(--lime); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 4px; }
+    .ai-tip-body { font-size: 13px; color: rgba(255,255,255,0.85); font-weight: 500; line-height: 1.4; }
+    .ai-tip-body strong { color: var(--white); font-weight: 700; }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span>Neatlist<span class="logo-dot"></span></span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="nav-item active" href="#">
+        <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0h6"/></svg>
+        Home
+      </a>
+      <a class="nav-item" href="#">
+        <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path stroke-linecap="round" d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+        Jobs
+      </a>
+      <a class="nav-item" href="#">
+        <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+        Applications
+      </a>
+      <a class="nav-item" href="#">
+        <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+        Messages
+      </a>
+      <a class="nav-item" href="#">
+        <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="7" r="4"/><path stroke-linecap="round" d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/></svg>
+        Profile
+      </a>
+    </nav>
+
+    <!-- Profile completion card -->
+    <div class="sidebar-profile">
+      <div class="profile-row">
+        <div class="avatar">MS</div>
+        <div>
+          <div class="profile-name">Maria Santos</div>
+          <div class="profile-role">Product Designer</div>
+        </div>
+      </div>
+      <div class="profile-badges">
+        <span class="badge badge-verified" style="font-size:10px;padding:2px 8px;">
+          <svg width="10" height="10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+          Verified
+        </span>
+      </div>
+      <div class="progress-label">
+        <span>Profile complete</span>
+        <span>75%</span>
+      </div>
+      <div class="progress-bar-bg"><div class="progress-bar-fill"></div></div>
+      <a class="complete-link" href="#">Complete profile →</a>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <main class="main">
+    <!-- Top bar -->
+    <div class="topbar">
+      <div class="topbar-greeting">Hi, Maria — 5 new matches today</div>
+      <div class="topbar-right">
+        <button class="bell-btn" aria-label="Notifications">
+          <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 00-9.33-5.001A6 6 0 006 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+          <span class="bell-dot"></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Profile nudge banner -->
+    <div class="nudge-banner">
+      <span class="nudge-icon"><i data-lucide="alert-triangle" style="width:16px;height:16px;"></i></span>
+      <div>
+        <strong>Complete your profile to unlock more matches.</strong> 3 fields remaining —
+        <a href="#">finish now</a>
+      </div>
+    </div>
+
+    <!-- Top matches -->
+    <div class="section-header">
+      <span class="section-title">Top matches for you</span>
+      <a class="see-all" href="#">See all →</a>
+    </div>
+
+    <div class="jobs-grid">
+
+      <!-- Card 1 -->
+      <a class="job-card" href="job-detail-web.html">
+        <div class="job-card-top">
+          <div class="company-row">
+            <div class="company-logo" style="background:#6366f1;">A</div>
+            <div>
+              <div class="company-name">Acme Corp</div>
+              <div class="job-title">Senior Product Designer</div>
+            </div>
+          </div>
+          <span class="match-badge">97% match</span>
+        </div>
+        <div class="job-tags">
+          <span class="tag">Remote</span>
+          <span class="tag">$110k–$140k</span>
+          <span class="tag">San Francisco, CA</span>
+        </div>
+        <div class="job-card-footer">
+          <span class="posted-date">Posted 2 days ago</span>
+          <div class="job-actions" onclick="event.preventDefault()">
+            <button class="btn btn-primary btn-sm">Apply</button>
+            <button class="save-btn" aria-label="Save job">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+            </button>
+          </div>
+        </div>
+      </a>
+
+      <!-- Card 2 -->
+      <a class="job-card" href="job-detail-web.html">
+        <div class="job-card-top">
+          <div class="company-row">
+            <div class="company-logo" style="background:#f97316;">N</div>
+            <div>
+              <div class="company-name">Notion</div>
+              <div class="job-title">Lead UX Designer</div>
+            </div>
+          </div>
+          <span class="match-badge">93% match</span>
+        </div>
+        <div class="job-tags">
+          <span class="tag">Hybrid</span>
+          <span class="tag">$120k–$155k</span>
+          <span class="tag">New York, NY</span>
+        </div>
+        <div class="job-card-footer">
+          <span class="posted-date">Posted 1 day ago</span>
+          <div class="job-actions" onclick="event.preventDefault()">
+            <button class="btn btn-primary btn-sm">Apply</button>
+            <button class="save-btn" aria-label="Save job">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+            </button>
+          </div>
+        </div>
+      </a>
+
+      <!-- Card 3 -->
+      <a class="job-card" href="job-detail-web.html">
+        <div class="job-card-top">
+          <div class="company-row">
+            <div class="company-logo" style="background:#0ea5e9;">L</div>
+            <div>
+              <div class="company-name">Linear</div>
+              <div class="job-title">Product Design Manager</div>
+            </div>
+          </div>
+          <span class="match-badge">89% match</span>
+        </div>
+        <div class="job-tags">
+          <span class="tag">Remote</span>
+          <span class="tag">$130k–$165k</span>
+          <span class="tag">Austin, TX</span>
+        </div>
+        <div class="job-card-footer">
+          <span class="posted-date">Posted 3 days ago</span>
+          <div class="job-actions" onclick="event.preventDefault()">
+            <button class="btn btn-primary btn-sm">Apply</button>
+            <button class="save-btn" aria-label="Save job">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+            </button>
+          </div>
+        </div>
+      </a>
+
+      <!-- Card 4 -->
+      <a class="job-card" href="job-detail-web.html">
+        <div class="job-card-top">
+          <div class="company-row">
+            <div class="company-logo" style="background:#10b981;">V</div>
+            <div>
+              <div class="company-name">Vercel</div>
+              <div class="job-title">UX Researcher</div>
+            </div>
+          </div>
+          <span class="match-badge">85% match</span>
+        </div>
+        <div class="job-tags">
+          <span class="tag">Remote</span>
+          <span class="tag">$95k–$125k</span>
+          <span class="tag">Remote — Global</span>
+        </div>
+        <div class="job-card-footer">
+          <span class="posted-date">Posted today</span>
+          <div class="job-actions" onclick="event.preventDefault()">
+            <button class="btn btn-primary btn-sm">Apply</button>
+            <button class="save-btn" aria-label="Save job">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+            </button>
+          </div>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- Applications section -->
+    <div class="section-header">
+      <span class="section-title">Your applications</span>
+      <a class="see-all" href="#">View all →</a>
+    </div>
+
+    <div class="applications-list">
+      <div class="app-row">
+        <div class="app-info">
+          <div class="app-title">Senior Product Designer</div>
+          <div class="app-company">Acme Corp</div>
+        </div>
+        <div class="app-right">
+          <span class="app-date">Jun 20</span>
+          <span class="badge badge-applied">Applied</span>
+        </div>
+      </div>
+      <div class="app-row">
+        <div class="app-info">
+          <div class="app-title">Design Systems Lead</div>
+          <div class="app-company">Stripe</div>
+        </div>
+        <div class="app-right">
+          <span class="app-date">Jun 18</span>
+          <span class="badge" style="background:hsl(270 80% 94%);color:hsl(270 80% 40%);">Interview</span>
+        </div>
+      </div>
+      <div class="app-row">
+        <div class="app-info">
+          <div class="app-title">Head of Design</div>
+          <div class="app-company">Arc Browser</div>
+        </div>
+        <div class="app-right">
+          <span class="app-date">Jun 15</span>
+          <span class="badge" style="background:hsl(0 0% 93%);color:hsl(0 0% 40%);">Awaiting</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI tip card -->
+    <div class="ai-tip">
+      <div class="ai-tip-icon"><i data-lucide="mic" style="width:20px;height:20px;color:var(--lime-text);"></i></div>
+      <div class="ai-tip-text">
+        <div class="ai-tip-label">AI Interview Ready</div>
+        <div class="ai-tip-body">
+          Your <strong>AI Interview for Senior Designer at Acme</strong> is ready. Complete it to move to the shortlist.
+        </div>
+      </div>
+      <button class="btn btn-lime btn-sm" style="flex-shrink:0;">Start now</button>
+    </div>
+  </main>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

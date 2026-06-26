@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neatlist — Employer Onboarding</title>
+  <link rel="stylesheet" href="tokens.css">
+  <style>
+    html, body { height: 100%; }
+    body { display: flex; background: var(--bg); }
+
+    /* ── Left panel ── */
+    .panel-left {
+      width: 420px;
+      flex-shrink: 0;
+      background: var(--black);
+      display: flex;
+      flex-direction: column;
+      padding: 40px 40px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+    .panel-left::before {
+      content: '';
+      position: absolute;
+      bottom: -80px;
+      right: -80px;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(204,255,0,0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      margin-bottom: auto;
+    }
+    .logo-mark {
+      width: 34px;
+      height: 34px;
+      background: var(--lime);
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 16px;
+      color: var(--lime-text);
+    }
+    .logo-text {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: -0.02em;
+    }
+
+    .panel-mid {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 48px;
+    }
+
+    .step-dots {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .step-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      transition: var(--transition);
+    }
+    .step-dot.done {
+      background: rgba(204,255,0,0.5);
+    }
+    .step-dot.active {
+      width: 24px;
+      border-radius: 4px;
+      background: var(--lime);
+    }
+
+    .step-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.4);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .step-title {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.03em;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+
+    /* ── Illustration area ── */
+    .illustration {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius-lg);
+      padding: 28px 24px;
+      position: relative;
+    }
+    .illus-avatars {
+      display: flex;
+      gap: -8px;
+      margin-bottom: 16px;
+    }
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 2px solid var(--black);
+      margin-right: -8px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+    .avatar:nth-child(1) { background: #6366f1; color: #fff; }
+    .avatar:nth-child(2) { background: var(--lime); color: var(--lime-text); }
+    .avatar:nth-child(3) { background: #f97316; color: #fff; }
+    .avatar:nth-child(4) { background: #22c55e; color: #fff; }
+
+    .illus-quote {
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.55;
+      margin-bottom: 14px;
+    }
+    .illus-attr {
+      font-size: 12px;
+      color: rgba(255,255,255,0.4);
+    }
+    .illus-attr strong {
+      color: var(--lime);
+      font-weight: 600;
+    }
+    .illus-badge {
+      position: absolute;
+      top: -10px;
+      right: 18px;
+      background: var(--lime);
+      color: var(--lime-text);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+    }
+
+    .panel-back {
+      font-size: 13px;
+      color: rgba(255,255,255,0.35);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: var(--transition);
+    }
+    .panel-back:hover { color: rgba(255,255,255,0.7); }
+
+    /* ── Right panel ── */
+    .panel-right {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 40px;
+      overflow-y: auto;
+    }
+
+    .form-card {
+      width: 100%;
+      max-width: 520px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .form-header { }
+    .form-step-hint {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--lime-text);
+      background: var(--lime-dim);
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+      margin-bottom: 12px;
+    }
+    /* ponytail: lime-dim uses rgba so --lime-text is fine on light bg */
+    .form-step-hint { color: #3a4a00; }
+    .form-heading {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--black);
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 6px;
+    }
+    .form-sub {
+      font-size: 14px;
+      color: var(--fg-muted);
+    }
+
+    /* Role cards */
+    .role-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .role-card {
+      border: 2px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px 20px;
+      cursor: pointer;
+      transition: var(--transition);
+      background: var(--bg);
+      position: relative;
+      text-align: left;
+    }
+    .role-card:hover {
+      border-color: var(--border-strong);
+      box-shadow: var(--shadow-md);
+    }
+    .role-card.selected {
+      border-color: var(--black);
+      background: #f9faf9;
+      box-shadow: var(--shadow-md);
+    }
+    .role-card.selected .role-check {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .role-check {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 20px;
+      height: 20px;
+      background: var(--lime);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: scale(0.6);
+      transition: var(--transition);
+    }
+    .role-check svg { width: 11px; height: 11px; }
+    .role-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius);
+      background: var(--bg-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      font-size: 22px;
+    }
+    .role-card.selected .role-icon {
+      background: var(--lime-dim);
+    }
+    .role-card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 4px;
+    }
+    .role-card-desc {
+      font-size: 13px;
+      color: var(--fg-muted);
+      line-height: 1.5;
+    }
+
+    /* Step 3 preview */
+    .step-preview {
+      border: 1.5px dashed var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      opacity: 0.5;
+      pointer-events: none;
+    }
+    .preview-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--fg-subtle);
+      margin-bottom: 16px;
+    }
+    .preview-fields {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .preview-field {
+      height: 40px;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-sm);
+    }
+    .preview-field.full { grid-column: 1 / -1; }
+
+    /* Actions */
+    .form-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .skip-link {
+      font-size: 13px;
+      color: var(--fg-muted);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    .skip-link:hover { color: var(--fg); }
+    .btn-continue {
+      background: var(--black);
+      color: var(--white);
+      padding: 13px 32px;
+      border-radius: var(--radius);
+      font-size: 15px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: var(--transition);
+      text-decoration: none;
+    }
+    .btn-continue:hover { background: #1a1a1a; }
+    .btn-continue svg { width: 16px; height: 16px; }
+  </style>
+</head>
+<body>
+
+  <!-- Left panel -->
+  <aside class="panel-left">
+    <a href="auth-web.html" class="logo">
+      <div class="logo-mark">N</div>
+      <span class="logo-text">Neatlist</span>
+    </a>
+
+    <div class="panel-mid">
+      <div>
+        <p class="step-label">Your progress</p>
+        <div class="step-dots">
+          <div class="step-dot done" title="Phone verified"></div>
+          <div class="step-dot active" title="Pick role"></div>
+          <div class="step-dot" title="Enter info"></div>
+        </div>
+      </div>
+
+      <div>
+        <p class="step-label">Step 2 of 3</p>
+        <h2 class="step-title">Tell us what you're here for</h2>
+
+        <div class="illustration">
+          <span class="illus-badge">✓ 3 hires in 2 weeks</span>
+          <div class="illus-avatars">
+            <div class="avatar">JK</div>
+            <div class="avatar">A</div>
+            <div class="avatar">MR</div>
+            <div class="avatar">+</div>
+          </div>
+          <p class="illus-quote">"We hired our first 3 engineers through Neatlist in under 2 weeks. The quality bar is genuinely different."</p>
+          <p class="illus-attr"><strong>— Priya S.</strong>, CTO at Formshift</p>
+        </div>
+      </div>
+    </div>
+
+    <a href="auth-web.html" class="panel-back">
+      <svg viewBox="0 0 16 16" width="14" fill="none" stroke="currentColor" stroke-width="1.8">
+        <path d="M10 3L5 8l5 5"/>
+      </svg>
+      Back to sign in
+    </a>
+  </aside>
+
+  <!-- Right panel -->
+  <main class="panel-right">
+    <div class="form-card">
+
+      <div class="form-header">
+        <span class="form-step-hint">Step 2 — Role</span>
+        <h1 class="form-heading">What are you looking to do?</h1>
+        <p class="form-sub">Pick the one that fits. You can always add both later.</p>
+      </div>
+
+      <!-- Role selection -->
+      <div class="role-cards">
+        <label class="role-card selected" for="role-hire">
+          <input type="radio" id="role-hire" name="role" value="hire" style="display:none" checked>
+          <div class="role-check">
+            <svg viewBox="0 0 12 12" fill="none" stroke="#111a00" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 6l3 3 5-5"/>
+            </svg>
+          </div>
+          <div class="role-icon"><i data-lucide="briefcase" style="width:28px;height:28px;"></i></div>
+          <div class="role-card-title">I want to HIRE</div>
+          <div class="role-card-desc">Post roles, review applicants, and build your team fast.</div>
+        </label>
+
+        <label class="role-card" for="role-work">
+          <input type="radio" id="role-work" name="role" value="work" style="display:none">
+          <div class="role-check">
+            <svg viewBox="0 0 12 12" fill="none" stroke="#111a00" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 6l3 3 5-5"/>
+            </svg>
+          </div>
+          <div class="role-icon"><i data-lucide="banknote" style="width:28px;height:28px;"></i></div>
+          <div class="role-card-title">I want to FIND WORK</div>
+          <div class="role-card-desc">Browse opportunities and get discovered by top employers.</div>
+        </label>
+      </div>
+
+      <!-- Step 3 preview -->
+      <div class="step-preview">
+        <p class="preview-label">Next — Enter your company info</p>
+        <div class="preview-fields">
+          <div class="preview-field full"></div>
+          <div class="preview-field"></div>
+          <div class="preview-field"></div>
+          <div class="preview-field full"></div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="form-actions">
+        <a href="#" class="skip-link">I'll do this later</a>
+        <a href="onboarding-pro-web.html" class="btn-continue">
+          Continue
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 8h10M9 4l4 4-4 4"/>
+          </svg>
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>lucide.createIcons();</script>
+  <script>
+    // ponytail: pure DOM toggle — no framework needed for a prototype
+    document.querySelectorAll('.role-card').forEach(card => {
+      card.addEventListener('click', () => {
+        document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        card.querySelector('input[type=radio]').checked = true;
+      });
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Neatlist v3 — Prototype Navigator</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  body { max-width: 960px; margin: 0 auto; padding: 48px 24px 80px; }
+  header { margin-bottom: 48px; }
+  .logo { font-size: 22px; font-weight: 800; display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+  .logo-dot { width: 8px; height: 8px; background: var(--lime); border-radius: 50%; }
+  .version-tag { display: inline-flex; align-items: center; background: var(--lime-dim); border-radius: var(--radius-full); padding: 3px 12px; font-size: 12px; font-weight: 700; color: #557700; margin-bottom: 16px; }
+  h1 { font-size: 32px; font-weight: 800; letter-spacing: -0.75px; margin-bottom: 8px; }
+  .subtitle { font-size: 15px; color: var(--fg-muted); line-height: 1.6; }
+
+  .legend { display: flex; gap: 16px; margin-bottom: 40px; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--fg-muted); }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .dot-web { background: var(--black); }
+  .dot-mobile { background: var(--lime); }
+
+  .section { margin-bottom: 40px; }
+  .section-title { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg-subtle); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+  .card { border: 1.5px solid var(--border); border-radius: var(--radius-lg); padding: 18px 20px; text-decoration: none; color: inherit; transition: var(--transition); display: flex; align-items: center; gap: 14px; }
+  .card:hover { border-color: var(--black); box-shadow: var(--shadow-md); transform: translateY(-1px); }
+  .card-icon { width: 40px; height: 40px; border-radius: var(--radius); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .card-icon-web { background: var(--black); }
+  .card-icon-mobile { background: var(--lime); }
+  .card-title { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+  .card-sub { font-size: 12px; color: var(--fg-muted); }
+  .card-tag { display: inline-flex; align-items: center; gap: 4px; margin-top: 6px; background: var(--bg-secondary); border-radius: var(--radius-full); padding: 2px 8px; font-size: 10px; font-weight: 700; color: var(--fg-subtle); }
+
+  .flow-note { background: var(--bg-secondary); border-radius: var(--radius-lg); padding: 20px 24px; margin-top: 48px; }
+  .flow-note h3 { font-size: 14px; font-weight: 700; margin-bottom: 12px; }
+  .flow-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .flow-col h4 { font-size: 12px; font-weight: 700; color: var(--fg-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+  .flow-steps { list-style: none; }
+  .flow-steps li { font-size: 13px; color: var(--fg); padding: 4px 0; display: flex; align-items: center; gap: 8px; }
+  .flow-steps li::before { content: '→'; font-size: 11px; color: var(--fg-subtle); flex-shrink: 0; }
+  .flow-steps li a { color: inherit; text-decoration: none; font-weight: 600; }
+  .flow-steps li a:hover { color: var(--black); text-decoration: underline; }
+</style>
+</head>
+<body>
+<header>
+  <div class="logo"><div class="logo-dot"></div>Neatlist</div>
+  <div class="version-tag">v3 HTML Prototypes</div>
+  <h1>Screen Navigator</h1>
+  <p class="subtitle">16 static HTML screens — 8 screens × web + mobile. Open any screen to preview. Built for Figma capture.</p>
+</header>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot dot-web"></div>Web — full desktop layout</div>
+  <div class="legend-item"><div class="legend-dot dot-mobile"></div>Mobile — 390×844 phone frame</div>
+</div>
+
+<!-- MARKETING -->
+<div class="section">
+  <div class="section-title">Marketing / Landing</div>
+  <div class="cards">
+    <a href="landing-web.html" class="card">
+      <div class="card-icon card-icon-web"><i data-lucide="layout-template" style="width:20px;height:20px;color:#fff;"></i></div>
+      <div>
+        <div class="card-title">Landing — Web</div>
+        <div class="card-sub">Hero, roles split, AI features, CTA</div>
+        <div class="card-tag">Desktop</div>
+      </div>
+    </a>
+    <a href="landing-mobile.html" class="card">
+      <div class="card-icon card-icon-mobile"><i data-lucide="smartphone" style="width:20px;height:20px;color:var(--lime-text);"></i></div>
+      <div>
+        <div class="card-title">Landing — Mobile</div>
+        <div class="card-sub">Phone frame, stacked CTAs, bottom nav</div>
+        <div class="card-tag">390px frame</div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<!-- AUTH -->
+<div class="section">
+  <div class="section-title">Authentication</div>
+  <div class="cards">
+    <a href="auth-web.html" class="card">
+      <div class="card-icon card-icon-web"><i data-lucide="lock" style="width:20px;height:20px;color:#fff;"></i></div>
+      <div>
+        <div class="card-title">Auth — Web</div>
+        <div class="card-sub">Split login/register, Google/Apple SSO</div>
+        <div class="card-tag">Desktop</div>
+      </div>
+    </a>
+    <a href="auth-mobile.html" class="card">
+      <div class="card-icon card-icon-mobile"><i data-lucide="lock" style="width:20px;height:20px;color:var(--lime-text);"></i></div>
+      <div>
+        <div class="card-title">Auth — Mobile</div>
+        <div class="card-sub">Tab-switched login/register, phone frame</div>
+        <div class="card-tag">390px frame</div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<!-- ONBOARDING -->
+<div class="section">
+  <div class="section-title">Onboarding — Employer (3 steps) &amp; Professional (6 steps)</div>
+  <div class="cards">
+    <a href="onboarding-employer-web.html" class="card">
+      <div class="card-icon card-icon-web"><i data-lucide="building-2" style="width:20px;height:20px;color:#fff;"></i></div>
+      <div>
+        <div class="card-title">Onboarding Employer — Web</div>
+        <div class="card-sub">Step 2: Role selection (3-step flow)</div>
+        <div class="card-tag">Desktop</div>
+      </div>
+    </a>
+    <a href="onboarding-employer-mobile.html" class="card">
+      <div class="card-icon card-icon-mobile"><i data-lucide="building-2" style="width:20px;height:20px;color:var(--lime-text);"></i></div>
+      <div>
+        <div class="card-title">Onboarding Employer — Mobile</div>
+        <div class="card-sub">Role cards, step dots, phone frame</div>
+        <div class="card-tag">390px frame</div>
+      </div>
+    </a>
+    <a href="onboarding-pro-web.html" class="card">
+      <div class="card-icon card-icon-web"><i data-lucide="target" style="width:20px;height:20px;color:#fff;"></i></div>
+      <div>
+        <div class="card-title">Onboarding Pro — Web</div>
+        <div class="card-sub">Step 4: Expertise selection (6-step flow)</div>
+        <div class="card-tag">Desktop</div>
+      </div>
+    </a>
+    <a href="onboarding-pro-mobile.html" class="card">
+      <div class="card-icon card-icon-mobile"><i data-lucide="target" style="width:20px;height:20px;color:var(--lime-text);"></i></div>
+      <div>
+        <div class="card-title">Onboarding Pro — Mobile</div>
+        <div class="card-sub">Chip selector, 6-pip progress</div>
+        <div class="card-tag">390px frame</div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<!-- EMPLOYER APP -->
+<div class="section">
+  <div class="section-title">Employer App</div>
+  <div class="cards">
+    <a href="employer-home-web.html" class="card">
+      <div class="card-icon card-icon-web"><i data-lucide="bar-chart-2" style="width:20px;height:20px;color:#fff;"></i></div>
+      <div>
+        <div class="card-title">Employer Home — Web</div>
+        <div class="card-sub">Dashboard, stats, jobs, applicants</div>
+        <div class="card-tag">Desktop · Sidebar</div>
+      </div>
+    </a>
+    <a href="employer-home-mobile.html" class="card">
+      <div class="card-icon card-icon-mobile"><i data-lucide="bar-chart-2" style="width:20px;height:20px;color:var(--lime-text);"></i></div>
+      <div>
+        <div class="card-title">Employer Home — Mobile</div>
+        <div class="card-sub">Stats grid, job cards, bottom nav</div>
+        <div class="card-tag">390px frame</div>
+      </div>
+    </a>
+    <a href="pipeline-web.html" class="card">
+      <div class="card-icon card-icon-web"><i data-lucide="kanban" style="width:20px;height:20px;color:#fff;"></i></div>
+      <div>
+        <div class="card-title">Pipeline — Web</div>
+        <div class="card-sub">Kanban: Applied → Interview → Shortlisted → Hired</div>
+        <div class="card-tag">Desktop · Kanban</div>
+      </div>
+    </a>
+    <a href="pipeline-mobile.html" class="card">
+      <div class="card-icon card-icon-mobile"><i data-lucide="kanban" style="width:20px;height:20px;color:var(--lime-text);"></i></div>
+      <div>
+        <div class="card-title">Pipeline — Mobile</div>
+        <div class="card-sub">Tab-based list view, candidate cards</div>
+        <div class="card-tag">390px frame</div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<!-- PRO APP -->
+<div class="section">
+  <div class="section-title">Professional App</div>
+  <div class="cards">
+    <a href="pro-home-web.html" class="card">
+      <div class="card-icon card-icon-web"><i data-lucide="sparkles" style="width:20px;height:20px;color:#fff;"></i></div>
+      <div>
+        <div class="card-title">Pro Home — Web</div>
+        <div class="card-sub">Match feed, application status, AI tip</div>
+        <div class="card-tag">Desktop · Sidebar</div>
+      </div>
+    </a>
+    <a href="pro-home-mobile.html" class="card">
+      <div class="card-icon card-icon-mobile"><i data-lucide="sparkles" style="width:20px;height:20px;color:var(--lime-text);"></i></div>
+      <div>
+        <div class="card-title">Pro Home — Mobile</div>
+        <div class="card-sub">Job cards, match %, bottom nav</div>
+        <div class="card-tag">390px frame</div>
+      </div>
+    </a>
+    <a href="job-detail-web.html" class="card">
+      <div class="card-icon card-icon-web"><i data-lucide="file-text" style="width:20px;height:20px;color:#fff;"></i></div>
+      <div>
+        <div class="card-title">Job Detail — Web</div>
+        <div class="card-sub">Description, apply sidebar, AI match breakdown</div>
+        <div class="card-tag">Desktop · 2-col</div>
+      </div>
+    </a>
+    <a href="job-detail-mobile.html" class="card">
+      <div class="card-icon card-icon-mobile"><i data-lucide="file-text" style="width:20px;height:20px;color:var(--lime-text);"></i></div>
+      <div>
+        <div class="card-title">Job Detail — Mobile</div>
+        <div class="card-sub">Tabs, read-more expander, sticky apply bar</div>
+        <div class="card-tag">390px frame</div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<!-- USER FLOWS -->
+<div class="flow-note">
+  <h3>Prototype navigation flows</h3>
+  <div class="flow-grid">
+    <div class="flow-col">
+      <h4>Employer flow</h4>
+      <ul class="flow-steps">
+        <li><a href="landing-web.html">Landing</a></li>
+        <li><a href="auth-web.html">Auth (Sign up)</a></li>
+        <li><a href="onboarding-employer-web.html">Onboarding — Role</a></li>
+        <li><a href="employer-home-web.html">Home Dashboard</a></li>
+        <li><a href="pipeline-web.html">Pipeline (Kanban)</a></li>
+      </ul>
+    </div>
+    <div class="flow-col">
+      <h4>Professional flow</h4>
+      <ul class="flow-steps">
+        <li><a href="landing-web.html">Landing</a></li>
+        <li><a href="auth-web.html">Auth (Sign up)</a></li>
+        <li><a href="onboarding-pro-web.html">Onboarding — Expertise</a></li>
+        <li><a href="pro-home-web.html">Home Feed</a></li>
+        <li><a href="job-detail-web.html">Job Detail → Apply</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>lucide.createIcons();</script>
+</body>
+</html>

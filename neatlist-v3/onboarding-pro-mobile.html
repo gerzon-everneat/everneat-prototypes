@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neatlist — Select Expertise (Mobile)</title>
+  <link rel="stylesheet" href="tokens.css">
+  <style>
+    body {
+      background: #1a1a1a;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 16px;
+    }
+
+    /* ── Phone frame ── */
+    .phone {
+      width: 390px;
+      background: var(--bg);
+      border-radius: 48px;
+      box-shadow:
+        0 0 0 2px #333,
+        0 0 0 4px #111,
+        0 40px 80px rgba(0,0,0,0.6);
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Status bar */
+    .status-bar {
+      height: 52px;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 28px 0;
+      flex-shrink: 0;
+    }
+    .status-time {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--black);
+      letter-spacing: -0.02em;
+    }
+    .status-icons {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .status-icons svg { width: 16px; height: 16px; }
+
+    /* Notch */
+    .notch {
+      width: 120px;
+      height: 34px;
+      background: var(--black);
+      border-radius: 0 0 22px 22px;
+      margin: 0 auto;
+      margin-top: -8px;
+      flex-shrink: 0;
+    }
+
+    /* Scrollable content area */
+    .phone-content {
+      flex: 1;
+      overflow-y: auto;
+      padding-bottom: 120px; /* space for fixed footer */
+      /* hide scrollbar inside frame */
+      scrollbar-width: none;
+    }
+    .phone-content::-webkit-scrollbar { display: none; }
+
+    /* Nav bar */
+    .nav-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px 8px;
+    }
+    .nav-back {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-full);
+      background: var(--bg-secondary);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+    .nav-back:hover { background: var(--border); }
+    .nav-back svg { width: 16px; height: 16px; }
+
+    .nav-step {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--fg);
+    }
+    .nav-skip {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--fg-muted);
+      text-decoration: none;
+      transition: var(--transition);
+    }
+    .nav-skip:hover { color: var(--black); }
+
+    /* Progress pips */
+    .progress-pips {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 8px 20px 16px;
+    }
+    .pip {
+      height: 3px;
+      border-radius: var(--radius-full);
+      flex: 1;
+      background: var(--border);
+      transition: var(--transition);
+    }
+    .pip.done { background: var(--lime); }
+    .pip.active { background: var(--black); }
+
+    /* Form content */
+    .form-body {
+      padding: 0 20px;
+    }
+
+    .form-heading {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--black);
+      letter-spacing: -0.03em;
+      line-height: 1.25;
+      margin-bottom: 6px;
+    }
+
+    .form-sub {
+      font-size: 14px;
+      color: var(--fg-muted);
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+
+    /* Category sections */
+    .category { margin-bottom: 20px; }
+    .category-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--fg-subtle);
+      margin-bottom: 8px;
+    }
+    .chip-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+    .chip {
+      padding: 7px 14px;
+      border-radius: var(--radius-full);
+      border: 1.5px solid var(--border);
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .chip.selected {
+      background: var(--black);
+      color: var(--white);
+      border-color: var(--black);
+    }
+
+    /* Fixed footer */
+    .phone-footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      padding: 16px 20px 0;
+      flex-shrink: 0;
+    }
+
+    .footer-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .selection-count {
+      font-size: 12px;
+      color: var(--fg-subtle);
+    }
+    .selection-count span { color: var(--black); font-weight: 700; }
+
+    .btn-continue {
+      display: block;
+      width: 100%;
+      padding: 15px;
+      background: var(--black);
+      color: var(--white);
+      border: none;
+      border-radius: var(--radius);
+      font-family: var(--font);
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+      transition: var(--transition);
+    }
+    .btn-continue:hover { background: #222; }
+
+    /* Home indicator */
+    .home-indicator {
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .home-bar {
+      width: 120px;
+      height: 4px;
+      background: var(--black);
+      border-radius: var(--radius-full);
+      opacity: 0.2;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="phone">
+    <!-- Status bar -->
+    <div class="status-bar">
+      <span class="status-time">9:41</span>
+      <div class="status-icons">
+        <!-- Signal -->
+        <svg viewBox="0 0 16 16" fill="currentColor">
+          <rect x="1" y="10" width="2" height="4" rx="0.5"/>
+          <rect x="4.5" y="7" width="2" height="7" rx="0.5"/>
+          <rect x="8" y="4" width="2" height="10" rx="0.5"/>
+          <rect x="11.5" y="1" width="2" height="13" rx="0.5"/>
+        </svg>
+        <!-- WiFi -->
+        <svg viewBox="0 0 16 16" fill="currentColor">
+          <path d="M8 11a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm0-3.5c1.6 0 3 .65 4.05 1.7l-1.05 1.05A4 4 0 0 0 8 9a4 4 0 0 0-3 1.25L3.95 9.2A5.5 5.5 0 0 1 8 7.5zm0-3C10.8 4.5 13.3 5.6 15.1 7.4l-1.05 1.05A7 7 0 0 0 8 6a7 7 0 0 0-6.05 2.45L.9 7.4A8.5 8.5 0 0 1 8 4.5z"/>
+        </svg>
+        <!-- Battery -->
+        <svg viewBox="0 0 20 12" fill="currentColor">
+          <rect x="0.5" y="0.5" width="16" height="11" rx="2" stroke="currentColor" stroke-width="1" fill="none"/>
+          <rect x="2" y="2" width="11" height="8" rx="1"/>
+          <path d="M17.5 4v4a2 2 0 0 0 0-4z"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Dynamic island placeholder -->
+    <div class="notch"></div>
+
+    <!-- Nav bar -->
+    <div class="phone-content">
+      <div class="nav-bar">
+        <button class="nav-back" onclick="history.back()">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M10 3L5 8l5 5"/>
+          </svg>
+        </button>
+        <span class="nav-step">Step 4 of 6</span>
+        <a href="pro-home-mobile.html" class="nav-skip">Skip</a>
+      </div>
+
+      <!-- Progress pips -->
+      <div class="progress-pips">
+        <div class="pip done"></div>
+        <div class="pip done"></div>
+        <div class="pip done"></div>
+        <div class="pip active"></div>
+        <div class="pip"></div>
+        <div class="pip"></div>
+      </div>
+
+      <!-- Form content -->
+      <div class="form-body">
+        <h1 class="form-heading">What's your expertise?</h1>
+        <p class="form-sub">Select all that apply. This powers your job matches.</p>
+
+        <div class="category">
+          <div class="category-label">Design</div>
+          <div class="chip-group">
+            <button class="chip selected" onclick="toggleChip(this)">Product Design</button>
+            <button class="chip selected" onclick="toggleChip(this)">UI/UX</button>
+            <button class="chip" onclick="toggleChip(this)">Graphic Design</button>
+            <button class="chip" onclick="toggleChip(this)">Motion Design</button>
+            <button class="chip" onclick="toggleChip(this)">Brand Identity</button>
+          </div>
+        </div>
+
+        <div class="category">
+          <div class="category-label">Engineering</div>
+          <div class="chip-group">
+            <button class="chip selected" onclick="toggleChip(this)">Frontend</button>
+            <button class="chip" onclick="toggleChip(this)">Backend</button>
+            <button class="chip" onclick="toggleChip(this)">Full Stack</button>
+            <button class="chip" onclick="toggleChip(this)">Mobile</button>
+            <button class="chip" onclick="toggleChip(this)">DevOps</button>
+          </div>
+        </div>
+
+        <div class="category">
+          <div class="category-label">Marketing</div>
+          <div class="chip-group">
+            <button class="chip" onclick="toggleChip(this)">SEO</button>
+            <button class="chip" onclick="toggleChip(this)">Content</button>
+            <button class="chip" onclick="toggleChip(this)">Paid Ads</button>
+            <button class="chip" onclick="toggleChip(this)">Social Media</button>
+          </div>
+        </div>
+
+        <div class="category">
+          <div class="category-label">Management</div>
+          <div class="chip-group">
+            <button class="chip" onclick="toggleChip(this)">Product Management</button>
+            <button class="chip" onclick="toggleChip(this)">Project Management</button>
+            <button class="chip" onclick="toggleChip(this)">Operations</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fixed bottom CTA -->
+    <div class="phone-footer">
+      <div class="footer-meta">
+        <span class="selection-count"><span id="count">3</span> selected</span>
+      </div>
+      <a href="pro-home-mobile.html" class="btn-continue">Continue</a>
+      <div class="home-indicator">
+        <div class="home-bar"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleChip(el) {
+      el.classList.toggle('selected');
+      document.getElementById('count').textContent =
+        document.querySelectorAll('.chip.selected').length;
+    }
+  </script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

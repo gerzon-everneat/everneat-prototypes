@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neatlist — Select Expertise</title>
+  <link rel="stylesheet" href="tokens.css">
+  <style>
+    html, body { height: 100%; }
+
+    body {
+      display: flex;
+      min-height: 100vh;
+      background: var(--black);
+    }
+
+    /* ── Left panel ── */
+    .left {
+      width: 380px;
+      flex-shrink: 0;
+      background: var(--black);
+      padding: 48px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 48px;
+    }
+    .logo-mark {
+      width: 32px;
+      height: 32px;
+      background: var(--lime);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .logo-mark svg { width: 18px; height: 18px; }
+    .logo-name {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.02em;
+    }
+
+    /* Step progress dots */
+    .step-dots {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 32px;
+    }
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: var(--radius-full);
+      background: #333;
+      transition: var(--transition);
+    }
+    .dot.done { background: var(--lime); }
+    .dot.active {
+      width: 28px;
+      background: var(--white);
+    }
+
+    /* Step list */
+    .step-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-bottom: 40px;
+    }
+    .step-list li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid #1a1a1a;
+      font-size: 13px;
+    }
+    .step-list li:last-child { border-bottom: none; }
+    .step-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: var(--radius-full);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .step-icon.done { background: var(--lime); color: var(--lime-text); }
+    .step-icon.current { background: var(--white); color: var(--black); }
+    .step-icon.upcoming { background: #222; color: #555; }
+    .step-label { color: #888; font-size: 13px; }
+    .step-label.done { color: #666; }
+    .step-label.current { color: var(--white); font-weight: 600; }
+
+    /* Pull-quote */
+    .panel-quote {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+    .panel-quote blockquote {
+      font-size: 17px;
+      font-weight: 500;
+      color: var(--white);
+      line-height: 1.6;
+      opacity: 0.9;
+      margin-bottom: 24px;
+    }
+    .panel-quote blockquote span { color: var(--lime); }
+
+    .back-link {
+      font-size: 13px;
+      color: #555;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: var(--transition);
+    }
+    .back-link:hover { color: var(--white); }
+
+    /* ── Right panel ── */
+    .right {
+      flex: 1;
+      background: var(--bg);
+      overflow-y: auto;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .form-wrap {
+      width: 100%;
+      max-width: 600px;
+      padding: 64px 48px;
+    }
+
+    .step-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--lime-dim);
+      color: #667700;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      margin-bottom: 20px;
+    }
+
+    .form-heading {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--black);
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+
+    .form-sub {
+      font-size: 15px;
+      color: var(--fg-muted);
+      margin-bottom: 36px;
+      line-height: 1.5;
+    }
+
+    /* Category sections */
+    .category { margin-bottom: 28px; }
+    .category-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--fg-subtle);
+      margin-bottom: 10px;
+    }
+    .chip-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .chip {
+      padding: 8px 16px;
+      border-radius: var(--radius-full);
+      border: 1.5px solid var(--border);
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      user-select: none;
+    }
+    .chip:hover { border-color: var(--black); background: var(--bg-secondary); }
+    .chip.selected {
+      background: var(--black);
+      color: var(--white);
+      border-color: var(--black);
+    }
+    .chip.selected:hover { background: #222; }
+
+    .form-footer {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 40px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+    }
+    .form-footer .btn { min-width: 160px; }
+    .form-back {
+      font-size: 14px;
+      color: var(--fg-muted);
+      text-decoration: none;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+    .form-back:hover { color: var(--black); }
+
+    .selection-count {
+      margin-left: auto;
+      font-size: 13px;
+      color: var(--fg-subtle);
+    }
+    .selection-count span { color: var(--black); font-weight: 700; }
+  </style>
+</head>
+<body>
+
+  <!-- LEFT PANEL -->
+  <aside class="left">
+    <div class="logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 18 18" fill="none">
+          <rect x="2" y="2" width="6" height="6" rx="1.5" fill="#111a00"/>
+          <rect x="10" y="2" width="6" height="6" rx="1.5" fill="#111a00"/>
+          <rect x="2" y="10" width="6" height="6" rx="1.5" fill="#111a00"/>
+          <rect x="10" y="10" width="6" height="6" rx="1.5" fill="#111a00" opacity="0.4"/>
+        </svg>
+      </div>
+      <span class="logo-name">Neatlist</span>
+    </div>
+
+    <!-- Step dots -->
+    <div class="step-dots">
+      <div class="dot done"></div>
+      <div class="dot done"></div>
+      <div class="dot done"></div>
+      <div class="dot active"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+
+    <!-- Step list -->
+    <ul class="step-list">
+      <li>
+        <div class="step-icon done"><i data-lucide="check" style="width:14px;height:14px;"></i></div>
+        <span class="step-label done">Phone verified</span>
+      </li>
+      <li>
+        <div class="step-icon done"><i data-lucide="check" style="width:14px;height:14px;"></i></div>
+        <span class="step-label done">Role selected (Professional)</span>
+      </li>
+      <li>
+        <div class="step-icon done"><i data-lucide="check" style="width:14px;height:14px;"></i></div>
+        <span class="step-label done">Basic info</span>
+      </li>
+      <li>
+        <div class="step-icon current">→</div>
+        <span class="step-label current">Expertise</span>
+      </li>
+      <li>
+        <div class="step-icon upcoming">5</div>
+        <span class="step-label">Service area</span>
+      </li>
+      <li>
+        <div class="step-icon upcoming">6</div>
+        <span class="step-label">Verification</span>
+      </li>
+    </ul>
+
+    <div class="panel-quote">
+      <blockquote>
+        "Tell us what you're great at — we'll match you to the <span>right jobs</span> automatically."
+      </blockquote>
+      <a href="auth-web.html" class="back-link">
+        ← Back to sign in
+      </a>
+    </div>
+  </aside>
+
+  <!-- RIGHT PANEL -->
+  <main class="right">
+    <div class="form-wrap">
+      <div class="step-badge">Step 4 of 6</div>
+      <h1 class="form-heading">What's your expertise?</h1>
+      <p class="form-sub">Select all that apply. This powers your job matches.</p>
+
+      <div class="category">
+        <div class="category-label">Design</div>
+        <div class="chip-group">
+          <button class="chip selected" onclick="toggleChip(this)">Product Design</button>
+          <button class="chip selected" onclick="toggleChip(this)">UI/UX</button>
+          <button class="chip" onclick="toggleChip(this)">Graphic Design</button>
+          <button class="chip" onclick="toggleChip(this)">Motion Design</button>
+          <button class="chip" onclick="toggleChip(this)">Brand Identity</button>
+        </div>
+      </div>
+
+      <div class="category">
+        <div class="category-label">Engineering</div>
+        <div class="chip-group">
+          <button class="chip selected" onclick="toggleChip(this)">Frontend</button>
+          <button class="chip" onclick="toggleChip(this)">Backend</button>
+          <button class="chip" onclick="toggleChip(this)">Full Stack</button>
+          <button class="chip" onclick="toggleChip(this)">Mobile</button>
+          <button class="chip" onclick="toggleChip(this)">DevOps</button>
+        </div>
+      </div>
+
+      <div class="category">
+        <div class="category-label">Marketing</div>
+        <div class="chip-group">
+          <button class="chip" onclick="toggleChip(this)">SEO</button>
+          <button class="chip" onclick="toggleChip(this)">Content</button>
+          <button class="chip" onclick="toggleChip(this)">Paid Ads</button>
+          <button class="chip" onclick="toggleChip(this)">Social Media</button>
+        </div>
+      </div>
+
+      <div class="category">
+        <div class="category-label">Management</div>
+        <div class="chip-group">
+          <button class="chip" onclick="toggleChip(this)">Product Management</button>
+          <button class="chip" onclick="toggleChip(this)">Project Management</button>
+          <button class="chip" onclick="toggleChip(this)">Operations</button>
+        </div>
+      </div>
+
+      <div class="form-footer">
+        <a href="pro-home-web.html" class="btn btn-primary btn-lg">Continue</a>
+        <a href="#" onclick="history.back(); return false;" class="form-back">← Back</a>
+        <span class="selection-count"><span id="count">3</span> selected</span>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function toggleChip(el) {
+      el.classList.toggle('selected');
+      document.getElementById('count').textContent =
+        document.querySelectorAll('.chip.selected').length;
+    }
+  </script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

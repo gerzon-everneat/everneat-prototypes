@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Neatlist — Auth (Web)</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  body { background: var(--bg-secondary); min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+  .auth-layout { display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; width: 100%; }
+
+  /* LEFT PANEL */
+  .auth-visual { background: var(--black); padding: 48px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
+  .auth-visual::before { content: ''; position: absolute; top: -120px; right: -120px; width: 400px; height: 400px; background: var(--lime); opacity: 0.08; border-radius: 50%; }
+  .auth-visual::after { content: ''; position: absolute; bottom: -80px; left: -80px; width: 300px; height: 300px; background: var(--lime); opacity: 0.05; border-radius: 50%; }
+  .auth-logo { font-size: 22px; font-weight: 800; color: var(--white); display: flex; align-items: center; gap: 8px; z-index: 1; }
+  .auth-logo-dot { width: 8px; height: 8px; background: var(--lime); border-radius: 50%; }
+  .auth-visual-content { z-index: 1; }
+  .auth-visual-content h2 { font-size: 40px; font-weight: 800; color: var(--white); line-height: 1.15; letter-spacing: -1px; margin-bottom: 16px; }
+  .auth-visual-content h2 em { font-style: normal; color: var(--lime); }
+  .auth-visual-content p { font-size: 16px; color: rgba(255,255,255,0.5); line-height: 1.7; margin-bottom: 40px; }
+  .auth-testimonial { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-lg); padding: 24px; z-index: 1; }
+  .auth-testimonial p { font-size: 15px; color: rgba(255,255,255,0.8); line-height: 1.65; margin-bottom: 16px; font-style: italic; }
+  .testimonial-author { display: flex; align-items: center; gap: 12px; }
+  .testimonial-av { width: 36px; height: 36px; border-radius: 50%; background: var(--lime); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; color: var(--lime-text); }
+  .testimonial-name { font-size: 13px; font-weight: 700; color: var(--white); }
+  .testimonial-role { font-size: 12px; color: rgba(255,255,255,0.4); }
+
+  /* RIGHT PANEL */
+  .auth-form-panel { background: var(--white); padding: 48px; display: flex; flex-direction: column; justify-content: center; }
+  .auth-form-inner { max-width: 400px; margin: 0 auto; width: 100%; }
+  .auth-tabs { display: flex; background: var(--bg-secondary); border-radius: var(--radius-sm); padding: 4px; margin-bottom: 32px; }
+  .auth-tab { flex: 1; text-align: center; padding: 8px; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; transition: var(--transition); color: var(--fg-muted); }
+  .auth-tab.active { background: var(--white); color: var(--black); box-shadow: var(--shadow-sm); }
+  .auth-heading { font-size: 26px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 6px; }
+  .auth-sub { font-size: 14px; color: var(--fg-muted); margin-bottom: 28px; }
+  .form-group { margin-bottom: 16px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .input-wrapper { position: relative; }
+  .input-wrapper input { padding-right: 40px; }
+  .input-icon { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--fg-subtle); cursor: pointer; display: flex; align-items: center; }
+  .forgot { font-size: 13px; color: var(--fg-muted); text-align: right; margin-top: -8px; margin-bottom: 16px; text-decoration: none; }
+  .forgot:hover { color: var(--black); }
+  .btn-full { width: 100%; justify-content: center; padding: 13px; font-size: 15px; }
+  .auth-divider { display: flex; align-items: center; gap: 12px; margin: 20px 0; }
+  .auth-divider span { font-size: 12px; color: var(--fg-subtle); white-space: nowrap; }
+  .auth-divider::before, .auth-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .social-btn { width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 11px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; cursor: pointer; background: var(--white); color: var(--fg); transition: var(--transition); margin-bottom: 10px; }
+  .social-btn:hover { border-color: var(--black); }
+  .auth-switch { text-align: center; margin-top: 24px; font-size: 13px; color: var(--fg-muted); }
+  .auth-switch a { color: var(--black); font-weight: 700; text-decoration: none; }
+  .phone-prefix { display: flex; align-items: center; gap: 0; }
+  .phone-prefix select { width: auto; border-right: none; border-radius: var(--radius-sm) 0 0 var(--radius-sm); padding: 10px 10px; flex-shrink: 0; min-width: 80px; }
+  .phone-prefix input { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+  /* Register extra fields */
+  .register-fields { display: none; }
+  .register-fields.show { display: block; }
+</style>
+</head>
+<body>
+<div class="auth-layout">
+  <!-- LEFT -->
+  <div class="auth-visual">
+    <div class="auth-logo"><div class="auth-logo-dot"></div>Neatlist</div>
+    <div class="auth-visual-content">
+      <h2>Where the best<br />talent meets the<br />best <em>opportunity.</em></h2>
+      <p>Join thousands of professionals and employers who use Neatlist to make smarter, faster hiring decisions.</p>
+    </div>
+    <div class="auth-testimonial">
+      <p>"Neatlist matched me with three interviews in my first week. I accepted an offer within 12 days."</p>
+      <div class="testimonial-author">
+        <div class="testimonial-av">M</div>
+        <div>
+          <div class="testimonial-name">Maria Santos</div>
+          <div class="testimonial-role">UX Designer · Hired via Neatlist</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="auth-form-panel">
+    <div class="auth-form-inner">
+      <div class="auth-tabs">
+        <div class="auth-tab active" onclick="showLogin()">Log in</div>
+        <div class="auth-tab" onclick="showRegister()">Sign up</div>
+      </div>
+
+      <!-- LOGIN -->
+      <div id="login-form">
+        <h2 class="auth-heading">Welcome back</h2>
+        <p class="auth-sub">Log in to your Neatlist account</p>
+        <div class="form-group">
+          <label>Email address</label>
+          <input type="email" placeholder="you@example.com" />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <div class="input-wrapper">
+            <input type="password" placeholder="Enter your password" />
+            <span class="input-icon"><i data-lucide="eye" style="width:18px;height:18px;"></i></span>
+          </div>
+        </div>
+        <a href="#" class="forgot">Forgot password?</a>
+        <a href="onboarding-employer-web.html" class="btn btn-primary btn-full">Log in</a>
+        <div class="auth-divider"><span>or continue with</span></div>
+        <button class="social-btn"><i data-lucide="globe" style="width:16px;height:16px;"></i> Continue with Google</button>
+        <button class="social-btn"> Apple</button>
+        <div class="auth-switch">Don't have an account? <a href="#" onclick="showRegister()">Sign up free</a></div>
+      </div>
+
+      <!-- REGISTER -->
+      <div id="register-form" style="display:none">
+        <h2 class="auth-heading">Create account</h2>
+        <p class="auth-sub">Start hiring or finding work today</p>
+        <div class="form-row">
+          <div class="form-group">
+            <label>First name</label>
+            <input type="text" placeholder="Maria" />
+          </div>
+          <div class="form-group">
+            <label>Last name</label>
+            <input type="text" placeholder="Santos" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email address</label>
+          <input type="email" placeholder="you@example.com" />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <div class="input-wrapper">
+            <input type="password" placeholder="Create a password" />
+            <span class="input-icon"><i data-lucide="eye" style="width:18px;height:18px;"></i></span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Phone number</label>
+          <div class="phone-prefix">
+            <select><option>🇺🇸 +1</option><option>🇬🇧 +44</option><option>🇵🇭 +63</option></select>
+            <input type="tel" placeholder="555 000 0000" />
+          </div>
+        </div>
+        <a href="onboarding-employer-web.html" class="btn btn-primary btn-full" style="margin-bottom:10px">Create account</a>
+        <div class="auth-divider"><span>or continue with</span></div>
+        <button class="social-btn"><i data-lucide="globe" style="width:16px;height:16px;"></i> Continue with Google</button>
+        <div class="auth-switch">Already have an account? <a href="#" onclick="showLogin()">Log in</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showLogin() {
+  document.getElementById('login-form').style.display = 'block';
+  document.getElementById('register-form').style.display = 'none';
+  document.querySelectorAll('.auth-tab')[0].classList.add('active');
+  document.querySelectorAll('.auth-tab')[1].classList.remove('active');
+}
+function showRegister() {
+  document.getElementById('login-form').style.display = 'none';
+  document.getElementById('register-form').style.display = 'block';
+  document.querySelectorAll('.auth-tab')[0].classList.remove('active');
+  document.querySelectorAll('.auth-tab')[1].classList.add('active');
+}
+</script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>lucide.createIcons();</script>
+</body>
+</html>
